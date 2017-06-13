@@ -8,19 +8,14 @@
 //the numbers of data files are all recgnized as real numbers, not integer 	
 //OutPutFile will be "InputFileName + .out"
 
-//***Note***
-//You must modify the first line of data file, like
-//	"View Overall#" to "View_Overall#"
-
-#include <stdio.h>
 
 int main(int argc, char** argv) {
 	FILE *fp_in, *fp_out;
 	char *InputFileName;
 	char OutputFileName[100];
 	
-	int skip_lines = 11;	//how many lines(iteration) you skip at each View_Overall
-	double iteration_current = 0;
+//	int skip_lines = 11;	//how many lines(iteration) you skip at each View_Overall
+	int skip_lines;
 	double DWs_previous;
 	double data_current[6], data_previous[6];
 
@@ -28,17 +23,14 @@ int main(int argc, char** argv) {
 
 	int i;
 
-	printf("flag 5\n");
-	
-	if (argc != 2) {
-		printf("Usage: %s InputFileName\n", argv[0]);
+	if (argc != 3) {
+		printf("Usage: %s InputFileName skip_lines\n", argv[0]);
 		return 0;
 	}
 	InputFileName = argv[1];
-	printf("flag 7\n");
 	sprintf(OutputFileName, "%s.output", InputFileName);
+	skip_lines = atoi(argv[2]);
 
-	printf("flag 9\n");
 	fp_in = fopen(InputFileName, "r");
 	if (fp_in == NULL) {
 		printf("Can't open file %s\n", InputFileName);
@@ -52,39 +44,27 @@ int main(int argc, char** argv) {
 	fprintf(fp_out, "View_Overall#	Disappearing_DAQ-X / V	Disappearing_Magnetic_Field / Oe	#Disappearing_DWs\n");
 
 	fscanf(fp_in, "%s %s %s %s %s %s %s %s\n", dust[0], dust[1], dust[2], dust[3], dust[4], dust[5], dust[6], dust[7]);
-	printf("first line of %s is %s %s %s %s %s %s\n", argv[1], dust[0], dust[1], dust[2], dust[3], dust[4], dust[5]);
 	fscanf(fp_in, "%lf %lf %lf %lf %lf %lf\n", &data_previous[0], &data_previous[1], &data_previous[2], &data_previous[3], &data_previous[4], &data_previous[5]);
-	//%*s means that you read the data in %s format, but you don't substitute the data in a variable.
 
-	printf("flag 10\n");
 
 	while (1) {
 		for (i = 0; i < skip_lines - 1; ++i) {
 			fscanf(fp_in, "%lf %lf %lf %lf %lf %lf\n", &data_previous[0], &data_previous[1], &data_previous[2], &data_previous[3], &data_previous[4], &data_previous[5]);
 		}
-		printf("flag 20\n");
+		//Note that the last iteration of each ViewOverall is Max Field
 
 		while (1) {
 			if (fscanf(fp_in, "%lf %lf %lf %lf %lf %lf\n", &data_previous[0], &data_previous[1], &data_previous[2], &data_previous[3], &data_previous[4], &data_previous[5]) == EOF) {
-				goto ending;
-			}
-			printf("data_previous is %lf %lf %lf %lf %lf %lf\n", data_previous[0], data_previous[1], data_previous[2], data_previous[3], data_previous[4], data_previous[5]);
-
-			if (fscanf(fp_in, "%lf %lf %lf %lf %lf %lf\n", &data_current[0], &data_current[1], &data_current[2], &data_current[3], &data_current[4], &data_current[5]) == EOF) {
 				printf("You have a mistake in skip_lines or file format.");
 				return 0;
 			}
-			printf("data_current is %lf %lf %lf %lf %lf %lf\n", data_current[0], data_current[1], data_current[2], data_current[3], data_current[4], data_current[5]);
 
-			printf("flag 30\n");
-			printf("current ViewOverall is %lf, current Iteration is %lf\n", data_current[0], data_current[1]);
-
-			if (iteration_current > data_current[1]) {
-				iteration_current = 0.0;
-				break;
-			} else {
-				iteration_current = data_current[1];
+			if (fscanf(fp_in, "%lf %lf %lf %lf %lf %lf\n", &data_current[0], &data_current[1], &data_current[2], &data_current[3], &data_current[4], &data_current[5]) == EOF) {
+				goto ending;
 			}
+
+			if (data_current[0] > (data_previous[0] + 0.1)) break;	//Next ViewOverall
+
 			if ((int)data_previous[1] == skip_lines - 1) {
 				DWs_previous = data_current[5];
 			} else {
@@ -92,7 +72,6 @@ int main(int argc, char** argv) {
 				DWs_previous = data_current[5];
 			}
 		}
-
 	}
 
 	ending:
