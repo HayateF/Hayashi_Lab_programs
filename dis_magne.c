@@ -8,6 +8,7 @@
 //the numbers of data files are all recgnized as real numbers, not integer 	
 //OutPutFile will be "InputFileName + .out"
 
+#include <stdio.h>
 
 int main(int argc, char** argv) {
 	FILE *fp_in, *fp_out;
