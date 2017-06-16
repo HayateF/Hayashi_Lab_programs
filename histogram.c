@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
 		return 0;
 	}
 
-	sprintf(OutputFileName, "%s.histogram", InputFileName);
+	sprintf(OutputFileName, "%s.histogram_width_%s", InputFileName, argv[4]);
 	if ( (fp_out = fopen(OutputFileName, "w")) == NULL) {
 		fprintf(stderr, "Can't open %s\n", OutputFileName);
 		return 0;
@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
 	step_x = atof(argv[4]);
 	histo_size = (int)((end_x - start_x) / step_x) + 1;
 
-	histogram = (int *)malloc(sizeof(int) * histo_size);
+	histogram = (int *)malloc(sizeof(int) * (histo_size + 5));	// +5 is merge.
 	printf("malloc success\n");
 
 	fscanf(fp_in, "%s %s %s %s %s %s %s %s", dust[0], dust[1], dust[2], dust[3], dust[4], dust[5], dust[6], dust[7]);
@@ -52,7 +52,6 @@ int main(int argc, char **argv) {
 	}
 
 	for (i = 0; i < histo_size; ++i) {
-	if (histogram[i] < 0) histogram[i] = 0;
 	fprintf(fp_out, "[%lf_%lf] %lf %d\n", start_x + i * step_x, start_x + (i+1) * step_x, start_x + (i + 0.5) * step_x, histogram[i]);
 	}
 

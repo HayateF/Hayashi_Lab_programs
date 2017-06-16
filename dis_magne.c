@@ -6,7 +6,10 @@
 //	and the first line of the files must be column names above
 
 //the numbers of data files are all recgnized as real numbers, not integer 	
-//OutPutFile will be "InputFileName + .out"
+//OutPutFile will be "InputFileName + .output"
+
+//skip_lines is the number of lines from the first iteration to the last iteration of killing zone.
+//For example, when the magnetic fields are 0, 9, 9, 9, 9, 9, 9, 0, 9, 0, 10, 0, 11, ...., skip_lines shouled be 8.
 
 #include <stdio.h>
 
@@ -70,6 +73,9 @@ int main(int argc, char** argv) {
 				DWs_previous = data_current[5];
 			} else {
 				fprintf(fp_out, "%lf %lf %lf %lf\n", data_current[0], data_previous[2], data_previous[4], DWs_previous - data_current[5]);
+				if ((DWs_previous - data_current[5]) < -0.1) {
+					fprintf(stdout, "ViewOverall %lf have minus Disappering_DWs\n", data_current[0]);
+				}
 				DWs_previous = data_current[5];
 			}
 		}
