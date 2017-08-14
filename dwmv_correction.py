@@ -1,6 +1,7 @@
+from operator import itemgetter
 import numpy as np
 SAMPLE_REF_RATE = 1.0
-SMALL_CORRECTION = False	# when you correct velocities of small amplitudes, True, when not, False. 
+SMALL_CORRECTION = True	# when you correct velocities of small amplitudes, True, when not, False. 
 
 # function returns the pulse voltage when you input a pulse with voltage v
 def generator_ref(v):
@@ -16,8 +17,12 @@ data = np.loadtxt("velocity_v1_51a.dat", delimiter = "\t", usecols = (8, 11, 14)
 # but you have to note that the number starts from 0.
 
 # You have to sort an input file by pulse amplitude in ascending order.
-data = np.sort(data, axis = 0)
-print (data)
+# But if you sort with np.sort directly, you will sort all columns independently.
+data = sorted(data, key = itemgetter(0))	# you can replace "itemgetter(0)" to "lambda x: x[0]"
+print ("sorted data is", data)
+
+# data = np.sort(data, axis = 0)	# axis = 0 means sort by column. axis = 1 means sort by row.
+# np.sort does not suit this time because np.sort will sorts all columns independently.
 
 # Find the minimum positive pulse amplitude
 MIN_POS_AMP_LIST = 0
@@ -59,7 +64,10 @@ while m < len(data):
 					break
 			k += 1
 	elif SMALL_CORRECTION:
+		print ("reflection voltage of", data[m][0], "is", ref_vol)
+		print (data[m][1], "-", data[MIN_POS_AMP_LIST][1], "*", ref_vol, "/", data[MIN_POS_AMP_LIST][0], "is")
 		data[m][1] = data[m][1] - data[MIN_POS_AMP_LIST][1] * ref_vol / data[MIN_POS_AMP_LIST][0]
+		print (data[m][1])
 		data[m][2] = data[m][2] - data[MIN_POS_AMP_LIST][2] * ref_vol / data[MIN_POS_AMP_LIST][0]
 		
 	m += 1
