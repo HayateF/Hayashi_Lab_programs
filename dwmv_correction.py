@@ -47,7 +47,7 @@ def ref_pos_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CO
 			print (data[m][1])
 			data[m][2] = data[m][2] - data[MIN_POS_AMP_LIST][2] * ref_vol / data[MIN_POS_AMP_LIST][0]
 
-		ref_vol *= generator_ref_ratio(data[m][0])
+		ref_vol *= generator_ref_ratio(data[m][0]) * SAMPLE_REF_RATE
 
 
 
@@ -70,7 +70,7 @@ def ref_neg_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CO
 			data[m][1] = data[m][1] - data[MIN_POS_AMP_LIST - 1][1] * ref_vol / data[MIN_POS_AMP_LIST - 1][0]
 			data[m][2] = data[m][2] - data[MIN_POS_AMP_LIST - 1][2] * ref_vol / data[MIN_POS_AMP_LIST - 1][0]
 
-		ref_vol *= generator_ref_ratio(data[m][0])
+		ref_vol *= generator_ref_ratio(data[m][0]) * SAMPLE_REF_RATE
 
 
 
