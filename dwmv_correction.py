@@ -2,6 +2,7 @@ from operator import itemgetter
 import numpy as np
 SAMPLE_REF_RATE = 1.0
 SMALL_CORRECTION = True	# when you correct velocities of small amplitudes, True, when not, False. 
+THRESHOLD = 0.5	# pulse voltage whose domain wall motion velocity is negligible, you think.
 
 # function returns the pulse voltage when you input a pulse with voltage v
 # NOTE that each output pulse voltagethe determinens each output impedance of the pulse generator
@@ -23,48 +24,53 @@ def generator_ref_ratio(v):
 
 ### WE HAVE TO CONSIDER THE SMALLER REFLECTION PULSE ###
 # because smaller pulses can have an influence on velocities when domain walls are move.
-def ref_pos_correction(m, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION):
+def ref_pos_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION):
 	"""velocity correction for postivie pulse amplitude"""
 	global data
-	k = MIN_POS_AMP_LIST
-	# k is the list number that you refer to when you correct m. Therefore, k is always satisfies k < m.
 	ref_vol = data[m][0] * SAMPLE_REF_RATE * generator_ref_ratio(data[m][0])	
-	# We consider the reflection pulse whose amplitude is larger than the minimum positive pulse amplitude.
-	if ref_vol > data[MIN_POS_AMP_LIST][0]:		
-		while k < len(data):
-			if data[k][0] < ref_vol:
-				if data[k+1][0] > ref_vol:			
-					data[m][1] = data[m][1] - data[k][1] - (data[k+1][1] - data[k][1]) * (ref_vol - data[k][0]) / (data[k+1][0] - data[k][0])
-					data[m][2] = data[m][2] - data[k][2] - (data[k+1][2] - data[k][2]) * (ref_vol - data[k][0]) / (data[k+1][0] - data[k][0])
-					break
-			k += 1
-	elif SMALL_CORRECTION:
-		print ("reflection voltage of", data[m][0], "is", ref_vol)
-		print (data[m][1], "-", data[MIN_POS_AMP_LIST][1], "*", ref_vol, "/", data[MIN_POS_AMP_LIST][0], "is")
-		data[m][1] = data[m][1] - data[MIN_POS_AMP_LIST][1] * ref_vol / data[MIN_POS_AMP_LIST][0]
-		print (data[m][1])
-		data[m][2] = data[m][2] - data[MIN_POS_AMP_LIST][2] * ref_vol / data[MIN_POS_AMP_LIST][0]
+	while ref_vol > THRESHOLD:
+		k = MIN_POS_AMP_LIST
+		# k is the list number that you refer to when you correct m. Therefore, k is always satisfies k < m.
+
+		if ref_vol > data[MIN_POS_AMP_LIST][0]:		
+			while k < len(data):
+				if data[k][0] < ref_vol:
+					if data[k+1][0] > ref_vol:			
+						data[m][1] = data[m][1] - data[k][1] - (data[k+1][1] - data[k][1]) * (ref_vol - data[k][0]) / (data[k+1][0] - data[k][0])
+						data[m][2] = data[m][2] - data[k][2] - (data[k+1][2] - data[k][2]) * (ref_vol - data[k][0]) / (data[k+1][0] - data[k][0])
+						break
+				k += 1
+		elif SMALL_CORRECTION:
+			print ("reflection voltage of", data[m][0], "is", ref_vol)
+			print (data[m][1], "-", data[MIN_POS_AMP_LIST][1], "*", ref_vol, "/", data[MIN_POS_AMP_LIST][0], "is")
+			data[m][1] = data[m][1] - data[MIN_POS_AMP_LIST][1] * ref_vol / data[MIN_POS_AMP_LIST][0]
+			print (data[m][1])
+			data[m][2] = data[m][2] - data[MIN_POS_AMP_LIST][2] * ref_vol / data[MIN_POS_AMP_LIST][0]
+
+		ref_vol *= generator_ref_ratio(data[m][0])
 
 
-def ref_neg_correction(m, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION):
+
+def ref_neg_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION):
 	"""velocity correction for negative pulse amplitude"""
 	global data
-	k = MIN_POS_AMP_LIST - 1
 	ref_vol = data[m][0] * SAMPLE_REF_RATE * generator_ref_ratio(data[m][0])
-	
-	if ref_vol < data[MIN_POS_AMP_LIST - 1][0]:		
-		while k >= 0:
-			if data[k][0] > ref_vol:
-				if data[k-1][0] < ref_vol:			
-					data[m][1] = data[m][1] - data[k][1] - (data[k-1][1] - data[k][1]) * (ref_vol - data[k][0]) / (data[k-1][0] - data[k][0])
-					data[m][2] = data[m][2] - data[k][2] - (data[k-1][2] - data[k][2]) * (ref_vol - data[k][0]) / (data[k-1][0] - data[k][0])
-					break
-			k -= 1
-	elif SMALL_CORRECTION:
-		data[m][1] = data[m][1] - data[MIN_POS_AMP_LIST - 1][1] * ref_vol / data[MIN_POS_AMP_LIST - 1][0]
-		data[m][2] = data[m][2] - data[MIN_POS_AMP_LIST - 1][2] * ref_vol / data[MIN_POS_AMP_LIST - 1][0]
 
+	while ref_vol < -1.0 * THRESHOLD:	
+		k = MIN_POS_AMP_LIST - 1
+		if ref_vol < data[MIN_POS_AMP_LIST - 1][0]:		
+			while k >= 0:
+				if data[k][0] > ref_vol:
+					if data[k-1][0] < ref_vol:			
+						data[m][1] = data[m][1] - data[k][1] - (data[k-1][1] - data[k][1]) * (ref_vol - data[k][0]) / (data[k-1][0] - data[k][0])
+						data[m][2] = data[m][2] - data[k][2] - (data[k-1][2] - data[k][2]) * (ref_vol - data[k][0]) / (data[k-1][0] - data[k][0])
+						break
+				k -= 1
+		elif SMALL_CORRECTION:
+			data[m][1] = data[m][1] - data[MIN_POS_AMP_LIST - 1][1] * ref_vol / data[MIN_POS_AMP_LIST - 1][0]
+			data[m][2] = data[m][2] - data[MIN_POS_AMP_LIST - 1][2] * ref_vol / data[MIN_POS_AMP_LIST - 1][0]
 
+		ref_vol *= generator_ref_ratio(data[m][0])
 
 
 
@@ -94,7 +100,7 @@ print ("the list number of the minimum positive pulse amplitude is", MIN_POS_AMP
 # velocity correction for positive pulse amplitude
 m = MIN_POS_AMP_LIST + 1	# m is the list number that you want to correct.
 while m < len(data):
-	ref_pos_correction(m, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION)
+	ref_pos_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION)
 	m += 1
 
 
@@ -102,7 +108,7 @@ while m < len(data):
 # We have to correct from the smaller amplitude. In other words, we have to correct in order -8V, -12V, -20V, like that.
 m = MIN_POS_AMP_LIST - 2
 while m >= 0:
-	ref_neg_correction(m, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION)
+	ref_neg_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION)
 	m -= 1
 
 
