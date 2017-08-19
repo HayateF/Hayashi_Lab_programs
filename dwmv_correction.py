@@ -2,15 +2,15 @@ from operator import itemgetter
 import numpy as np
 SAMPLE_REF_RATE = 1.0
 SMALL_CORRECTION = True	# when you correct velocities of small amplitudes, True, when not, False. 
-POS_THRESHOLD = 5.0	# positive pulse voltage whose domain wall motion velocity is negligible, you think.
-NEG_THRESHOLD = -5.0
+POS_THRESHOLD = 6.0	# positive pulse voltage whose domain wall motion velocity is negligible, you think.
+NEG_THRESHOLD = -6.0
 
 # function returns the pulse voltage when you input a pulse with voltage v
 # NOTE that each output pulse voltagethe determinens each output impedance of the pulse generator
 # and reflection ratio. Each reflection pulse voltage returning from the sample does not determine
 # reflection ratio. 
 def generator_ref_ratio(v):
-	return abs(v) * 0.8 / 100.0
+	return 0.00017 * v**2 - 0.00074 * abs(v) + 0.0244
 
 
 # NOTE that you have to measure domain wall motion velocity at a certain pulse amplitude where the pulse reflection has little influence on the velocity.
