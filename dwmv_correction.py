@@ -24,7 +24,7 @@ def generator_ref_ratio(v):
 
 ### WE HAVE TO CONSIDER THE SMALLER REFLECTION PULSE ###
 # because smaller pulses can have an influence on velocities when domain walls are move.
-def ref_pos_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION):
+def ref_pos_correction(m, POS_THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION):
 	"""velocity correction for postivie pulse amplitude"""
 	global data
 	ref_vol = data[m][0] * SAMPLE_REF_RATE * generator_ref_ratio(data[m][0])	
@@ -51,7 +51,7 @@ def ref_pos_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CO
 
 
 
-def ref_neg_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION):
+def ref_neg_correction(m, NEG_THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION):
 	"""velocity correction for negative pulse amplitude"""
 	global data
 	ref_vol = data[m][0] * SAMPLE_REF_RATE * generator_ref_ratio(data[m][0])
@@ -106,14 +106,14 @@ print ("the list number of the minimum positive pulse amplitude is", MIN_POS_AMP
 # velocity correction for positive pulse amplitude
 m = MIN_POS_AMP_LIST + 1	# m is the list number that you want to correct.
 while m < len(data):
-	ref_pos_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION)
+	ref_pos_correction(m, POS_THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION)
 	m += 1
 
 # velocity correction for negative pulse amplitude
 # We have to correct from the smaller amplitude. In other words, we have to correct in order -8V, -12V, -20V, like that.
 m = MIN_POS_AMP_LIST - 2
 while m >= 0:
-	ref_neg_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION)
+	ref_neg_correction(m, NEG_THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION)
 	m -= 1
 
 
