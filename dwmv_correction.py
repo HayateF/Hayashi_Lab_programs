@@ -101,6 +101,7 @@ for n in range(len(data)):
 			MIN_POS_AMP_LIST = n+1
 			break
 print ("the list number of the minimum positive pulse amplitude is", MIN_POS_AMP_LIST)
+print ("the minimum positive pulse amplitude is", data[MIN_POS_AMP_LIST][0])
 
 
 # velocity correction for positive pulse amplitude
