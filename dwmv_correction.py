@@ -2,8 +2,8 @@ from operator import itemgetter
 import numpy as np
 SAMPLE_REF_RATE = 1.0
 SMALL_CORRECTION = True	# when you correct velocities of small amplitudes, True, when not, False. 
-POS_THRESHOLD = 6.0	# positive pulse voltage whose domain wall motion velocity is negligible, you think.
-NEG_THRESHOLD = -0.5
+POS_THRESHOLD = 5.0	# positive pulse voltage whose domain wall motion velocity is negligible, you think.
+NEG_THRESHOLD = -5.0
 
 # function returns the pulse voltage when you input a pulse with voltage v
 # NOTE that each output pulse voltagethe determinens each output impedance of the pulse generator
