@@ -2,18 +2,18 @@ from operator import itemgetter
 import numpy as np
 SAMPLE_REF_RATE = 1.0
 SMALL_CORRECTION = True	# when you correct velocities of small amplitudes, True, when not, False. 
-THRESHOLD = 0.5	# pulse voltage whose domain wall motion velocity is negligible, you think.
+POS_THRESHOLD = 6.0	# positive pulse voltage whose domain wall motion velocity is negligible, you think.
+NEG_THRESHOLD = -0.5
 
 # function returns the pulse voltage when you input a pulse with voltage v
 # NOTE that each output pulse voltagethe determinens each output impedance of the pulse generator
 # and reflection ratio. Each reflection pulse voltage returning from the sample does not determine
 # reflection ratio. 
 def generator_ref_ratio(v):
-#	return abs(v) * 0.8 / 100.0
-	return abs(v) / 100.0
+	return abs(v) * 0.8 / 100.0
 
 
-# Note that you have to measure domain wall motion velocity at a certain pulse amplitude where the pulse reflection has little influence on the velocity.
+# NOTE that you have to measure domain wall motion velocity at a certain pulse amplitude where the pulse reflection has little influence on the velocity.
 # We do not calculate correction for the minimum positive pulse amplitude because we use the amplitude as the base.
 
 # Correction is performed in the following way. We eliminate the velocity obtained by the reflection pulse.
@@ -28,7 +28,7 @@ def ref_pos_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CO
 	"""velocity correction for postivie pulse amplitude"""
 	global data
 	ref_vol = data[m][0] * SAMPLE_REF_RATE * generator_ref_ratio(data[m][0])	
-	while ref_vol > THRESHOLD:
+	while ref_vol > POS_THRESHOLD:
 		k = MIN_POS_AMP_LIST
 		# k is the list number that you refer to when you correct m. Therefore, k is always satisfies k < m.
 
@@ -41,11 +41,11 @@ def ref_pos_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CO
 						break
 				k += 1
 		elif SMALL_CORRECTION:
-			print ("reflection voltage of", data[m][0], "is", ref_vol)
-			print (data[m][1], "-", data[MIN_POS_AMP_LIST][1], "*", ref_vol, "/", data[MIN_POS_AMP_LIST][0], "is")
-			data[m][1] = data[m][1] - data[MIN_POS_AMP_LIST][1] * ref_vol / data[MIN_POS_AMP_LIST][0]
-			print (data[m][1])
-			data[m][2] = data[m][2] - data[MIN_POS_AMP_LIST][2] * ref_vol / data[MIN_POS_AMP_LIST][0]
+		#	print ("reflection voltage of", data[m][0], "is", ref_vol)
+		#	print (data[m][1], "-", data[MIN_POS_AMP_LIST][1], "*", ref_vol, "/", data[MIN_POS_AMP_LIST][0], "is")
+			data[m][1] = data[m][1] - data[MIN_POS_AMP_LIST][1] * (ref_vol - POS_THRESHOLD) / (data[MIN_POS_AMP_LIST][0] - POS_THRESHOLD)
+		#	print (data[m][1])
+			data[m][2] = data[m][2] - data[MIN_POS_AMP_LIST][2] * (ref_vol - POS_THRESHOLD) / (data[MIN_POS_AMP_LIST][0] - POS_THRESHOLD)
 
 		ref_vol *= generator_ref_ratio(data[m][0]) * SAMPLE_REF_RATE
 
@@ -56,7 +56,7 @@ def ref_neg_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CO
 	global data
 	ref_vol = data[m][0] * SAMPLE_REF_RATE * generator_ref_ratio(data[m][0])
 
-	while ref_vol < -1.0 * THRESHOLD:	
+	while ref_vol < NEG_THRESHOLD:	
 		k = MIN_POS_AMP_LIST - 1
 		if ref_vol < data[MIN_POS_AMP_LIST - 1][0]:		
 			while k >= 0:
@@ -67,12 +67,19 @@ def ref_neg_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CO
 						break
 				k -= 1
 		elif SMALL_CORRECTION:
-			data[m][1] = data[m][1] - data[MIN_POS_AMP_LIST - 1][1] * ref_vol / data[MIN_POS_AMP_LIST - 1][0]
-			data[m][2] = data[m][2] - data[MIN_POS_AMP_LIST - 1][2] * ref_vol / data[MIN_POS_AMP_LIST - 1][0]
+			data[m][1] = data[m][1] - data[MIN_POS_AMP_LIST - 1][1] * (ref_vol - NEG_THRESHOLD) / (data[MIN_POS_AMP_LIST - 1][0] - NEG_THRESHOLD)
+			data[m][2] = data[m][2] - data[MIN_POS_AMP_LIST - 1][2] * (ref_vol - NEG_THRESHOLD) / (data[MIN_POS_AMP_LIST - 1][0] - NEG_THRESHOLD)
 
 		ref_vol *= generator_ref_ratio(data[m][0]) * SAMPLE_REF_RATE
 
 
+
+
+
+
+#################################################
+########### main starts from here ###############
+#################################################
 
 data = np.loadtxt("velocity_v1_51a.dat", delimiter = "\t", usecols = (8, 11, 14), skiprows = 1)
 # \t means tab
@@ -82,7 +89,6 @@ data = np.loadtxt("velocity_v1_51a.dat", delimiter = "\t", usecols = (8, 11, 14)
 # You have to sort an input file by pulse amplitude in ascending order.
 # But if you sort with np.sort directly, you will sort all columns independently.
 data = sorted(data, key = itemgetter(0))	# you can replace "itemgetter(0)" to "lambda x: x[0]"
-print ("sorted data is", data)
 
 # data = np.sort(data, axis = 0)	# axis = 0 means sort by column. axis = 1 means sort by row.
 # np.sort does not suit this time because np.sort will sorts all columns independently.
@@ -103,7 +109,6 @@ while m < len(data):
 	ref_pos_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION)
 	m += 1
 
-
 # velocity correction for negative pulse amplitude
 # We have to correct from the smaller amplitude. In other words, we have to correct in order -8V, -12V, -20V, like that.
 m = MIN_POS_AMP_LIST - 2
@@ -111,8 +116,6 @@ while m >= 0:
 	ref_neg_correction(m, THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMALL_CORRECTION)
 	m -= 1
 
-
-print (data)
 
 # columns are from the left "Pulse Amplitude [V]", "velocity for up-down [m/s]", "velocity for down-up [m/s]"
 np.savetxt("velocity_corrected.dat", data, delimiter = "\t")
