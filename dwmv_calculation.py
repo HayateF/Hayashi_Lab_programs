@@ -1,11 +1,13 @@
 from operator import itemgetter
 import numpy as np
+readfilename = "velocity_v1_51a.dat"
+writefilename = "real_velocity.dat"
 
 #################################################
 ########### main starts from here ###############
 #################################################
 
-data = np.loadtxt("velocity_v1_51a.dat", delimiter = "\t", skiprows = 1)
+data = np.loadtxt(readfilename, delimiter = "\t", skiprows = 1)
 #data = np.loadtxt("velocity_v1_51a.dat", delimiter = "\t", usecols = (8, 9, 11, 14), skiprows = 1)
 # \t means tab
 # column 9 is Pulse_Amp, column 10 is Pulse length, column 12 is Slope1, column 15 is Slope2,
@@ -83,5 +85,17 @@ while current_row < len(data):
 # do not have meaning because we calculated special values for velocities.
 del data[using_row: len(data)]
 # Delete list elements list[i] to list[j-1] by "del list[i: j]".
-np.savetxt("real_velocity.dat", data, delimiter = "\t")
+np.savetxt(writefilename, data, delimiter = "\t")
+
+# Return to the original format.
+orig_f = open(readfilename, "r")
+str = f.readline()
+orig_f.close()
+new_f = open(writefilename, "r")
+content = new_f.read()
+new_f.close()
+new_f = open(writefilename, "w")
+new_f.write(str)
+new_f.write(content)
+new_f.close()
 
