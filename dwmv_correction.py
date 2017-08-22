@@ -1,9 +1,13 @@
 from operator import itemgetter
 import numpy as np
 SAMPLE_REF_RATE = 1.0
-SMALL_CORRECTION = True	# when you correct velocities of small amplitudes, True, when not, False. 
-POS_THRESHOLD = 6.0	# positive pulse voltage whose domain wall motion velocity is negligible, you think.
-NEG_THRESHOLD = -6.0
+SMALL_CORRECTION = False	# when you correct velocities of small amplitudes, True, when not, False. 
+POS_THRESHOLD = 2.5	# positive pulse voltage whose domain wall motion velocity is negligible, you think.
+NEG_THRESHOLD = -2.5
+#readfilename = "velocity_v1_51a_20170711.dat"
+readfilename = "real_velocity.dat"
+#writefilename = "velocity_corrected_without_small.dat"
+writefilename = "real_velocity_corrected.dat"
 
 # function returns the pulse voltage when you input a pulse with voltage v
 # NOTE that each output pulse voltagethe determinens each output impedance of the pulse generator
@@ -81,7 +85,7 @@ def ref_neg_correction(m, NEG_THRESHOLD, MIN_POS_AMP_LIST, SAMPLE_REF_RATE, SMAL
 ########### main starts from here ###############
 #################################################
 
-data = np.loadtxt("velocity_v1_51a.dat", delimiter = "\t", usecols = (8, 11, 14), skiprows = 1)
+data = np.loadtxt(readfilename, delimiter = "\t", usecols = (8, 11, 14), skiprows = 1)
 # \t means tab
 # column 9 is Pulse_Amp, column 12 is Slope1, column 15 is Slope2,
 # but you have to note that the number starts from 0.
@@ -119,5 +123,4 @@ while m >= 0:
 
 
 # columns are from the left "Pulse Amplitude [V]", "velocity for up-down [m/s]", "velocity for down-up [m/s]"
-np.savetxt("velocity_corrected.dat", data, delimiter = "\t")
-
+np.savetxt(writefilename, data, delimiter = "\t")
