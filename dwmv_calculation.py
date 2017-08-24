@@ -1,7 +1,13 @@
 from operator import itemgetter
 import numpy as np
-readfilename = "velocity_v1_51a_20170821_3.dat"
-writefilename = "real_velocity.dat"
+readfilename = "velocity_v1_51a_20170823.dat"
+writefilename = "real_velocity_1.5ns.dat"
+
+
+# return real pulse width from the set value
+def pulse_width(w):
+	return w
+
 
 #################################################
 ########### main starts from here ###############
@@ -42,7 +48,7 @@ using_row = 0	# the row in which we will store data next
 # Complexity below comes from multiple velocities of the same amplitude and pulse length.
 # We calculate average when multiple velocities of the same amp and length exist.
 t_l = 0.0
-t_s = data[0][9]
+t_s = pulse_width(data[0][9])
 v_lu = 0.0	# u means up-down
 v_ld = 0.0	# d means down-up
 v_su = 0.0
@@ -69,7 +75,7 @@ while current_row < len(data):
 		n_longer = 1
 		n_shorter = 1
 		current_length = 0
-		t_s = data[current_row + 1][9]
+		t_s = pulse_width(data[current_row + 1][9])
 		v_lu = 0.0
 		v_ld = 0.0
 		v_su = 0.0
@@ -90,7 +96,7 @@ while current_row < len(data):
 		n_longer = 1
 		n_shorter = 1
 		current_length = 0
-		t_s = data[current_row + 1][9]
+		t_s = pulse_width(data[current_row + 1][9])
 		v_lu = 0.0
 		v_ld = 0.0
 		v_su = 0.0
@@ -100,7 +106,7 @@ while current_row < len(data):
 		v_su = (v_su + data[current_row][11]) / n_shorter	# calculated average
 		v_sd = (v_sd + data[current_row][14]) / n_shorter
 		current_length = 1
-		t_l = data[current_row + 1][9]
+		t_l = pulse_width(data[current_row + 1][9])
 	else:
 		if current_length == 0:
 			v_su += data[current_row][11]
