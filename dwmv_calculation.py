@@ -1,10 +1,14 @@
 from operator import itemgetter
 import numpy as np
 readfilename = "velocity_v1_51a_20170823.dat"
-writefilename = "real_velocity_1.5ns.dat"
+writefilename = "real_velocity_1.5ns_corrected_pulse_width.dat"
 
 
 # return real pulse width from the set value
+# fitting results are
+# REAL_WIDTH = a * SET_WIDTH + b,
+# a = 1.00333 \pm 0.0009972,
+# b = -0.953443 \pm 0.03989
 def pulse_width(w):
 	return 1.003 * w - 0.95
 
