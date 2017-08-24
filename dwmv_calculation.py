@@ -6,7 +6,7 @@ writefilename = "real_velocity_1.5ns.dat"
 
 # return real pulse width from the set value
 def pulse_width(w):
-	return w
+	return 1.003 * w - 0.95
 
 
 #################################################
