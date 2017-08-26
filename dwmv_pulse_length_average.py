@@ -9,8 +9,11 @@ writefilename = "velocity_averaged_by_pulse_length_28V.dat"
 # REAL_WIDTH = a * SET_WIDTH + b,
 # a = 1.00333 \pm 0.0009972,
 # b = -0.953443 \pm 0.03989
+# But here, too short pulse length leads to incorrect pulse length.
+# So, this function just returns the set pulse length.
 def pulse_width(w):
-	return 1.003 * w - 0.95
+	#return 1.003 * w - 0.95
+	return w
 
 
 #################################################
