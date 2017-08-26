@@ -47,15 +47,15 @@ v_d = 0.0	# "d" means "down-up"
 
 while current_row < len(data):
 	if current_row == (len(data) - 1):
-		v_u /= n_row	# calculated average
-		v_d /= n_row
+		v_u = (v_u + data[current_row][1] ) / n_row	# calculated average
+		v_d = (v_d + data[current_row][2] ) / n_row
 		data[using_row][0] = pulse_width(data[current_row][0])
 		data[using_row][1] = v_u
 		data[using_row][2] = v_d
 		using_row += 1
 	elif (data[current_row + 1][0] - data[current_row][0]) > 0.1:
-		v_u /= n_row	# calculated average
-		v_d /= n_row
+		v_u = (v_u + data[current_row][1] ) / n_row	# calculated average
+		v_d = (v_d + data[current_row][2] ) / n_row
 		data[using_row][0] = pulse_width(data[current_row][0])
 		data[using_row][1] = v_u
 		data[using_row][2] = v_d
