@@ -42,7 +42,7 @@ fit [-47:0] vnd(x) "< tail -n +2 velocity_v1_51a.dat" u 9:12 via vDnd, aDnd, aCn
 fit [0:47] vpu(x) "< tail -n +2 velocity_v1_51a.dat" u 9:12 via vDpu, aDpu, aCpu
 fit [0:47] vpd(x) "< tail -n +2 velocity_v1_51a.dat" u 9:15 via vDpd, aDpd, aCpd
 fit [-47:0] vnu(x) "< tail -n +2 velocity_v1_51a.dat" u 9:12 via vDnu, aDnu, aCnu
-fit [-47:0] vnd(x) "< tail -n +2 velocity_v1_51a.dat" u 9:12 via vDnd, aDnd, aCnd
+fit [-47:0] vnd(x) "< tail -n +2 velocity_v1_51a.dat" u 9:15 via vDnd, aDnd, aCnd
 
 plot "velocity_v1_51a.dat" u 9:12 title "up-down", "velocity_v1_51a.dat" u 9:15 title "down-up", vpu(x) title "fit + up-down", vpd(x) title "fit + down-up", vnu(x) title "fit - up-down", vnd(x) title "fit - down-up"
 
