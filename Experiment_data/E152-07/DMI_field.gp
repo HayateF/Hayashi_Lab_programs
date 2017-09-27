@@ -1,5 +1,5 @@
-#plot "velocity+current.txt" u 9:12 title "+current up-down"
-#plot "velocity-current.txt" u 9:15 title "-current down-up"
+##plot "velocity+current.txt" u 9:12 title "+current up-down"
+##plot "velocity-current.txt" u 9:15 title "-current down-up"
 set xrange [-700:700]
 set yrange [*:*]
 set xtics 200
