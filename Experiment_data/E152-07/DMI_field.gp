@@ -1,7 +1,7 @@
-#plot "velocity+current.txt" u 9:12 title "+current up-down"
-#plot "velocity-current.txt" u 9:15 title "-current down-up"
-set xrange [-800:800]
-set yrange [-75:75]
+##plot "velocity+current.txt" u 9:12 title "+current up-down"
+##plot "velocity-current.txt" u 9:15 title "-current down-up"
+set xrange [-700:700]
+set yrange [*:*]
 set xtics 200
 set mxtics
 set xlabel "Field [Oe]"
