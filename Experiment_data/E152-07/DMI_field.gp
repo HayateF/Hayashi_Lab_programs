@@ -6,7 +6,7 @@ set xtics 200
 set mxtics
 set xlabel "Field [Oe]"
 set ylabel "Velocity [m/s]"
-set key center top
+set key center bottom
 set grid
 
 #slope for positive up-down area
@@ -31,14 +31,14 @@ vnd(x)=And*x+Bnd
 # perform fitting
 fit [-250:600] [1:*] vpu(x) "< tail -n +2 velocity+current.txt" u 5:12 via Apu, Bpu
 fit [-600:250] [1:*] vpd(x) "< tail -n +2 velocity+current.txt" u 5:15 via Apd, Bpd
-fit [-150:600] [*:-1] vnu(x) "< tail -n +2 velocity-current.txt" u 5:12 via Anu, Bnu
-fit [-600:50] [*:-1] vnd(x) "< tail -n +2 velocity-current.txt" u 5:15 via And, Bnd
+fit [-350:600] [*:-1] vnu(x) "< tail -n +2 velocity-current.txt" u 5:12 via Anu, Bnu
+fit [-600:250] [*:-1] vnd(x) "< tail -n +2 velocity-current.txt" u 5:15 via And, Bnd
 
 # to get summary of fitting
 fit [-250:600] [1:*] vpu(x) "< tail -n +2 velocity+current.txt" u 5:12 via Apu, Bpu
 fit [-600:250] [1:*] vpd(x) "< tail -n +2 velocity+current.txt" u 5:15 via Apd, Bpd
-fit [-150:600] [*:-1] vnu(x) "< tail -n +2 velocity-current.txt" u 5:12 via Anu, Bnu
-fit [-600:50] [*:-1] vnd(x) "< tail -n +2 velocity-current.txt" u 5:15 via And, Bnd
+fit [-350:600] [*:-1] vnu(x) "< tail -n +2 velocity-current.txt" u 5:12 via Anu, Bnu
+fit [-600:250] [*:-1] vnd(x) "< tail -n +2 velocity-current.txt" u 5:15 via And, Bnd
 
 plot "velocity+current.txt" u 5:12 title "", "velocity+current.txt" u 5:15 title "",\
 "velocity-current.txt" u 5:12 title "", "velocity-current.txt" u 5:15 title "",\
