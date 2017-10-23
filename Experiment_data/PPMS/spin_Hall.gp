@@ -2,19 +2,20 @@
 #set datafile separator ","
 set xrange [0:9]
 #set xtics 30
+set yrange [0:0.12]
 set xlabel "Ir Thickness [nm]"
 set ylabel "R_S / R_xx [%]"
 unset key
 set grid
 
 ## spin diffusion length [nm]
-lambda=5
+lambda=1
 ## When lambda is dependent on rho_HM
 #mu=30
 #lambda(x)=mu/rho_HM(x)
 
 # spin Hall angle
-theta=0.038
+theta=0.05
 
 # thickness of FM layer [nm]
 t_FM=1
@@ -29,12 +30,15 @@ rho_HM=19
 ## in this case CoFeB
 rho_FM=150
 
+## thickness offset for HM layer [nm]
+d_off=0.3
+
 #plot "SMR_ratio.txt" u 2:10:11, Percentage(x)
 
 ## for normal case
-Percentage(x)=100*(theta**2)*(lambda/x)*(tanh(0.5*x/lambda)/(1+rho_HM*t_FM/(rho_FM*x)))*(1-1/cosh(x/lambda))
+Percentage(x)=100*(theta**2)*(lambda/(x-d_off))*(tanh(0.5*(x-d_off)/lambda)/(1+rho_HM*t_FM/(rho_FM*(x-d_off))))*(1-1/cosh((x-d_off)/lambda))
 ## perform fitting for nomal case
-fit [0.5:8.5] [*:*] Percentage(x) "SMR_ratio.txt" u 2:10:11 via lambda, theta
+fit [0.5:8.5] [*:*] Percentage(x) "SMR_ratio.txt" u 2:10:11 via lambda, theta, d_off
 
 ## for the case where rho_HM is dependenet on t_HM
 #Percentage(x)=100*(theta**2)*(lambda/x)*(tanh(0.5*x/lambda)/(1+rho_HM(x)*t_FM/(rho_FM*x)))*(1-1/cosh(x/lambda))
