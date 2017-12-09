@@ -61,7 +61,7 @@ y_0 = np.array([0.0, 0.0, 0.0])
 
 y = odeint(one_dim_model_3var, y_0, t, args = (Alpha, Gamma, Delta, Width, DWtype, H_K(T_FM, M_s, Delta), H_DM(D, DWtype, Delta, M_s), H_SH(Theta_SH, Current, M_s, T_FM), K_eff, M_s))
 
-plt.scatter(t * 1e+09, y[0] * 1e+06)
+plt.scatter(t * 1e+09, y[:, 0] * 1e+06)
 plt.xlabel("Time [ns]")
 plt.ylabel("DW position [$\mu$m]")
 plt.grid(True)
