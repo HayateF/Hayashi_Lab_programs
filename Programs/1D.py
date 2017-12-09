@@ -27,7 +27,7 @@ def H_PIN(q):
 
 ## Physical constants
 Hbar = 1.0545718e-34	# Dirac constant. J*s.
-Charge = # elementary charge. Unit:C.
+Charge = 1.60217662e-19	# elementary charge. Unit:C.
 Gamma = 1.7608598e11	# gyromagnetic ratio. rad/sT
 Mu_0 = 4 * math.pi * 1e-07	# magnetic permiability. H/m.
 
