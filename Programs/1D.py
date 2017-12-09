@@ -28,17 +28,17 @@ def H_PIN(q):
 ## Physical constants
 Hbar = 1.0545718e-34	# Dirac constant. J*s.
 Charge = 1.60217662e-19	# elementary charge. Unit:C.
-Gamma = 1.7608598e11	# gyromagnetic ratio. rad/sT
+Gamma = 1.7608598e+11	# gyromagnetic ratio. rad/sT
 Mu_0 = 4 * pi * 1e-07	# magnetic permiability. H/m.
 
 
 ## Consider X Ta / 1 W / 1 CoFeB / 2 MgO / 1 Ta, X = 2.5.
-K_eff = 3.2e+05
+K_eff = 3.2e+05	# effective magnetic anisotropy enery. J/m^3.
 M_s = 1.1e+06	# saturation magnetization. J/T.
 Alpha = 0.05	# damping coefficient
 DWtype = 1	# this means up/down DW. -1 if down/up DW.
-Exchange = 1.5e-11
-Delta = sqrt(K_eff / Exchange)	# width of DW.
+Exchange = 1.5e-11	# exchange stiffness. J/m.
+Delta = sqrt(Exchange / K_eff)	# width of DW.
 Width = 5.0e-06	# width of wire. 5um.
 T_FM = 1.0e-09	# thickness of CoFeB. 1nm.
 D = 0.24e-03	# DMI constant. J/m^2
@@ -53,7 +53,7 @@ Length = 30e-06	# length of wire
 Current = 0.5e+12	# current density in heavy metal layer Ta / W. A/m^2.
 
 T_max = 100e-09	# final time. 100ns.
-T_div = 10	# the number of time step
+T_div = 1000	# the number of time step
 t = np.linspace(0, T_max, T_div)	# time array when solutions are obtained.
 
 # initial condition
