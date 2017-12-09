@@ -1,4 +1,4 @@
-import math
+from math import *	# You don't have to add "math" before any modules of math.
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
@@ -14,7 +14,7 @@ def one_dim_model_3var(y, t, Alpha, Gamma, Delta, Width, DWtype, H_K, H_DM, H_SH
 	])
 
 def H_K(T_FM, M_s, Delta):
-	return Mu_0 * 4 * T_FM * M_s * math.log(2) / Delta
+	return Mu_0 * 4 * T_FM * M_s * log(2) / Delta
 
 def H_DM(D, DWtype, Delta, M_s):
 	return Mu_0 * D * DWtype / (Delta * M_s)
