@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 ## Ref. Torrejon, Tunable inertia of chiral magnetic domain walls
 ## y[0] is q (DW position), y[1] is psi (angle of moment in DW), y[2] is chi (angle of DW).
-def 1d_model_3var(y, t, Alpha, Gamma, Delta, Width, DWtype, H_K, H_DM, H_SH, K_eff, M_s):
+def one_dim_model_3var(y, t, Alpha, Gamma, Delta, Width, DWtype, H_K, H_DM, H_SH, K_eff, M_s):
 	return \
 	np.array([\
 	(-Gamma * H_K * sin(2 * (y[1] - y[2])) / 2 + DWtype * math.pi * Gamma * H_DM * sin(y[1] - y[2]) / 2 + Alpha * Gamma * H_PIN(y[0]) + Alpha * DWtype * math.pi * Gamma * H_SH * cos(y[1]) / 2) * Delta / (cos(y[2]) * (1 + Alpha ** 2)),\
@@ -59,7 +59,7 @@ t = np.linspace(0, T_max, T_div)	# time array when solutions are obtained.
 # initial condition
 y_0 = np.array([0.0, 0.0, 0.0])
 
-y = odeint(1d_model_3var, y_0, t, args = (Alpha, Gamma, Delta, Width, DWtype, H_K(T_FM, M_s, Delta), H_DM(D, DWtype, Delta, M_s), H_SH(Theta_SH, Current, M_s, T_FM), K_eff, M_s))
+y = odeint(one_dim_model_3var, y_0, t, args = (Alpha, Gamma, Delta, Width, DWtype, H_K(T_FM, M_s, Delta), H_DM(D, DWtype, Delta, M_s), H_SH(Theta_SH, Current, M_s, T_FM), K_eff, M_s))
 
 plt.scatter(t * 1e+09, y[0] * 1e+06)
 plt.xlabel("Time [ns]")
