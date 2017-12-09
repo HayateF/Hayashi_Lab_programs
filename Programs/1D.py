@@ -1,4 +1,4 @@
-from math import *	# You don't have to add "math" before any modules of math.
+from math import *	# You don't have to add "math" before any modules of 
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 def one_dim_model_3var(y, t, Alpha, Gamma, Delta, Width, DWtype, H_K, H_DM, H_SH, K_eff, M_s):
 	return \
 	np.array([\
-	(-Gamma * H_K * sin(2 * (y[1] - y[2])) / 2 + DWtype * math.pi * Gamma * H_DM * sin(y[1] - y[2]) / 2 + Alpha * Gamma * H_PIN(y[0]) + Alpha * DWtype * math.pi * Gamma * H_SH * cos(y[1]) / 2) * Delta / (cos(y[2]) * (1 + Alpha ** 2)),\
-	(Alpha * Gamma * H_K * sin(2 * (y[1] - y[2])) / 2 - Alpha * math.pi * DWtype * Gamma * H_DM * sin(y[1] - y[2]) / 2 + Gamma * H_PIN(y[0]) + DWtype * math.pi * Gamma * H_SH * cos(y[1]) / 2) / (1 + Alpha ** 2),\
-	(-H_K * sin(2 * (y[1] - y[2])) / 2 + DWtype * math.pi * H_DM * sin(y[1] - y[2]) / 2 - 2 * K_eff * tan(y[2]) / M_s + DWtype * math.pi * H_DM * cos(y[1] - y[2]) * tan(y[2]) / 2 - H_K * cos(y[1] - y[2])**2 * tan(y[2])) * 12 * Gamma / (Alpha * math.pi**2 * (tan(y[2])**2 + (Width / (math.pi * Delta * cos(y[2])))**2))\
+	(-Gamma * H_K * sin(2 * (y[1] - y[2])) / 2 + DWtype * pi * Gamma * H_DM * sin(y[1] - y[2]) / 2 + Alpha * Gamma * H_PIN(y[0]) + Alpha * DWtype * pi * Gamma * H_SH * cos(y[1]) / 2) * Delta / (cos(y[2]) * (1 + Alpha ** 2)),\
+	(Alpha * Gamma * H_K * sin(2 * (y[1] - y[2])) / 2 - Alpha * pi * DWtype * Gamma * H_DM * sin(y[1] - y[2]) / 2 + Gamma * H_PIN(y[0]) + DWtype * pi * Gamma * H_SH * cos(y[1]) / 2) / (1 + Alpha ** 2),\
+	(-H_K * sin(2 * (y[1] - y[2])) / 2 + DWtype * pi * H_DM * sin(y[1] - y[2]) / 2 - 2 * K_eff * tan(y[2]) / M_s + DWtype * pi * H_DM * cos(y[1] - y[2]) * tan(y[2]) / 2 - H_K * cos(y[1] - y[2])**2 * tan(y[2])) * 12 * Gamma / (Alpha * pi**2 * (tan(y[2])**2 + (Width / (pi * Delta * cos(y[2])))**2))\
 	])
 
 def H_K(T_FM, M_s, Delta):
@@ -29,7 +29,7 @@ def H_PIN(q):
 Hbar = 1.0545718e-34	# Dirac constant. J*s.
 Charge = 1.60217662e-19	# elementary charge. Unit:C.
 Gamma = 1.7608598e11	# gyromagnetic ratio. rad/sT
-Mu_0 = 4 * math.pi * 1e-07	# magnetic permiability. H/m.
+Mu_0 = 4 * pi * 1e-07	# magnetic permiability. H/m.
 
 
 ## Consider X Ta / 1 W / 1 CoFeB / 2 MgO / 1 Ta, X = 2.5.
@@ -38,7 +38,7 @@ M_s = 1.1e+06	# saturation magnetization. J/T.
 Alpha = 0.05	# damping coefficient
 DWtype = 1	# this means up/down DW. -1 if down/up DW.
 Exchange = 1.5e-11
-Delta = math.sqrt(K_eff / Exchange)	# width of DW.
+Delta = sqrt(K_eff / Exchange)	# width of DW.
 Width = 5.0e-06	# width of wire. 5um.
 T_FM = 1.0e-09	# thickness of CoFeB. 1nm.
 D = 0.24e-03	# DMI constant. J/m^2
