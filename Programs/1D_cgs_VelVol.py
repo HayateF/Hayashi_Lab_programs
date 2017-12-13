@@ -34,8 +34,8 @@ def H_PIN(q, M_s, Width, T_FM, V_0, Period):	# pinning field
 	return - (pi * V_0 / (Period * M_s * Width * T_FM)) * sin(pi * q / Period) * cos (pi * q / Period)
 
 def D(Current):	# DMI constant depending on spin current. erg/cm^2
-	#return 0.24 + Current * 1e-09
-	return 0.24
+	return 0.24 + Current * 1e-09
+	#return 0.24
 	
 print ("flag 10")
 
@@ -64,13 +64,13 @@ Theta_SH = -0.21	# spin Hall angle.
 #T_Ta = 0.0e-07	# thickness of Ta. 0nm.
 #Length = 30e-04	# length of wire
 #V_0 = 20e-14	# pinning amplitude. erg.
-V_0 = 20e-13
+V_0 = 20e-09
 Period = 21e-03	# pinning periodicity. 21nm. cm. But q's unit is um for accuracy of numerical calculation. So, this should be um too.
 
 #Current = 0.5e+08	# current density in heavy metal layer Ta / W. A/cm^2.
-Current_start = -1.0e+08
-Current_end = 1.0e+08
-Current_step = 0.01e+08
+Current_start = -0.2e+08
+Current_end = 0.2e+08
+Current_step = 0.001e+08
 Current = np.arange(Current_start, Current_end, Current_step, dtype = np.float64)	# current density in heavy metal layer Ta / W. A/cm^2.
 velocity_eff = np.zeros(Current.size) 
 velocity_stat = np.zeros(Current.size)
