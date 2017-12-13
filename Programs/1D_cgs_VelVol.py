@@ -30,8 +30,8 @@ def H_PIN(q, M_s, Width, T_FM, V_0, Period):	# pinning field
 	# Here I use V_pin (x) = V_0 sin(pi x / p)^2,
 	# V_0 = 20 * 10^(-21) J = 20 * 10^(-14) erg, p = 21nm = 21 * 10^(-7) cm.
 	# So in the cgs unit, H_pin = - (pi V_0 / p M_s Width T_FM) sin(pi x / p) cos(pi x / p)
-	return 0
-	#return - (pi * V_0 / (Period * M_s * Width * T_FM)) * sin(pi * q / Period) * cos (pi * q / Period)
+	#return 0
+	return - (pi * V_0 / (Period * M_s * Width * T_FM)) * sin(pi * q / Period) * cos (pi * q / Period)
 
 def D(Current):	# DMI constant depending on spin current. erg/cm^2
 	#return 0.24 + Current * 1e-09
@@ -63,8 +63,9 @@ Theta_SH = -0.21	# spin Hall angle.
 #T_W = 1.0e-07	# thickness of W. 1nm.
 #T_Ta = 0.0e-07	# thickness of Ta. 0nm.
 #Length = 30e-04	# length of wire
-V_0 = 20e-14	# pinning amplitude. erg.
-Period = 21e-07	# pinning periodicity. cm.
+#V_0 = 20e-14	# pinning amplitude. erg.
+V_0 = 20e-13
+Period = 21e-03	# pinning periodicity. 21nm. cm. But q's unit is um for accuracy of numerical calculation. So, this should be um too.
 
 #Current = 0.5e+08	# current density in heavy metal layer Ta / W. A/cm^2.
 Current_start = -1.0e+08
