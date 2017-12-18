@@ -20,7 +20,7 @@ import numpy as np
 #b = np.random.normal(0, 10, (3, 10))
 #print (b)
 
-sigma = 100
+sigma = 10000
 sample = int(1e+08)	##### max sample is 1e+07.
 #np.random.seed(213)
 #gauss = np.random.normal(0, sigma, 10000000)	# this is the limit of iteration
@@ -38,4 +38,5 @@ gauss3 = gauss1 * gauss2
 correlation = np.mean(gauss3)
 print (correlation)
 print ("normalized correlation is", correlation / (sigma ** 2))
-## normalized correlation should be delta function.
+## Normalized correlation should be delta function.
+## Or normalized correlation expresses how small different-time correlation is compared with the same-time correlation.
