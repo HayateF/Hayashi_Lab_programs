@@ -4,6 +4,8 @@ from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 
 ## Ref. Torrejon, Tunable inertia of chiral magnetic domain walls
+## Ref. Martinez, Current-driven dynamics of Dzyaloshinskii domain walls in the presence of in-plane field
+## Ref. Martinez, Coupled Dzyaloshinskii walls and their current-induced dynamics by the spin Hall effect
 ## y[0] is q (DW position), y[1] is psi (angle of moment in DW), y[2] is chi (angle of DW).
 ## 1e+04 below is to avoid errors. We have to erase that conversion coefficient later.
 def one_dim_model_3var(y, t_0, Alpha, Gamma, Delta, Width, DWtype, H_K, H_DM, H_SH, K_eff, M_s, T_FM, V_0, Period):
@@ -33,9 +35,12 @@ def H_PIN(q, M_s, Width, T_FM, V_0, Period):	# pinning field
 	#return 0
 	return - (pi * V_0 / (Period * M_s * Width * T_FM)) * sin(pi * q / Period) * cos (pi * q / Period)
 
+def H_th(Alpha, Temperature, M_s, Delta, T_FM, Width):	# thermal field
+	return np.random.normal(0, sqrt(2 * Alpha * K_B * Temperature / (Gamma * M_s * Delta * Width * T_FM)))	
+
 def D(Current):	# DMI constant depending on spin current. erg/cm^2
-	return 0.24 + Current * 1e-09
-	#return 0.24
+	#return 0.24 + Current * 1e-09
+	return 0.24
 	
 print ("flag 10")
 
@@ -43,8 +48,11 @@ print ("flag 10")
 Hbar = 1.0545718e-27	# Dirac constant. erg*s.
 Charge = 1.60217662e-19	# elementary charge. Unit:C.
 Gamma = 1.7608598e+07	# gyromagnetic ratio. rad/sG
+K_B = 1.380649e-16	# Boltzmann constant. erg/K.
 #Mu_0 = 4 * pi * 1e-07	# magnetic permiability. H/m.
 
+Temperature = 300	# ambient temperature
+Seed = 213	# seed of Mersenne twister
 
 ## Consider W / 1 CoFeB / 2 MgO / 1 Ta.
 K_eff = 3.2e+06	# effective magnetic anisotropy enery. erg/cm^3.
@@ -66,6 +74,8 @@ Theta_SH = -0.21	# spin Hall angle.
 #V_0 = 20e-14	# pinning amplitude. erg.
 V_0 = 20e-09
 Period = 21e-03	# pinning periodicity. 21nm. cm. But q's unit is um for accuracy of numerical calculation. So, this should be um too.
+
+np.random.seed(Seed)	# set seed for Mersenne twister
 
 #Current = 0.5e+08	# current density in heavy metal layer Ta / W. A/cm^2.
 Current_start = -0.2e+08
