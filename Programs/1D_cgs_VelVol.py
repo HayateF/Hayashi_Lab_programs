@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 def one_dim_model_3var(y, t_0, Alpha, Gamma, Delta, Width, DWtype, H_K, H_DM, H_SH, K_eff, M_s, T_FM, V_0, Period):
 	return \
 	np.array([\
-	1e+04 * (-Gamma * H_K * sin(2 * (y[1] - y[2])) / 2 + DWtype * pi * Gamma * H_DM * sin(y[1] - y[2]) / 2 + Alpha * Gamma * H_PIN(y[0], M_s, Width, T_FM, V_0, Period) + Alpha * DWtype * pi * Gamma * H_SH * cos(y[1]) / 2) * Delta / (cos(y[2]) * (1 + Alpha ** 2)),\
-	(Alpha * Gamma * H_K * sin(2 * (y[1] - y[2])) / 2 - Alpha * pi * DWtype * Gamma * H_DM * sin(y[1] - y[2]) / 2 + Gamma * H_PIN(y[0], M_s, Width, T_FM, V_0, Period) + DWtype * pi * Gamma * H_SH * cos(y[1]) / 2) / (1 + Alpha ** 2),\
+	1e+04 * (-Gamma * H_K * sin(2 * (y[1] - y[2])) / 2 + DWtype * pi * Gamma * H_DM * sin(y[1] - y[2]) / 2 + Alpha * Gamma * (H_PIN(y[0], M_s, Width, T_FM, V_0, Period) + H_th(Alpha, Temperature, M_s, Delta, T_FM, Width)) + Alpha * DWtype * pi * Gamma * H_SH * cos(y[1]) / 2) * Delta / (cos(y[2]) * (1 + Alpha ** 2)),\
+	(Alpha * Gamma * H_K * sin(2 * (y[1] - y[2])) / 2 - Alpha * pi * DWtype * Gamma * H_DM * sin(y[1] - y[2]) / 2 + Gamma * (H_PIN(y[0], M_s, Width, T_FM, V_0, Period) + H_th(Alpha, Temperature, M_s, Delta, T_FM, Width)) + DWtype * pi * Gamma * H_SH * cos(y[1]) / 2) / (1 + Alpha ** 2),\
 	(- H_K * sin(2 * (y[1] - y[2])) / 2 + DWtype * pi * H_DM * sin(y[1] - y[2]) / 2 - 2 * K_eff * tan(y[2]) / M_s + DWtype * pi * H_DM * cos(y[1] - y[2]) * tan(y[2]) / 2 - H_K * cos(y[1] - y[2])**2 * tan(y[2])) * 12 * Gamma / (Alpha * pi**2 * (tan(y[2])**2 + (Width / (pi * Delta * cos(y[2])))**2))\
 	])
 
