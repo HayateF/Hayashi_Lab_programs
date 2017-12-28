@@ -32,11 +32,12 @@ def H_PIN(q, M_s, Width, T_FM, V_0, Period):	# pinning field
 	# Here I use V_pin (x) = V_0 sin(pi x / p)^2,
 	# V_0 = 20 * 10^(-21) J = 20 * 10^(-14) erg, p = 21nm = 21 * 10^(-7) cm.
 	# So in the cgs unit, H_pin = - (pi V_0 / p M_s Width T_FM) sin(pi x / p) cos(pi x / p)
-	#return 0
-	return - (pi * V_0 / (Period * M_s * Width * T_FM)) * sin(pi * q / Period) * cos (pi * q / Period)
+	return 0
+	#return - (pi * V_0 / (Period * M_s * Width * T_FM)) * sin(pi * q / Period) * cos (pi * q / Period)
 
 def H_th(Alpha, Temperature, M_s, Delta, T_FM, Width):	# thermal field
-	return np.random.normal(0, sqrt(2 * Alpha * K_B * Temperature / (Gamma * M_s * Delta * Width * T_FM)))	
+	#return np.random.normal(0, sqrt(2 * Alpha * K_B * Temperature / (Gamma * M_s * Delta * Width * T_FM)))	
+	return 0
 
 def D(Current):	# DMI constant depending on spin current. erg/cm^2
 	#return 0.24 + Current * 1e-09
@@ -120,6 +121,15 @@ plt.scatter(Current[:], velocity_eff[:], label = "effective")
 plt.scatter(Current[:], velocity_stat[:], label = "stationary")
 plt.xlabel("Current density [A/cm$^2$]")
 plt.ylabel("Velocity [m/s]")
+plt.legend()
+plt.grid(True)
+
+## plot velocity ration
+ratio = velocity_eff / velocity_stat
+plt.figure(2)
+plt.scatter(Current[:], ratio[:], label = "velocity ratio")
+plt.xlabel("Current density [A/cm$^2$]")
+plt.ylabel("Velocity Ratio")
 plt.legend()
 plt.grid(True)
 
