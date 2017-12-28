@@ -68,7 +68,7 @@ def Omega_A(phi, chi, H_x, H_y, H_K, H_D, H_R, Q, Delta, b_J):
 			 + (b_J / Delta) * cos(chi)
 
 def Omega_B(phi, chi, H_z, H_SH, H_R, H_PIN, H_th, Q, Delta, b_J, xi):
-	return gamma * Q * (H_z + H_PIN() + H_th()) \
+	return gamma * Q * (H_z + H_PIN + H_th) \
 			+ (pi/2) * gamma * Q * H_SH * cos(phi) \
 			- xi * (pi/2) * gamma * H_R * cos(phi) \
 			+ xi * (b_J / Delta) * cos(chi)
