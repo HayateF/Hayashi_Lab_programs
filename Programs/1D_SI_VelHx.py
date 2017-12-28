@@ -150,14 +150,14 @@ print ("flag 20")
 
 y_0 = np.array([0.0, 0.0, 0.0])
 y_1 = odeint(one_dim_model_3var, y_0, t_1, \
-	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D, Delta, M_s), \
+	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
 			H_R(alpha_R, P, current, M_s), H_SH(theta_SH, current, M_s, t_FM), \
 			alpha, Delta, width, Q, K_u, M_s, A, t_FM, b_J(current, P, M_s), xi))
 y_0 = y_1[-1]
 y_2 = odeint(one_dim_model_3var, y_0, t_2, \
-	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D, Delta, M_s), \
-			H_R(alpha_R, P, current, M_s), H_SH(theta_SH, current, M_s, t_FM), \
-			alpha, Delta, width, Q, K_u, M_s, A, t_FM, b_J(current, P, M_s), xi))
+	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
+			H_R(alpha_R, P, 0, M_s), H_SH(theta_SH, 0, M_s, t_FM), \
+			alpha, Delta, width, Q, K_u, M_s, A, t_FM, b_J(0, P, M_s), xi))
 
 # combine the two results.
 t = np.r_[t_1, t_2]	# np.r_ combines two arrays in the row direction.
