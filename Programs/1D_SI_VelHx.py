@@ -90,11 +90,11 @@ print ("flag 10")
 hbar = 1.0545718e-34	# Dirac constant. J*s.
 charge = 1.60217662e-19	# elementary charge. Unit:C.
 gamma = 1.7608598e+11	# gyromagnetic ratio. rad/sT
-k_B = 1.380649e-23	# Boltzmann constant. J/K.
+#k_B = 1.380649e-23	# Boltzmann constant. J/K.
 mu_0 = 4 * pi * 1e-07	# magnetic permiability. H/m.
 mu_B = 927.40100e-26	# Bohr magneton. J/T.
 
-temperature = 300	# ambient temperature
+#temperature = 300	# ambient temperature
 #seed = 213	# seed of Mersenne twister
 
 ## Consider W / 1 CoFeB / 2 MgO / 1 Ta.
@@ -107,7 +107,7 @@ A = 1.5e-11	# exchange stiffness. J/m.
 Delta = sqrt(A / K_eff)	# width of DW.
 width = 5.0e-06	# width of wire. 5um.
 t_FM = 1.0e-09	# thickness of CoFeB. 1nm.
-#D = 0.24e-03	# DMI constant. J/cm^2
+#D = 0.24e-03	# DMI constant. J/m^2
 theta_SH = -0.21	# spin Hall angle.
 P = 0.72	# spin polarization factor
 xi = 0	# dimensionless non-adiabatic parameter
@@ -118,8 +118,8 @@ alpha_R = 0	# Rashba parameter
 #t_W = 1.0e-09	# thickness of W. 1nm.
 #t_Ta = 0.0e-09	# thickness of Ta. 0nm.
 #length = 30e-06	# length of wire
-V_0 = 20e-14	# pinning amplitude. erg.
-period = 21e-09	# pinning periodicity. 21nm. 
+#V_0 = 20e-14	# pinning amplitude. erg.
+#period = 21e-09	# pinning periodicity. 21nm. 
 
 ## External Field. A/m. 1 Oe is 10^3/(4 pi) A/m.
 H_x = 0
@@ -149,15 +149,23 @@ print ("flag 20")
 
 
 y_0 = np.array([0.0, 0.0, 0.0])
+#y_1 = odeint(one_dim_model_3var, y_0, t_1, \
+#	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
+#			H_R(alpha_R, P, current, M_s), H_SH(theta_SH, current, M_s, t_FM), \
+#			alpha, Delta, width, Q, K_u, M_s, A, D(current), t_FM, b_J(current, P, M_s), xi))
 y_1 = odeint(one_dim_model_3var, y_0, t_1, \
 	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
 			H_R(alpha_R, P, current, M_s), H_SH(theta_SH, current, M_s, t_FM), \
-			alpha, Delta, width, Q, K_u, M_s, A, D(current), t_FM, b_J(current, P, M_s), xi))
+			alpha, Delta, width, Q, K_u, M_s, A, D(current), t_FM, 0, xi))
 y_0 = y_1[-1]
+#y_2 = odeint(one_dim_model_3var, y_0, t_2, \
+#	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
+#			H_R(alpha_R, P, 0, M_s), H_SH(theta_SH, 0, M_s, t_FM), \
+#			alpha, Delta, width, Q, K_u, M_s, A, D(0), t_FM, b_J(0, P, M_s), xi))
 y_2 = odeint(one_dim_model_3var, y_0, t_2, \
 	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
 			H_R(alpha_R, P, 0, M_s), H_SH(theta_SH, 0, M_s, t_FM), \
-			alpha, Delta, width, Q, K_u, M_s, A, D(0), t_FM, b_J(0, P, M_s), xi))
+			alpha, Delta, width, Q, K_u, M_s, A, D(0), t_FM, 0, xi))
 
 # combine the two results.
 t = np.r_[t_1, t_2]	# np.r_ combines two arrays in the row direction.
