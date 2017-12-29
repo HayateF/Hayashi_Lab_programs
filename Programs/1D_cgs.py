@@ -84,32 +84,32 @@ v = np.gradient((y[:, 0] / 1e+04 / (T_end_1 / T_div_1)).flatten())
 print (v)
 
 ## plot position
-#plt.figure(4)
-#plt.scatter(t * 1e+09, y[:, 0])
-#plt.xlabel("Time [ns]")
-#plt.ylabel("Position [$\mu$m]")
-#plt.grid(True)
+plt.figure(4)
+plt.scatter(t * 1e+09, y[:, 0])
+plt.xlabel("Time [ns]")
+plt.ylabel("Position [$\mu$m]")
+plt.grid(True)
 
 ## plot velocity
-#plt.figure(1)
-#plt.scatter(t * 1e+09, v[:])
-#plt.xlabel("Time [ns]")
-#plt.ylabel("Velocity [m/s]")
-#plt.grid(True)
+plt.figure(1)
+plt.scatter(t * 1e+09, v[:])
+plt.xlabel("Time [ns]")
+plt.ylabel("Velocity [m/s]")
+plt.grid(True)
 
 ## plot moment angle
-#plt.figure(2)
-#plt.scatter(t * 1e+09, y[:, 1] * 180 / pi)
-#plt.grid(True)
-#plt.xlabel("Time [ns]")
-#plt.ylabel("Moment angle [degree]")
+plt.figure(2)
+plt.scatter(t * 1e+09, y[:, 1] * 180 / pi)
+plt.grid(True)
+plt.xlabel("Time [ns]")
+plt.ylabel("Moment angle [degree]")
 
 ## plot DW angle
-#plt.figure(3)
-#plt.scatter(t * 1e+09, y[:, 2] * 180 / pi)
-#plt.xlabel("Time [ns]")
-#plt.ylabel("DW angle [degree]")
-#plt.grid(True)
+plt.figure(3)
+plt.scatter(t * 1e+09, y[:, 2] * 180 / pi)
+plt.xlabel("Time [ns]")
+plt.ylabel("DW angle [degree]")
+plt.grid(True)
 
-#plt.show()
+plt.show()
 
