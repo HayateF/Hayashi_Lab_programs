@@ -206,7 +206,7 @@ for H_x in H_x_list:
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
 				0, 0, \
 				alpha, Delta, width, 1, K_u, M_s, A, D(0), t_FM, 0, 0))
-	velocity_eff_p_updown[i] = (y_2[-1, 0] / duration)
+	velocity_eff_n_updown[i] = (y_2[-1, 0] / duration)
 	### down-up calculation
 	y_0 = np.array([0.0, 0.0, 0.0])
 	y_1 = odeint(one_dim_model_3var, y_0, t_1, \
@@ -218,7 +218,7 @@ for H_x in H_x_list:
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
 				0, 0, \
 				alpha, Delta, width, -1, K_u, M_s, A, D(0), t_FM, 0, 0))
-	velocity_eff_p_downup[i] = (y_2[-1, 0] / duration)
+	velocity_eff_n_downup[i] = (y_2[-1, 0] / duration)
 
 	print (i, "-th calculation finished.")
 	i += 1
