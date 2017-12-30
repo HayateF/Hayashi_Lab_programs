@@ -130,14 +130,18 @@ H_z = 0
 
 #np.random.seed(seed)	# set seed for Mersenne twister
 
-current = 0.5e+12	# current density in heavy metal layer Ta / W. A/m^2.
+# current density in heavy metal layer Ta / W. A/m^2.
+# This should be negative, for the convenience later.
+current = - 0.5e+12	
 
 H_x_start = -1000e+03 / (4 * pi)
 H_x_end = 1000e+03 / (4 * pi)
 H_x_step = 50e+03 / (4 * pi)
-H_x_list = np.arange(Hx_start, Hx_end, Hx_step, dtype = np.float64)	# x-field. A/m.
-velocity_eff_updown = np.zeros(H_x_list.size) 
-velocity_eff_downup = np.zeros(H_x_list.size) 
+H_x_list = np.arange(H_x_start, H_x_end, H_x_step, dtype = np.float64)	# x-field. A/m.
+velocity_eff_p_updown = np.zeros(H_x_list.size) 
+velocity_eff_p_downup = np.zeros(H_x_list.size) 
+velocity_eff_n_updown = np.zeros(H_x_list.size) 
+velocity_eff_n_downup = np.zeros(H_x_list.size) 
 #velocity_stat = np.zeros(H_x_list.size)
 #print (Current)
 
@@ -150,6 +154,96 @@ t_end = 300e-09	# final time. 300ns.
 t_2 = np.arange(duration, t_end, t_step, dtype = np.float64)
 
 print ("flag 20")
+
+
+i = 0
+for H_x in H_x_list:
+	current *= -1
+	######## positive current ########
+	### up-down calculation
+	# initial condition
+	y_0 = np.array([0.0, 0.0, 0.0])
+	print ("flag 30")
+	## solve the equation
+	y_1 = odeint(one_dim_model_3var, y_0, t_1, \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
+				0, H_SH(theta_SH, current, M_s, t_FM), \
+				alpha, Delta, width, 1, K_u, M_s, A, D(current), t_FM, 0, 0))	
+
+	print ("flag 40")
+	y_0 = y_1[-1]	# the initial condition is the final state of the previous calculation.
+	y_2 = odeint(one_dim_model_3var, y_0, t_2, \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
+				0, 0, \
+				alpha, Delta, width, 1, K_u, M_s, A, D(0), t_FM, 0, 0))
+	
+	print("flag 50")
+	velocity_eff_p_updown[i] = (y_2[-1, 0] / duration)
+
+	### down-up calculation
+	y_0 = np.array([0.0, 0.0, 0.0])
+	y_1 = odeint(one_dim_model_3var, y_0, t_1, \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
+				0, H_SH(theta_SH, current, M_s, t_FM), \
+				alpha, Delta, width, -1, K_u, M_s, A, D(current), t_FM, 0, 0))	
+	y_0 = y_1[-1]	# the initial condition is the final state of the previous calculation.
+	y_2 = odeint(one_dim_model_3var, y_0, t_2, \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
+				0, 0, \
+				alpha, Delta, width, -1, K_u, M_s, A, D(0), t_FM, 0, 0))
+	velocity_eff_p_downup[i] = (y_2[-1, 0] / duration)
+
+	current *= -1
+	######## negative current ########
+	### up-down calculation
+	y_0 = np.array([0.0, 0.0, 0.0])
+	y_1 = odeint(one_dim_model_3var, y_0, t_1, \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
+				0, H_SH(theta_SH, current, M_s, t_FM), \
+				alpha, Delta, width, 1, K_u, M_s, A, D(current), t_FM, 0, 0))	
+	y_0 = y_1[-1]	# the initial condition is the final state of the previous calculation.
+	y_2 = odeint(one_dim_model_3var, y_0, t_2, \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
+				0, 0, \
+				alpha, Delta, width, 1, K_u, M_s, A, D(0), t_FM, 0, 0))
+	velocity_eff_p_updown[i] = (y_2[-1, 0] / duration)
+	### down-up calculation
+	y_0 = np.array([0.0, 0.0, 0.0])
+	y_1 = odeint(one_dim_model_3var, y_0, t_1, \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
+				0, H_SH(theta_SH, current, M_s, t_FM), \
+				alpha, Delta, width, -1, K_u, M_s, A, D(current), t_FM, 0, 0))	
+	y_0 = y_1[-1]	# the initial condition is the final state of the previous calculation.
+	y_2 = odeint(one_dim_model_3var, y_0, t_2, \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
+				0, 0, \
+				alpha, Delta, width, -1, K_u, M_s, A, D(0), t_FM, 0, 0))
+	velocity_eff_p_downup[i] = (y_2[-1, 0] / duration)
+
+	print (i, "-th calculation finished.")
+	i += 1
+
+## plot velocity
+plt.figure(1)
+plt.scatter(H_x_list[:] * 1e-03 * 4 * pi, velocity_eff_p_updown[:], label = "+ up-down")
+plt.scatter(H_x_list[:] * 1e-03 * 4 * pi, velocity_eff_p_downup[:], label = "+ down-up")
+plt.scatter(H_x_list[:] * 1e-03 * 4 * pi, velocity_eff_n_updown[:], label = "- up-down")
+plt.scatter(H_x_list[:] * 1e-03 * 4 * pi, velocity_eff_n_downup[:], label = "- down-up")
+plt.xlabel("x Field [Oe]")
+plt.ylabel("Velocity [m/s]")
+plt.legend()
+plt.grid(True)
+
+## plot velocity ratio
+#ratio = velocity_eff / velocity_stat
+#plt.figure(2)
+#plt.scatter(Current[:], ratio[:], label = "velocity ratio")
+#plt.xlabel("Current density [A/cm$^2$]")
+#plt.ylabel("Velocity Ratio")
+#plt.legend()
+#plt.grid(True)
+
+plt.show()
 
 
 #y_0 = np.array([0.0, 0.0, 0.0])
@@ -209,65 +303,5 @@ print ("flag 20")
 #plt.grid(True)
 
 #plt.show()
-
-i = 0
-for H_x in H_x_list:
-	### up-down calculation
-	# initial condition
-	y_0 = np.array([0.0, 0.0, 0.0])
-	print ("flag 30")
-	## solve the equation
-	y_1 = odeint(one_dim_model_3var, y_0, t_1, \
-		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
-				0, H_SH(theta_SH, current, M_s, t_FM), \
-				alpha, Delta, width, 1, K_u, M_s, A, D(current), t_FM, 0, 0))	
-
-	print ("flag 40")
-	y_0 = y_1[-1]	# the initial condition is the final state of the previous calculation.
-	y_2 = odeint(one_dim_model_3var, y_0, t_2, \
-		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
-				0, 0, \
-				alpha, Delta, width, 1, K_u, M_s, A, D(0), t_FM, 0, 0))
-	
-	print("flag 50")
-	velocity_eff_updown[i] = (y_2[-1, 0] / Duration)
-
-	### down-up calculation
-	y_0 = np.array([0.0, 0.0, 0.0])
-	y_1 = odeint(one_dim_model_3var, y_0, t_1, \
-		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
-				0, H_SH(theta_SH, current, M_s, t_FM), \
-				alpha, Delta, width, -1, K_u, M_s, A, D(current), t_FM, 0, 0))	
-	y_0 = y_1[-1]	# the initial condition is the final state of the previous calculation.
-	y_2 = odeint(one_dim_model_3var, y_0, t_2, \
-		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
-				0, 0, \
-				alpha, Delta, width, -1, K_u, M_s, A, D(0), t_FM, 0, 0))
-	velocity_eff_downup[i] = (y_2[-1, 0] / Duration)
-
-	print (i, "-th calculation finished.")
-	i += 1
-
-## plot velocity
-plt.figure(1)
-plt.scatter(H_x_list[:] * 1e-03 * 4 * pi, velocity_eff_updown[:], label = "up-down")
-plt.scatter(Current[:] * 1e-03 * 4 * pi, velocity_eff_downup[:], label = "down-up")
-plt.xlabel("x Field [Oe]")
-plt.ylabel("Velocity [m/s]")
-plt.legend()
-plt.grid(True)
-
-## plot velocity ratio
-#ratio = velocity_eff / velocity_stat
-#plt.figure(2)
-#plt.scatter(Current[:], ratio[:], label = "velocity ratio")
-#plt.xlabel("Current density [A/cm$^2$]")
-#plt.ylabel("Velocity Ratio")
-#plt.legend()
-#plt.grid(True)
-
-plt.show()
-
-
 
 
