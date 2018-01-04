@@ -31,10 +31,10 @@ def one_dim_model_3var(y, t_0, H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta,
 				* q_dot(y[1], y[2], H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, Q, M_s, b_J, xi, C) ) \
 	])
 
-def q_dot(phi, chi, H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, Q, M_s, b_J, xi, C):
+def q_dot(phi, chi, H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, Q, M_s, b_J, xi, C):	# time derivative of q
 	return 	(Delta / (cos(chi) * (1 + alpha**2 - (pi/2) * Q * gamma * (C / (mu_0 * M_s)) * cos(phi) * sin(phi - chi) / cos(chi)))) \
 				* ( Omega_A(phi, chi, H_x, H_y, H_K, H_D, H_R, Q, Delta, b_J) \
-				+ alpha * Omega_B(phi, chi, H_z, H_SH, H_R, 0, 0, Q, Delta, b_J, xi) ), \
+					+ alpha * Omega_B(phi, chi, H_z, H_SH, H_R, 0, 0, Q, Delta, b_J, xi) )
 
 def H_K(t_FM, M_s, Delta):	# anisotropy field
 	return t_FM * M_s * log(2) / (pi * Delta)
@@ -126,7 +126,7 @@ theta_SH = -0.21	# spin Hall angle.
 #P = 0.72	# spin polarization factor
 #xi = 0	# dimensionless non-adiabatic parameter
 #alpha_R = 0	# Rashba parameter
-C = 0	# DW-motion-to-DMI conversion coefficient
+C = 0.0	# DW-motion-to-DMI conversion coefficient
 #voltage = 25 # voltage. 25V.
 #rho_W = # resistivity of W. Ohm*m.
 #rho_Ta = # resistivity of Ta.
