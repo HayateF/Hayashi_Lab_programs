@@ -13,7 +13,7 @@ def one_dim_model_3var(y, t_0, H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta,
 #	(Delta / (cos(y[2]) * (1 + alpha**2))) \
 #		* ( Omega_A(y[1], y[2], H_x, H_y, H_K, H_D, H_R, Q, Delta, b_J) \
 #			+ alpha * Omega_B(y[1], y[2], H_z, H_SH, H_R, 0, 0, Q, Delta, b_J, xi) ), \
-	q_dot(y[1], y[2], H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, Q, M_s, b_J, xi, C)
+	q_dot(y[1], y[2], H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, Q, M_s, b_J, xi, C), \
 	\
 	(1 / (1 + alpha**2)) \
 		* ( - alpha * Omega_A(y[1], y[2], H_x, H_y, H_K, H_D, H_R, Q, Delta, b_J) \
