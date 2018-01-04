@@ -47,7 +47,7 @@ H_z = 0
 current = 0.5e+12	# current density in heavy metal layer Ta / W. A/m^2.
 
 C_i_start = -10	# C starts from 1e-10
-C_i_end = -4	# C ends at 1e-05
+C_i_end = -5	# C ends at 1e-05
 C_i_split = 100
 C_list = np.logspace(C_i_start, C_i_end, C_i_split)
 print (C_list) 
@@ -145,7 +145,7 @@ for C in C_list:
 plt.figure(1)
 plt.scatter(C_list[:] * 1e+03, velocity_eff[:], label = "effective")
 plt.xscale("log")
-plt.xlim([1e-08, 1e-00])
+plt.xlim([1e-08, 1e-01])
 plt.xlabel("Conversion Coefficient [mJ/m$^2$ / (m/s)]")
 plt.ylabel("Velocity [m/s]")
 plt.legend()
