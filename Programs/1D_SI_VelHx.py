@@ -4,6 +4,7 @@ from math import *	# You don't have to add "math" before any modules of math.
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
+from sklearn import linear_model
 from one_dim_si_func_def import *
 
 ## Ref. Martinez, Current-driven dynamics of Dzyaloshinskii domain walls in the presence of in-plane field
@@ -140,27 +141,43 @@ for H_x in H_x_list:
 	print (i, "-th calculation finished.")
 	i += 1
 
+
+
+H_x_list = H_x_list * 1e-03 * 4 * pi	## Oe conversion
+	
+## perform linear regression
+lnrg = linear_model.LinearRegression()	
+lnrg.fit(H_x_list, velocity_eff_p_updown)
+a_p_ud, b_p_ud = lnrg.coef_, lnrg.intercept_
+lnrg.fit(H_x_list, velocity_eff_p_downup)
+a_p_du, b_p_du = lnrg.coef_, lnrg.intercept_
+lnrg.fit(H_x_list, velocity_eff_n_updown)
+a_n_ud, b_n_ud = lnrg.coef_, lnrg.intercept_
+lnrg.fit(H_x_list, velocity_eff_n_downup)
+a_n_du, b_n_du = lnrg.coef_, lnrg.intercept_
+
 ## plot velocity
 plt.figure(1)
-plt.scatter(H_x_list[:] * 1e-03 * 4 * pi, velocity_eff_p_updown[:], label = "+ up-down")
-plt.scatter(H_x_list[:] * 1e-03 * 4 * pi, velocity_eff_p_downup[:], label = "+ down-up")
-plt.scatter(H_x_list[:] * 1e-03 * 4 * pi, velocity_eff_n_updown[:], label = "- up-down")
-plt.scatter(H_x_list[:] * 1e-03 * 4 * pi, velocity_eff_n_downup[:], label = "- down-up")
+plt.scatter(H_x_list[:], velocity_eff_p_updown[:], label = "+ up-down")
+plt.scatter(H_x_list[:], velocity_eff_p_downup[:], label = "+ down-up")
+plt.scatter(H_x_list[:], velocity_eff_n_updown[:], label = "- up-down")
+plt.scatter(H_x_list[:], velocity_eff_n_downup[:], label = "- down-up")
+plt.scatter(H_x_list[:], a_p_ud * H_x_list[:] + b_p_ud, label = "")
+plt.scatter(H_x_list[:], a_p_du * H_x_list[:] + b_p_du, label = "")
+plt.scatter(H_x_list[:], a_n_ud * H_x_list[:] + b_n_ud, label = "")
+plt.scatter(H_x_list[:], a_n_du * H_x_list[:] + b_n_du, label = "")
 plt.xlabel("x Field [Oe]")
 plt.ylabel("Velocity [m/s]")
 plt.legend()
 plt.grid(True)
 
-## plot velocity ratio
-#ratio = velocity_eff / velocity_stat
-#plt.figure(2)
-#plt.scatter(Current[:], ratio[:], label = "velocity ratio")
-#plt.xlabel("Current density [A/cm$^2$]")
-#plt.ylabel("Velocity Ratio")
-#plt.legend()
-#plt.grid(True)
-
 plt.show()
+
+
+H_c = (b_p_ud / a_p_ud - b_p_du / a_p_du + b_n_ud / a_n_ud - b_n_du / a_n_du) / 4
+print ("compensation field is", H_c, "Oe.")
+
+
 
 
 #y_0 = np.array([0.0, 0.0, 0.0])
