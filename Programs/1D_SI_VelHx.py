@@ -4,7 +4,7 @@ from math import *	# You don't have to add "math" before any modules of math.
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
-from sklearn import linear_model
+#from sklearn import linear_model
 from one_dim_si_func_def import *
 
 ## Ref. Martinez, Current-driven dynamics of Dzyaloshinskii domain walls in the presence of in-plane field
@@ -30,7 +30,8 @@ theta_SH = -0.21	# spin Hall angle.
 #alpha_R = 0	# Rashba parameter
 #C_1 = 3.0e-06	# velocity-DMI conversion coefficient.
 C_1 = 0.0
-C_2 = 1.0e-15
+#C_2 = 1.0e-15
+C_2 = 0.0
 #voltage = 25 # voltage. 25V.
 #rho_W = # resistivity of W. Ohm*m.
 #rho_Ta = # resistivity of Ta.
@@ -144,17 +145,22 @@ for H_x in H_x_list:
 
 
 H_x_list = H_x_list * 1e-03 * 4 * pi	## Oe conversion
+H_x_lnrg = np.array(H_x_list)
 	
 ## perform linear regression
-lnrg = linear_model.LinearRegression()	
-lnrg.fit(H_x_list, velocity_eff_p_updown)
-a_p_ud, b_p_ud = lnrg.coef_, lnrg.intercept_
-lnrg.fit(H_x_list, velocity_eff_p_downup)
-a_p_du, b_p_du = lnrg.coef_, lnrg.intercept_
-lnrg.fit(H_x_list, velocity_eff_n_updown)
-a_n_ud, b_n_ud = lnrg.coef_, lnrg.intercept_
-lnrg.fit(H_x_list, velocity_eff_n_downup)
-a_n_du, b_n_du = lnrg.coef_, lnrg.intercept_
+#lnrg = linear_model.LinearRegression()	
+ab_p_ud = np.polyfit(H_x_list, velocity_eff_p_updown, 1)
+ab_p_du = np.polyfit(H_x_list, velocity_eff_p_downup, 1)
+ab_n_ud = np.polyfit(H_x_list, velocity_eff_n_updown, 1)
+ab_n_du = np.polyfit(H_x_list, velocity_eff_n_downup, 1)
+#lnrg.fit(H_x_list, velocity_eff_p_updown)
+#a_p_ud, b_p_ud = lnrg.coef_, lnrg.intercept_
+#lnrg.fit(H_x_list, velocity_eff_p_downup)
+#a_p_du, b_p_du = lnrg.coef_, lnrg.intercept_
+#lnrg.fit(H_x_list, velocity_eff_n_updown)
+#a_n_ud, b_n_ud = lnrg.coef_, lnrg.intercept_
+#lnrg.fit(H_x_list, velocity_eff_n_downup)
+#a_n_du, b_n_du = lnrg.coef_, lnrg.intercept_
 
 ## plot velocity
 plt.figure(1)
@@ -162,10 +168,10 @@ plt.scatter(H_x_list[:], velocity_eff_p_updown[:], label = "+ up-down")
 plt.scatter(H_x_list[:], velocity_eff_p_downup[:], label = "+ down-up")
 plt.scatter(H_x_list[:], velocity_eff_n_updown[:], label = "- up-down")
 plt.scatter(H_x_list[:], velocity_eff_n_downup[:], label = "- down-up")
-plt.scatter(H_x_list[:], a_p_ud * H_x_list[:] + b_p_ud, label = "")
-plt.scatter(H_x_list[:], a_p_du * H_x_list[:] + b_p_du, label = "")
-plt.scatter(H_x_list[:], a_n_ud * H_x_list[:] + b_n_ud, label = "")
-plt.scatter(H_x_list[:], a_n_du * H_x_list[:] + b_n_du, label = "")
+plt.plot(H_x_list[:], ab_p_ud[0] * H_x_list[:] + ab_p_ud[1], label = "", linestyle = "solid")
+plt.plot(H_x_list[:], ab_p_du[0] * H_x_list[:] + ab_p_du[1], label = "", linestyle = "solid")
+plt.plot(H_x_list[:], ab_n_ud[0] * H_x_list[:] + ab_n_ud[1], label = "", linestyle = "solid")
+plt.plot(H_x_list[:], ab_n_du[0] * H_x_list[:] + ab_n_du[1], label = "", linestyle = "solid")
 plt.xlabel("x Field [Oe]")
 plt.ylabel("Velocity [m/s]")
 plt.legend()
@@ -174,7 +180,7 @@ plt.grid(True)
 plt.show()
 
 
-H_c = (b_p_ud / a_p_ud - b_p_du / a_p_du + b_n_ud / a_n_ud - b_n_du / a_n_du) / 4
+H_c = (ab_p_ud[1] / ab_p_ud[0] - ab_p_du[1] / ab_p_du[0] + ab_n_ud[1] / ab_n_ud[0] - ab_n_du[1] / ab_n_du[0]) / 4
 print ("compensation field is", H_c, "Oe.")
 
 
