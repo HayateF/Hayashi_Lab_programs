@@ -27,7 +27,7 @@ theta_SH = -0.21	# spin Hall angle.
 #P = 0.72	# spin polarization factor
 #xi = 0	# dimensionless non-adiabatic parameter
 #alpha_R = 0	# Rashba parameter
-C = 1.0e-09	# DW-motion-to-DMI conversion coefficient
+C_1 = 1.0e-09	# DW-motion-to-DMI conversion coefficient
 #voltage = 25 # voltage. 25V.
 #rho_W = # resistivity of W. Ohm*m.
 #rho_Ta = # resistivity of Ta.
@@ -125,17 +125,17 @@ print ("flag 20")
 
 
 i = 0
-for C in C_list:
+for C_1 in C_list:
 	y_0 = np.array([0.0, 0.0, 0.0])
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
 				0, H_SH(theta_SH, current, M_s, t_FM), \
-				alpha, Delta, width, Q, K_u, M_s, A, D(current), t_FM, 0, 0, C))
+				alpha, Delta, width, Q, K_u, M_s, A, D(current), t_FM, 0, 0, C_1))
 	y_0 = y_1[-1]
 	y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
 				0, 0, \
-				alpha, Delta, width, Q, K_u, M_s, A, D(0), t_FM, 0, 0, C))
+				alpha, Delta, width, Q, K_u, M_s, A, D(0), t_FM, 0, 0, C_1))
 	
 	velocity_eff[i] = (y_2[-1, 0] / duration)
 	print (i, "-th calculation finished.")
