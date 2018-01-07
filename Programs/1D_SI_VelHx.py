@@ -4,7 +4,6 @@ from math import *	# You don't have to add "math" before any modules of math.
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
-#from sklearn import linear_model
 from one_dim_si_func_def import *
 
 ## Ref. Martinez, Current-driven dynamics of Dzyaloshinskii domain walls in the presence of in-plane field
@@ -145,22 +144,12 @@ for H_x in H_x_list:
 
 
 H_x_list = H_x_list * 1e-03 * 4 * pi	## Oe conversion
-H_x_lnrg = np.array(H_x_list)
 	
 ## perform linear regression
-#lnrg = linear_model.LinearRegression()	
 ab_p_ud = np.polyfit(H_x_list, velocity_eff_p_updown, 1)
 ab_p_du = np.polyfit(H_x_list, velocity_eff_p_downup, 1)
 ab_n_ud = np.polyfit(H_x_list, velocity_eff_n_updown, 1)
 ab_n_du = np.polyfit(H_x_list, velocity_eff_n_downup, 1)
-#lnrg.fit(H_x_list, velocity_eff_p_updown)
-#a_p_ud, b_p_ud = lnrg.coef_, lnrg.intercept_
-#lnrg.fit(H_x_list, velocity_eff_p_downup)
-#a_p_du, b_p_du = lnrg.coef_, lnrg.intercept_
-#lnrg.fit(H_x_list, velocity_eff_n_updown)
-#a_n_ud, b_n_ud = lnrg.coef_, lnrg.intercept_
-#lnrg.fit(H_x_list, velocity_eff_n_downup)
-#a_n_du, b_n_du = lnrg.coef_, lnrg.intercept_
 
 ## plot velocity
 plt.figure(1)
