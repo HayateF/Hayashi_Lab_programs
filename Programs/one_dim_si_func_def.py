@@ -5,18 +5,18 @@ import numpy as np
 
 ## Ref. Martinez, Current-driven dynamics of Dzyaloshinskii domain walls in the presence of in-plane field
 ## y[0] is q (DW position), y[1] is phi (angle of moment in DW), y[2] is chi (angle of DW).
-def one_dim_model_3var_ex(y, t_0, H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, width, Q,  K_u, M_s, A, D, t_FM, b_J, xi, C):
+def one_dim_model_3var_ex(y, t_0, H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, width, Q,  K_u, M_s, A, D, t_FM, b_J, xi, C_1):
 	return \
 	np.array([\
 #	(Delta / (cos(y[2]) * (1 + alpha**2))) \
 #		* ( Omega_A(y[1], y[2], H_x, H_y, H_K, H_D, H_R, Q, Delta, b_J) \
 #			+ alpha * Omega_B(y[1], y[2], H_z, H_SH, H_R, 0, 0, Q, Delta, b_J, xi) ), \
-	q_dot(y[1], y[2], H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, Q, M_s, b_J, xi, C), \
+	q_dot(y[1], y[2], H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, Q, M_s, b_J, xi, C_1), \
 	\
 	(1 / (1 + alpha**2)) \
 		* ( - alpha * Omega_A(y[1], y[2], H_x, H_y, H_K, H_D, H_R, Q, Delta, b_J) \
 			+ Omega_B(y[1], y[2], H_z, H_SH, H_R, 0, 0, Q, Delta, b_J, xi) \
-			- alpha * (pi/2) * gamma * Q * (C * cos(y[1]) * sin(y[1] - y[2]) / (mu_0 * M_s * Delta)) \
+			- alpha * (pi/2) * gamma * Q * (C_1 * sin(y[1]) * sin(y[1] - y[2]) / (mu_0 * M_s * Delta)) \
 				* q_dot(y[1], y[2], H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, Q, M_s, b_J, xi, C) ), \
 	\
 	(6 * gamma / ((alpha * mu_0 * M_s * Delta * pi**2) * (tan(y[2])**2 + (width / (pi * Delta * cos(y[2])))**2))) \
@@ -25,7 +25,7 @@ def one_dim_model_3var_ex(y, t_0, H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Del
 			- mu_0 * H_K * M_s * Delta * sin(2 * (y[1] - y[2])) \
 			+ pi * Q * sin(y[1] - y[2]) * C * cos(y[1]) \
 				* q_dot(y[1], y[2], H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, Q, M_s, b_J, xi, C) \
-			+ tan(y[2]) * Q * pi * cos(y[1] - y[2]) * C * cos(y[1]) \
+			+ tan(y[2]) * Q * pi * cos(y[1] - y[2]) * C_1 * sin(y[1]) \
 				* q_dot(y[1], y[2], H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, Q, M_s, b_J, xi, C) ) \
 	])
 
@@ -46,8 +46,8 @@ def one_dim_model_3var(y, t_0, H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta,
 			- mu_0 * H_K * M_s * Delta * sin(2 * (y[1] - y[2])) ) \
 	])
 
-def q_dot(phi, chi, H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, Q, M_s, b_J, xi, C):	# time derivative of q
-	return 	(Delta / (cos(chi) * (1 + alpha**2 - (pi/2) * Q * gamma * (C / (mu_0 * M_s)) * cos(phi) * sin(phi - chi) / cos(chi)))) \
+def q_dot(phi, chi, H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, Q, M_s, b_J, xi, C_1):	# time derivative of q
+	return 	(Delta / (cos(chi) * (1 + alpha**2 - (pi/2) * Q * gamma * (C_1 / (mu_0 * M_s)) * sin(phi) * sin(phi - chi) / cos(chi)))) \
 				* ( Omega_A(phi, chi, H_x, H_y, H_K, H_D, H_R, Q, Delta, b_J) \
 					+ alpha * Omega_B(phi, chi, H_z, H_SH, H_R, 0, 0, Q, Delta, b_J, xi) )
 
