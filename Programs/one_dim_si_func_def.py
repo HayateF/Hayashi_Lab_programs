@@ -5,6 +5,7 @@ import numpy as np
 
 ## Ref. Martinez, Current-driven dynamics of Dzyaloshinskii domain walls in the presence of in-plane field
 ## y[0] is q (DW position), y[1] is phi (angle of moment in DW), y[2] is chi (angle of DW).
+## D = D_0 + C_1 * dq/dt * sin(phi) + C_2 * current * sin(phi)
 def one_dim_model_3var_ex(y, t_0, H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, width, Q,  K_u, M_s, A, D, t_FM, b_J, xi, current, C_1, C_2):
 	return \
 	np.array([\
