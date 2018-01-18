@@ -29,8 +29,8 @@ theta_SH = -0.21	# spin Hall angle.
 #alpha_R = 0	# Rashba parameter
 #C_1 = 3.0e-06	# velocity-DMI conversion coefficient.
 C_1 = 0.0
-#C_2 = 1.0e-15
-C_2 = 0.0
+C_2 = 5.0e-16
+#C_2 = 0.0
 #voltage = 25 # voltage. 25V.
 #rho_W = # resistivity of W. Ohm*m.
 #rho_Ta = # resistivity of Ta.
@@ -171,6 +171,7 @@ plt.show()
 
 H_c = (ab_p_ud[1] / ab_p_ud[0] - ab_p_du[1] / ab_p_du[0] + ab_n_ud[1] / ab_n_ud[0] - ab_n_du[1] / ab_n_du[0]) / 4
 print ("compensation field is", H_c, "Oe.")
+print ("DMI is", H_c * M_s * Delta / 10, "mJ/m^2")
 
 
 
