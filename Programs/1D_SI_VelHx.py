@@ -29,8 +29,8 @@ theta_SH = -0.21	# spin Hall angle.
 #alpha_R = 0	# Rashba parameter
 #C_1 = 3.0e-06	# velocity-DMI conversion coefficient.
 C_1 = 0.0
-C_2 = 5.0e-16
-#C_2 = 0.0
+#C_2 = 5.0e-16
+C_2 = 0.0
 #voltage = 25 # voltage. 25V.
 #rho_W = # resistivity of W. Ohm*m.
 #rho_Ta = # resistivity of Ta.
@@ -59,7 +59,10 @@ velocity_eff_p_updown = np.zeros(H_x_list.size)
 velocity_eff_p_downup = np.zeros(H_x_list.size) 
 velocity_eff_n_updown = np.zeros(H_x_list.size) 
 velocity_eff_n_downup = np.zeros(H_x_list.size) 
-#velocity_stat = np.zeros(H_x_list.size)
+velocity_stat_p_updown = np.zeros(H_x_list.size) 
+velocity_stat_p_downup = np.zeros(H_x_list.size) 
+velocity_stat_n_updown = np.zeros(H_x_list.size) 
+velocity_stat_n_downup = np.zeros(H_x_list.size) 
 #print (Current)
 
 ## time array
@@ -97,6 +100,7 @@ for H_x in H_x_list:
 	
 	print("flag 50")
 	velocity_eff_p_updown[i] = (y_2[-1, 0] / duration)
+	velocity_stat_p_updown[i] = (y_1[-1, 0] / duration)
 
 	### down-up calculation
 	y_0 = np.array([0.0, -pi, 0.0])	# phi = -pi. right-handed wall is assumed.
@@ -110,6 +114,7 @@ for H_x in H_x_list:
 				0, 0, \
 				alpha, Delta, width, -1, K_u, M_s, A, D(0), t_FM, 0, 0, current, C_1, C_2))
 	velocity_eff_p_downup[i] = (y_2[-1, 0] / duration)
+	velocity_stat_p_downup[i] = (y_1[-1, 0] / duration)
 
 	current *= -1
 	######## negative current ########
@@ -125,6 +130,7 @@ for H_x in H_x_list:
 				0, 0, \
 				alpha, Delta, width, 1, K_u, M_s, A, D(0), t_FM, 0, 0, current, C_1, C_2))
 	velocity_eff_n_updown[i] = (y_2[-1, 0] / duration)
+	velocity_stat_n_updown[i] = (y_1[-1, 0] / duration)
 	### down-up calculation
 	y_0 = np.array([0.0, -pi, 0.0])
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
@@ -137,6 +143,7 @@ for H_x in H_x_list:
 				0, 0, \
 				alpha, Delta, width, -1, K_u, M_s, A, D(0), t_FM, 0, 0, current, C_1, C_2))
 	velocity_eff_n_downup[i] = (y_2[-1, 0] / duration)
+	velocity_stat_n_downup[i] = (y_1[-1, 0] / duration)
 
 	print (i, "-th calculation finished.")
 	i += 1
@@ -145,7 +152,7 @@ for H_x in H_x_list:
 
 H_x_list = H_x_list * 1e-03 * 4 * pi	## Oe conversion
 	
-## perform linear regression
+## perform linear regression for the effective velocities
 ab_p_ud = np.polyfit(H_x_list, velocity_eff_p_updown, 1)
 ab_p_du = np.polyfit(H_x_list, velocity_eff_p_downup, 1)
 ab_n_ud = np.polyfit(H_x_list, velocity_eff_n_updown, 1)
@@ -170,10 +177,18 @@ plt.show()
 
 
 H_c = (ab_p_ud[1] / ab_p_ud[0] - ab_p_du[1] / ab_p_du[0] + ab_n_ud[1] / ab_n_ud[0] - ab_n_du[1] / ab_n_du[0]) / 4
-print ("compensation field is", H_c, "Oe.")
-print ("DMI is", H_c * M_s * Delta / 10, "mJ/m^2")
+print ("compensation field from the effective velocities is", H_c, "Oe.")
+print ("the DMI is", H_c * M_s * Delta / 10, "mJ/m^2")
 
+## perform linear regression for the stationary velocities
+ab_p_ud = np.polyfit(H_x_list, velocity_stat_p_updown, 1)
+ab_p_du = np.polyfit(H_x_list, velocity_stat_p_downup, 1)
+ab_n_ud = np.polyfit(H_x_list, velocity_stat_n_updown, 1)
+ab_n_du = np.polyfit(H_x_list, velocity_stat_n_downup, 1)
 
+H_c = (ab_p_ud[1] / ab_p_ud[0] - ab_p_du[1] / ab_p_du[0] + ab_n_ud[1] / ab_n_ud[0] - ab_n_du[1] / ab_n_du[0]) / 4
+print ("compensation field from the stationary velocities is", H_c, "Oe.")
+print ("the DMI is", H_c * M_s * Delta / 10, "mJ/m^2")
 
 
 #y_0 = np.array([0.0, 0.0, 0.0])
