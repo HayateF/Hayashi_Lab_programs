@@ -29,8 +29,8 @@ theta_SH = -0.21	# spin Hall angle.
 #alpha_R = 0	# Rashba parameter
 #C_1 = 3.0e-06	# velocity-DMI conversion coefficient.
 C_1 = 0.0
-C_2 = 5.0e-15
-#C_2 = 0.0
+#C_2 = 5.0e-15
+C_2 = 0.0
 #voltage = 25 # voltage. 25V.
 #rho_W = # resistivity of W. Ohm*m.
 #rho_Ta = # resistivity of Ta.
@@ -42,6 +42,7 @@ C_2 = 5.0e-15
 
 ## External Field. A/m. 1 Oe is 10^3/(4 pi) A/m.
 #H_x = 0
+#H_y = 1000 * 1e+03 / (4 * pi)
 H_y = 0
 H_z = 0
 
