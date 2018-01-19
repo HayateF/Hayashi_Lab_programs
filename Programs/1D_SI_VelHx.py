@@ -44,7 +44,9 @@ C_2 = 0.0
 #H_x = 0
 #H_y = 1000 * 1e+03 / (4 * pi)
 H_y = 0
+#H_z = 50 * 1e+03 / (4 * pi)
 H_z = 0
+
 
 #np.random.seed(seed)	# set seed for Mersenne twister
 
