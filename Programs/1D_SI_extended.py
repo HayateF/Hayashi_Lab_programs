@@ -17,7 +17,7 @@ K_eff = 3.2e+05	# effective magnetic anisotropy energy. J/m^3.
 M_s = 1100e+03	# saturation magnetization. J/Tm^3.
 K_u = K_eff + mu_0 * M_s**2 / 2	# magnetic anisotropy energy.
 alpha = 0.01	# damping coefficient
-Q = 1	# this means up/down DW. -1 if down/up DW.
+Q = -1	# this means up/down DW. -1 if down/up DW.
 A = 1.5e-11	# exchange stiffness. J/m.
 Delta = sqrt(A / K_eff)	# width of DW.
 width = 5.0e-06	# width of wire. 5um.
@@ -29,7 +29,8 @@ theta_SH = -0.21	# spin Hall angle.
 #alpha_R = 0	# Rashba parameter
 #C_1 = 3.0e-06	# DW-motion-to-DMI conversion coefficient
 C_1 = 0.0
-C_2 = 1.0e-15
+#C_2 = 1.0e-16
+C_2 = 0.0
 #voltage = 25 # voltage. 25V.
 #rho_W = # resistivity of W. Ohm*m.
 #rho_Ta = # resistivity of Ta.
@@ -66,7 +67,8 @@ t_2 = np.arange(duration, t_end, t_step, dtype = np.float64)
 print ("flag 20")
 
 
-y_0 = np.array([0.0, 0.0, 0.0])
+#y_0 = np.array([0.0, 0.0, 0.0])
+y_0 = np.array([0.0, pi, 0.0])
 #y_1 = odeint(one_dim_model_3var, y_0, t_1, \
 #	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
 #			H_R(alpha_R, P, current, M_s), H_SH(theta_SH, current, M_s, t_FM), \
