@@ -17,7 +17,7 @@ K_eff = 3.2e+05	# effective magnetic anisotropy energy. J/m^3.
 M_s = 1100e+03	# saturation magnetization. J/Tm^3.
 K_u = K_eff + mu_0 * M_s**2 / 2	# magnetic anisotropy energy.
 alpha = 0.01	# damping coefficient
-Q = -1	# this means up/down DW. -1 if down/up DW.
+Q = 1	# this means up/down DW. -1 if down/up DW.
 A = 1.5e-11	# exchange stiffness. J/m.
 Delta = sqrt(A / K_eff)	# width of DW.
 width = 5.0e-06	# width of wire. 5um.
@@ -41,7 +41,9 @@ C_2 = 0.0
 #period = 21e-09	# pinning periodicity. 21nm. 
 
 ## External Field. A/m. 1 Oe is 10^3/(4 pi) A/m.
+#H_x = 1000 * 1e+03 / (4 * pi)
 H_x = 0
+#H_y = 1000 * 1e+03 / (4 * pi)
 H_y = 0
 H_z = 0
 
@@ -67,8 +69,8 @@ t_2 = np.arange(duration, t_end, t_step, dtype = np.float64)
 print ("flag 20")
 
 
-#y_0 = np.array([0.0, 0.0, 0.0])
-y_0 = np.array([0.0, pi, 0.0])
+y_0 = np.array([0.0, 0.0, 0.0])
+#y_0 = np.array([0.0, pi, 0.0])
 #y_1 = odeint(one_dim_model_3var, y_0, t_1, \
 #	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
 #			H_R(alpha_R, P, current, M_s), H_SH(theta_SH, current, M_s, t_FM), \
