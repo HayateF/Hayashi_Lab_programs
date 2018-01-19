@@ -51,10 +51,10 @@ def one_dim_model_3var(y, t_0, H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta,
 	])
 
 def q_dot(phi, chi, H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, Q, M_s, b_J, xi, current, C_1, C_2):	# time derivative of q
-	return 	(Delta / (cos(chi) * (1 + alpha**2 - (pi/2) * Q * gamma * (C_1 / (mu_0 * M_s)) * sin(phi) * sin(phi - chi) / cos(chi)))) \
+	return 	(Delta / (cos(chi) * (1 + alpha**2 - Q * (pi/2) * Q * gamma * (C_1 / (mu_0 * M_s)) * sin(phi) * sin(phi - chi) / cos(chi)))) \
 				* ( Q * Omega_A(phi, chi, H_x, H_y, H_K, H_D, H_R, Q, Delta, b_J) \
 					+ alpha * Omega_B(phi, chi, H_z, H_SH, H_R, 0, 0, Q, Delta, b_J, xi) \
-					+ (pi/2) * gamma * Q * sin(phi - chi) * (C_2 * current * sin(phi)) / (mu_0 * M_s * Delta) )
+					+ Q * (pi/2) * gamma * Q * sin(phi - chi) * (C_2 * current * sin(phi)) / (mu_0 * M_s * Delta) )
 
 def H_K(t_FM, M_s, Delta):	# anisotropy field
 	return t_FM * M_s * log(2) / (pi * Delta)
