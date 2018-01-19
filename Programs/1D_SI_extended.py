@@ -50,7 +50,7 @@ H_z = 0
 
 #np.random.seed(seed)	# set seed for Mersenne twister
 
-current = 0.5e+12	# current density in heavy metal layer Ta / W. A/m^2.
+current = -0.5e+12	# current density in heavy metal layer Ta / W. A/m^2.
 #current_start = -0.2e+08
 #current_end = 0.2e+08
 #current_step = 0.001e+08
