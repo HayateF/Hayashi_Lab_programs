@@ -16,7 +16,8 @@ def one_dim_model_3var_ex(y, t_0, H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Del
 	\
 	(1 / (1 + alpha**2)) \
 		* ( - alpha * Omega_A(y[1], y[2], H_x, H_y, H_K, H_D, H_R, Q, Delta, b_J) \
-			+ Omega_B(y[1], y[2], H_z, H_SH, H_R, 0, 0, Q, Delta, b_J, xi) \
+			#+ Omega_B(y[1], y[2], H_z, H_SH, H_R, 0, 0, Q, Delta, b_J, xi) \
+			+ Q * Omega_B(y[1], y[2], H_z, H_SH, H_R, 0, 0, Q, Delta, b_J, xi) \
 			- alpha * (pi/2) * gamma * Q * (C_2 * current * sin(y[1]) * sin(y[1] - y[2]) / (mu_0 * M_s * Delta)) \
 			- alpha * (pi/2) * gamma * Q * (C_1 * sin(y[1]) * sin(y[1] - y[2]) / (mu_0 * M_s * Delta)) \
 				* q_dot(y[1], y[2], H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, Q, M_s, b_J, xi, current, C_1, C_2) ), \
@@ -52,7 +53,8 @@ def one_dim_model_3var(y, t_0, H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta,
 
 def q_dot(phi, chi, H_x, H_y, H_z, H_K, H_D, H_R, H_SH, alpha, Delta, Q, M_s, b_J, xi, current, C_1, C_2):	# time derivative of q
 	return 	(Delta / (cos(chi) * (1 + alpha**2 - (pi/2) * Q * gamma * (C_1 / (mu_0 * M_s)) * sin(phi) * sin(phi - chi) / cos(chi)))) \
-				* ( Omega_A(phi, chi, H_x, H_y, H_K, H_D, H_R, Q, Delta, b_J) \
+				#* ( Omega_A(phi, chi, H_x, H_y, H_K, H_D, H_R, Q, Delta, b_J) \
+				* ( Q * Omega_A(phi, chi, H_x, H_y, H_K, H_D, H_R, Q, Delta, b_J) \
 					+ alpha * Omega_B(phi, chi, H_z, H_SH, H_R, 0, 0, Q, Delta, b_J, xi) \
 					+ (pi/2) * gamma * Q * sin(phi - chi) * (C_2 * current * sin(phi)) / (mu_0 * M_s * Delta) )
 
