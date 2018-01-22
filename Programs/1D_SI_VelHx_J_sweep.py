@@ -88,16 +88,16 @@ t_2 = np.arange(duration, t_end, t_step, dtype = np.float64)
 
 
 
-current *= -1
+
+
+
 j = 0
-
-
-
 #####################################
 ####### current sweep start #########
 #####################################
 for current in current_list:
 	i = 0
+	current *= -1
 	#################################
 	###### H_x sweep start ##########
 	#################################
