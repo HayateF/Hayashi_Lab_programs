@@ -56,7 +56,7 @@ H_z = 0
 current_start = 0
 current_end = 0.5e+12
 current_step = 0.1e+12
-current_list = np.arrange(current_start, current_end, current_step, dtype = np.float64)
+current_list = np.arange(current_start, current_end, current_step, dtype = np.float64)
 DMI = np.zeros(current_list.size)
 
 H_x_start = -1000e+03 / (4 * pi)
