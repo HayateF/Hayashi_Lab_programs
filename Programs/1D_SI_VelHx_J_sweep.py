@@ -29,8 +29,8 @@ theta_SH = -0.21	# spin Hall angle.
 #alpha_R = 0	# Rashba parameter
 #C_1 = 3.0e-06	# velocity-DMI conversion coefficient.
 C_1 = 0.0
-#C_2 = 5.0e-16
-C_2 = 0.0
+C_2 = 5.0e-16
+#C_2 = 0.0
 #voltage = 25 # voltage. 25V.
 #rho_W = # resistivity of W. Ohm*m.
 #rho_Ta = # resistivity of Ta.
@@ -53,9 +53,9 @@ H_z = 0
 # current density in heavy metal layer Ta / W. A/m^2.
 # This should be negative, for the convenience later.
 #current = 0.5e+12	
-current_start = 0
+current_start = 0.05e+12
 current_end = 0.5e+12
-current_step = 0.1e+12
+current_step = 0.05e+12
 current_list = np.arange(current_start, current_end, current_step, dtype = np.float64)
 DMI = np.zeros(current_list.size)
 
@@ -107,21 +107,18 @@ for current in current_list:
 		### up-down calculation
 		# initial condition
 		y_0 = np.array([0.0, 0.0, 0.0])
-		print ("flag 30")
 		## solve the equation
 		y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 			args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
 					0, H_SH(theta_SH, current, M_s, t_FM), \
 					alpha, Delta, width, 1, K_u, M_s, A, D(current), t_FM, 0, 0, current, C_1, C_2))	
 	
-		print ("flag 40")
 		y_0 = y_1[-1]	# the initial condition is the final state of the previous calculation.
 		y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
 			args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
 					0, 0, \
 					alpha, Delta, width, 1, K_u, M_s, A, D(0), t_FM, 0, 0, current, C_1, C_2))
 		
-		print("flag 50")
 		velocity_eff_p_updown[i] = (y_2[-1, 0] / duration)
 		velocity_stat_p_updown[i] = (y_1[-1, 0] / duration)
 	
@@ -168,19 +165,22 @@ for current in current_list:
 		velocity_eff_n_downup[i] = (y_2[-1, 0] / duration)
 		velocity_stat_n_downup[i] = (y_1[-1, 0] / duration)
 	
-		print (i, "-th calculation finished.")
 		i += 1
 	#################################
 	###### H_x sweep end ############
 	#################################	
-		
+	print (j, "-th calculation finished.")
+	
 	## perform linear regression for the effective velocities
 	ab_p_ud = np.polyfit(H_x_list, velocity_eff_p_updown, 1)
 	ab_p_du = np.polyfit(H_x_list, velocity_eff_p_downup, 1)
 	ab_n_ud = np.polyfit(H_x_list, velocity_eff_n_updown, 1)
 	ab_n_du = np.polyfit(H_x_list, velocity_eff_n_downup, 1)
+
+	print(j, "-th slope for positive up-down is", ab_p_ud[0])
+
 	H_c = (ab_p_ud[1] / ab_p_ud[0] - ab_p_du[1] / ab_p_du[0] + ab_n_ud[1] / ab_n_ud[0] - ab_n_du[1] / ab_n_du[0]) / 4
-	H_c = H_c * 1e-03 * 4 * pi	## Oe conversion
+	H_c *= 1e-03 * 4 * pi	## Oe conversion
 	DMI[j] = H_c * M_s * Delta / 10	# mJ/m^2
 	j += 1
 #####################################
@@ -191,7 +191,7 @@ for current in current_list:
 # plot DMI v.s. J
 plt.figure(1)
 plt.scatter(current_list[:] / 1e+12, DMI[:], label = "")
-plt.xlabel("Current Density [$10^(12)$ A/m$^2$]")
+plt.xlabel("Current Density [$10^{12}$ A/m$^2$]")
 plt.ylabel("DMI [mJ/m$^2$]")	
 plt.grid(True)
 
