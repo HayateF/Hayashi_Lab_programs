@@ -13,7 +13,8 @@ from one_dim_si_func_def import *
 #seed = 213	# seed of Mersenne twister
 
 ## Consider W / 1 CoFeB / 2 MgO / 1 Ta.
-K_eff = 3.2e+05	# effective magnetic anisotropy energy. J/m^3.
+#K_eff = 3.2e+05	# effective magnetic anisotropy energy. J/m^3.
+K_eff = 6.2e+05	# effective magnetic anisotropy energy. for E152-07 2C. J/m^3.
 M_s = 1100e+03	# saturation magnetization. J/Tm^3.
 K_u = K_eff + mu_0 * M_s**2 / 2	# magnetic anisotropy energy.
 alpha = 0.01	# damping coefficient
@@ -29,8 +30,8 @@ theta_SH = -0.21	# spin Hall angle.
 #alpha_R = 0	# Rashba parameter
 #C_1 = 3.0e-06	# velocity-DMI conversion coefficient.
 C_1 = 0.0
-C_2 = 5.0e-16
-#C_2 = 0.0
+#C_2 = 5.0e-16
+C_2 = 0.0
 #voltage = 25 # voltage. 25V.
 #rho_W = # resistivity of W. Ohm*m.
 #rho_Ta = # resistivity of Ta.
