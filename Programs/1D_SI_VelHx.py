@@ -18,12 +18,13 @@ K_eff = 6.2e+05	# effective magnetic anisotropy energy. for E152-07 2C. J/m^3.
 M_s = 1100e+03	# saturation magnetization. J/Tm^3.
 K_u = K_eff + mu_0 * M_s**2 / 2	# magnetic anisotropy energy.
 alpha = 0.01	# damping coefficient
+#alpha = 0.05	# damping coefficient
 Q = 1	# this means up/down DW. -1 if down/up DW.
 A = 1.5e-11	# exchange stiffness. J/m.
 Delta = sqrt(A / K_eff)	# width of DW.
 width = 5.0e-06	# width of wire. 5um.
 t_FM = 1.0e-09	# thickness of CoFeB. 1nm.
-#D = 0.24e-03	# DMI constant. J/m^2
+D_0 = 0.24e-03	# DMI constant. J/m^2
 theta_SH = -0.21	# spin Hall angle.
 #P = 0.72	# spin polarization factor
 #xi = 0	# dimensionless non-adiabatic parameter
@@ -53,7 +54,7 @@ H_z = 0
 
 # current density in heavy metal layer Ta / W. A/m^2.
 # This should be negative, for the convenience later.
-current = 0.5e+12	
+current = 0.22e+12	
 
 H_x_start = -1000e+03 / (4 * pi)
 H_x_end = 1000e+03 / (4 * pi)
@@ -91,16 +92,16 @@ for H_x in H_x_list:
 	print ("flag 30")
 	## solve the equation
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
-		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 				0, H_SH(theta_SH, current, M_s, t_FM), \
-				alpha, Delta, width, 1, K_u, M_s, A, D(current), t_FM, 0, 0, current, C_1, C_2))	
+				alpha, Delta, width, 1, K_u, M_s, A, D(D_0, current), t_FM, 0, 0, current, C_1, C_2))	
 
 	print ("flag 40")
 	y_0 = y_1[-1]	# the initial condition is the final state of the previous calculation.
 	y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
-		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
 				0, 0, \
-				alpha, Delta, width, 1, K_u, M_s, A, D(0), t_FM, 0, 0, current, C_1, C_2))
+				alpha, Delta, width, 1, K_u, M_s, A, D(D_0, 0), t_FM, 0, 0, current, C_1, C_2))
 	
 	print("flag 50")
 	velocity_eff_p_updown[i] = (y_2[-1, 0] / duration)
@@ -109,14 +110,14 @@ for H_x in H_x_list:
 	### down-up calculation
 	y_0 = np.array([0.0, -pi, 0.0])	# phi = -pi. right-handed wall is assumed.
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
-		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 				0, H_SH(theta_SH, current, M_s, t_FM), \
-				alpha, Delta, width, -1, K_u, M_s, A, D(current), t_FM, 0, 0, current, C_1, C_2))	
+				alpha, Delta, width, -1, K_u, M_s, A, D(D_0, current), t_FM, 0, 0, current, C_1, C_2))	
 	y_0 = y_1[-1]	# the initial condition is the final state of the previous calculation.
 	y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
-		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
 				0, 0, \
-				alpha, Delta, width, -1, K_u, M_s, A, D(0), t_FM, 0, 0, current, C_1, C_2))
+				alpha, Delta, width, -1, K_u, M_s, A, D(D_0, 0), t_FM, 0, 0, current, C_1, C_2))
 	velocity_eff_p_downup[i] = (y_2[-1, 0] / duration)
 	velocity_stat_p_downup[i] = (y_1[-1, 0] / duration)
 
@@ -125,27 +126,27 @@ for H_x in H_x_list:
 	### up-down calculation
 	y_0 = np.array([0.0, 0.0, 0.0])
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
-		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 				0, H_SH(theta_SH, current, M_s, t_FM), \
-				alpha, Delta, width, 1, K_u, M_s, A, D(current), t_FM, 0, 0, current, C_1, C_2))	
+				alpha, Delta, width, 1, K_u, M_s, A, D(D_0, current), t_FM, 0, 0, current, C_1, C_2))	
 	y_0 = y_1[-1]	# the initial condition is the final state of the previous calculation.
 	y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
-		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
 				0, 0, \
-				alpha, Delta, width, 1, K_u, M_s, A, D(0), t_FM, 0, 0, current, C_1, C_2))
+				alpha, Delta, width, 1, K_u, M_s, A, D(D_0, 0), t_FM, 0, 0, current, C_1, C_2))
 	velocity_eff_n_updown[i] = (y_2[-1, 0] / duration)
 	velocity_stat_n_updown[i] = (y_1[-1, 0] / duration)
 	### down-up calculation
 	y_0 = np.array([0.0, -pi, 0.0])
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
-		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 				0, H_SH(theta_SH, current, M_s, t_FM), \
-				alpha, Delta, width, -1, K_u, M_s, A, D(current), t_FM, 0, 0, current, C_1, C_2))	
+				alpha, Delta, width, -1, K_u, M_s, A, D(D_0, current), t_FM, 0, 0, current, C_1, C_2))	
 	y_0 = y_1[-1]	# the initial condition is the final state of the previous calculation.
 	y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
-		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
 				0, 0, \
-				alpha, Delta, width, -1, K_u, M_s, A, D(0), t_FM, 0, 0, current, C_1, C_2))
+				alpha, Delta, width, -1, K_u, M_s, A, D(D_0, 0), t_FM, 0, 0, current, C_1, C_2))
 	velocity_eff_n_downup[i] = (y_2[-1, 0] / duration)
 	velocity_stat_n_downup[i] = (y_1[-1, 0] / duration)
 
