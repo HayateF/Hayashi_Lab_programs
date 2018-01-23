@@ -84,9 +84,11 @@ def H_th(alpha, temperature, M_s, Delta, t_FM, width):	# thermal field
 	#return np.random.normal(0, sqrt(2 * alpha * k_B * temperature / (gamma * M_s * Delta * width * t_FM)))	
 	return 0
 
-def D(current):	# DMI constant depending on spin current. J/m^2.
+def D(D_0, current):	# DMI constant depending on spin current. J/m^2.
 	#return 0.24 + current * 1e-09
-	return 0.24e-03
+	#return 0.24e-03
+	#return D_0 + current * 1e-09
+	return D_0
 
 def b_J(current, P, M_s):	# STT coefficient
 	#return - current * mu_B * P / (charge * M_s)
