@@ -50,7 +50,7 @@ H_z = 0
 
 #np.random.seed(seed)	# set seed for Mersenne twister
 
-current = -0.5e+12	# current density in heavy metal layer Ta / W. A/m^2.
+current = 0.5e+12	# current density in heavy metal layer Ta / W. A/m^2.
 #current_start = -0.2e+08
 #current_end = 0.2e+08
 #current_step = 0.001e+08
@@ -70,7 +70,7 @@ t_2 = np.arange(duration, t_end, t_step, dtype = np.float64)
 print ("flag 20")
 
 
-y_0 = np.array([0.0, 0.0, 0.0])
+y_0 = np.array([0.0, - (Q-1) * pi / 2, 0.0])
 #y_0 = np.array([0.0, pi, 0.0])
 #y_1 = odeint(one_dim_model_3var, y_0, t_1, \
 #	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
