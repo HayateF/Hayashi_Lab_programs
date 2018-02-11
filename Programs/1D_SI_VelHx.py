@@ -72,7 +72,7 @@ velocity_stat_n_downup = np.zeros(H_x_list.size)
 #print (Current)
 
 ## time array
-duration = 100e-09	# current pulse duration. 100ns.
+duration = 10e-09	# current pulse duration. 10ns.
 t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 t_1 = np.arange(0, duration, t_step, dtype = np.float64)	# time array when solutions are obtained.
 ## after switch of the current
@@ -181,6 +181,14 @@ plt.plot(H_x_list[:], ab_n_du[0] * H_x_list[:] + ab_n_du[1], label = "", linesty
 plt.xlabel("x Field [Oe]")
 plt.ylabel("Velocity [m/s]")
 plt.legend()
+plt.grid(True)
+
+## plot ratio of effective velocity to stationary velocity
+plt.figure(2)
+plt.scatter(H_x_list[:], velocity_eff_p_updown[:] / velocity_stat_p_updown[:], label = "velocity ratio")
+plt.xlabel("x Field [Oe]")
+plt.ylabel("Velocity ratio")
+#plt.legend()
 plt.grid(True)
 
 plt.show()
