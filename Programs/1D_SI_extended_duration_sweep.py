@@ -24,7 +24,7 @@ A = 1.5e-11	# exchange stiffness. J/m.
 Delta = sqrt(A / K_eff)	# width of DW.
 width = 5.0e-06	# width of wire. 5um.
 t_FM = 1.0e-09	# thickness of CoFeB. 1nm.
-#D = 0.24e-03	# DMI constant. J/m^2
+D_0 = 0.24e-03	# DMI constant. J/m^2
 theta_SH = -0.21	# spin Hall angle.
 #P = 0.72	# spin polarization factor
 #xi = 0	# dimensionless non-adiabatic parameter
@@ -54,7 +54,7 @@ pulse_start = 1	# pulse duration starts from 1ns
 pulse_end = 100	# pulse duration ends at 100ns
 pulse_step = 1
 pulse_list = np.arange(pulse_start, pulse_end, pulse_step, dtype = np.float64)
-velocity_eff = np.zeros(pulse_list..size) 
+velocity_eff = np.zeros(pulse_list.size) 
 #velocity_stat = np.zeros(Current.size)
 
 
@@ -70,14 +70,14 @@ for duration in pulse_list:
 
 	y_0 = np.array([0.0, 0.0, 0.0])
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
-		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 				0, H_SH(theta_SH, current, M_s, t_FM), \
-				alpha, Delta, width, Q, K_u, M_s, A, D(current), t_FM, 0, 0, current, C_1, C_2))
+				alpha, Delta, width, Q, K_u, M_s, A, D(D_0, current), t_FM, 0, 0, current, C_1, C_2))
 	y_0 = y_1[-1]
 	y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
-		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
 				0, 0, \
-				alpha, Delta, width, Q, K_u, M_s, A, D(0), t_FM, 0, 0, current, C_1, C_2))
+				alpha, Delta, width, Q, K_u, M_s, A, D(D_0, 0), t_FM, 0, 0, current, C_1, C_2))
 	
 	velocity_eff[i] = (y_2[-1, 0] / duration * 1e+09)
 	print (i, "-th calculation finished.")
