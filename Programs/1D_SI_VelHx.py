@@ -18,15 +18,16 @@ K_eff = 6.2e+05	# effective magnetic anisotropy energy. for E152-07 2C. J/m^3.
 M_s = 1100e+03	# saturation magnetization. J/Tm^3.
 K_u = K_eff + mu_0 * M_s**2 / 2	# magnetic anisotropy energy.
 #alpha = 0.01	# damping coefficient
-alpha = 0.05	# damping coefficient
+#alpha = 0.05	# damping coefficient
+alpha = 0.09
 Q = 1	# this means up/down DW. -1 if down/up DW.
 A = 1.5e-11	# exchange stiffness. J/m.
 Delta = sqrt(A / K_eff)	# width of DW.
 width = 5.0e-06	# width of wire. 5um.
 t_FM = 1.0e-09	# thickness of CoFeB. 1nm.
 #D_0 = 0.24e-03	# DMI constant. J/m^2
-D_0 = 0.3e-03	# DMI constant. J/m^2
-theta_SH = -0.21	# spin Hall angle.
+D_0 = 0.32e-03	# DMI constant. J/m^2
+theta_SH = -0.10	# spin Hall angle.
 #P = 0.72	# spin polarization factor
 #xi = 0	# dimensionless non-adiabatic parameter
 #alpha_R = 0	# Rashba parameter
@@ -55,7 +56,8 @@ H_z = 0
 
 # current density in heavy metal layer Ta / W. A/m^2.
 # This should be negative, for the convenience later.
-current = 0.22e+12	
+#current = 0.6e+12	
+current = 0.4e+12
 
 H_x_start = -1000e+03 / (4 * pi)
 H_x_end = 1000e+03 / (4 * pi)
@@ -72,7 +74,8 @@ velocity_stat_n_downup = np.zeros(H_x_list.size)
 #print (Current)
 
 ## time array
-duration = 10e-09	# current pulse duration. 10ns.
+#duration = 2.6e-09	# current pulse duration. 10ns.
+duration = 9.0e-09
 t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 t_1 = np.arange(0, duration, t_step, dtype = np.float64)	# time array when solutions are obtained.
 ## after switch of the current
