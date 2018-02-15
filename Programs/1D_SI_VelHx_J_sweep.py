@@ -14,28 +14,31 @@ from one_dim_si_func_def import *
 
 ## Consider W / 1 CoFeB / 2 MgO / 1 Ta.
 #K_eff = 3.2e+05	# effective magnetic anisotropy energy. J/m^3.
-#K_eff = 6.2e+05	# effective magnetic anisotropy energy. J/m^3. 2C.
-K_eff = 3.7e+05	# effective magnetic anisotropy energy. J/m^3. 2M.
-#M_s = 1100e+03	# saturation magnetization. J/Tm^3. 2C.
-M_s = 1000e+03	# saturation magnetization. J/Tm^3. 2M.
+K_eff = 6.2e+05	# effective magnetic anisotropy energy. J/m^3. 2C.
+#K_eff = 3.7e+05	# effective magnetic anisotropy energy. J/m^3. 2M.
+M_s = 1100e+03	# saturation magnetization. J/Tm^3. 2C.
+#M_s = 1000e+03	# saturation magnetization. J/Tm^3. 2M.
 K_u = K_eff + mu_0 * M_s**2 / 2	# magnetic anisotropy energy.
 #alpha = 0.01	# damping coefficient
-alpha = 0.05	# damping coefficient
+#alpha = 0.05	# damping coefficient
+alpha = 0.09
 Q = 1	# this means up/down DW. -1 if down/up DW.
 A = 1.5e-11	# exchange stiffness. J/m.
 Delta = sqrt(A / K_eff)	# width of DW.
 width = 5.0e-06	# width of wire. 5um.
 t_FM = 1.0e-09	# thickness of CoFeB. 1nm.
 #D_0 = 0.24e-03	# DMI constant. J/m^2
-D_0 = 0.3e-03	# DMI constant. J/m^2
-theta_SH = -0.21	# spin Hall angle.
-#P = 0.72	# spin polarization factor
+D_0 = 0.32e-03	# DMI constant. J/m^2
+#theta_SH = -0.21	# spin Hall angle.
+theta_SH = -0.20	# spin Hall angle.
+P = 0.72	# spin polarization factor
 #xi = 0	# dimensionless non-adiabatic parameter
 #alpha_R = 0	# Rashba parameter
 #C_1 = 3.0e-06	# velocity-DMI conversion coefficient.
 C_1 = 0.0
 C_2 = 3.0e-16
 #C_2 = 0.0
+C_2 *= P	# based on the STT-like mechanism
 #voltage = 25 # voltage. 25V.
 #rho_W = # resistivity of W. Ohm*m.
 #rho_Ta = # resistivity of Ta.
@@ -59,7 +62,7 @@ H_z = 0
 # This should be negative, for the convenience later.
 #current = 0.5e+12	
 current_start = 0.05e+12
-current_end = 0.5e+12
+current_end = 1.2e+12
 current_step = 0.05e+12
 current_list = np.arange(current_start, current_end, current_step, dtype = np.float64)
 DMI = np.zeros(current_list.size)

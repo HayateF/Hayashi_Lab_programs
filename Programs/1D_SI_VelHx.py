@@ -27,7 +27,7 @@ width = 5.0e-06	# width of wire. 5um.
 t_FM = 1.0e-09	# thickness of CoFeB. 1nm.
 #D_0 = 0.24e-03	# DMI constant. J/m^2
 D_0 = 0.32e-03	# DMI constant. J/m^2
-theta_SH = -0.10	# spin Hall angle.
+theta_SH = -0.20	# spin Hall angle.
 #P = 0.72	# spin polarization factor
 #xi = 0	# dimensionless non-adiabatic parameter
 #alpha_R = 0	# Rashba parameter
@@ -61,7 +61,7 @@ current = 0.4e+12
 
 H_x_start = -1000e+03 / (4 * pi)
 H_x_end = 1000e+03 / (4 * pi)
-H_x_step = 50e+03 / (4 * pi)
+H_x_step = 100e+03 / (4 * pi)
 H_x_list = np.arange(H_x_start, H_x_end, H_x_step, dtype = np.float64)	# x-field. A/m.
 velocity_eff_p_updown = np.zeros(H_x_list.size) 
 velocity_eff_p_downup = np.zeros(H_x_list.size) 
@@ -75,7 +75,7 @@ velocity_stat_n_downup = np.zeros(H_x_list.size)
 
 ## time array
 #duration = 2.6e-09	# current pulse duration. 10ns.
-duration = 9.0e-09
+duration = 100e-09
 t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 t_1 = np.arange(0, duration, t_step, dtype = np.float64)	# time array when solutions are obtained.
 ## after switch of the current
@@ -169,14 +169,14 @@ ab_n_du = np.polyfit(H_x_list, velocity_eff_n_downup, 1)
 
 ## plot velocity
 plt.figure(1)
-plt.scatter(H_x_list[:], velocity_eff_p_updown[:], label = "e+ up-down")
-plt.scatter(H_x_list[:], velocity_eff_p_downup[:], label = "e+ down-up")
-plt.scatter(H_x_list[:], velocity_eff_n_updown[:], label = "e- up-down")
-plt.scatter(H_x_list[:], velocity_eff_n_downup[:], label = "e- down-up")
-plt.plot(H_x_list[:], ab_p_ud[0] * H_x_list[:] + ab_p_ud[1], label = "", linestyle = "solid")
-plt.plot(H_x_list[:], ab_p_du[0] * H_x_list[:] + ab_p_du[1], label = "", linestyle = "solid")
-plt.plot(H_x_list[:], ab_n_ud[0] * H_x_list[:] + ab_n_ud[1], label = "", linestyle = "solid")
-plt.plot(H_x_list[:], ab_n_du[0] * H_x_list[:] + ab_n_du[1], label = "", linestyle = "solid")
+plt.scatter(H_x_list[:], velocity_eff_p_updown[:], label = "+ up-down", c = "red", s = 150)
+plt.scatter(H_x_list[:], velocity_eff_p_downup[:], label = "+ down-up", facecolors = "none", edgecolors = "red", s = 150)
+plt.scatter(H_x_list[:], velocity_eff_n_updown[:], label = "- up-down", c = "blue", s = 150)
+plt.scatter(H_x_list[:], velocity_eff_n_downup[:], label = "- down-up", facecolors = "none", edgecolors = "blue", s = 150)
+plt.plot(H_x_list[:], ab_p_ud[0] * H_x_list[:] + ab_p_ud[1], label = "", linestyle = "solid", c = "red")
+plt.plot(H_x_list[:], ab_p_du[0] * H_x_list[:] + ab_p_du[1], label = "", linestyle = "solid", c = "red")
+plt.plot(H_x_list[:], ab_n_ud[0] * H_x_list[:] + ab_n_ud[1], label = "", linestyle = "solid", c = "blue")
+plt.plot(H_x_list[:], ab_n_du[0] * H_x_list[:] + ab_n_du[1], label = "", linestyle = "solid", c = "blue")
 #plt.scatter(H_x_list[:], velocity_stat_p_updown[:], label = "s+ up-down")
 #plt.scatter(H_x_list[:], velocity_stat_p_downup[:], label = "s+ down-up")
 #plt.scatter(H_x_list[:], velocity_stat_n_updown[:], label = "s- up-down")
@@ -186,13 +186,13 @@ plt.ylabel("Velocity [m/s]")
 plt.legend()
 plt.grid(True)
 
-## plot ratio of effective velocity to stationary velocity
-plt.figure(2)
-plt.scatter(H_x_list[:], velocity_eff_p_updown[:] / velocity_stat_p_updown[:], label = "velocity ratio")
-plt.xlabel("x Field [Oe]")
-plt.ylabel("Velocity ratio")
-#plt.legend()
-plt.grid(True)
+### plot ratio of effective velocity to stationary velocity
+#plt.figure(2)
+#plt.scatter(H_x_list[:], velocity_eff_p_updown[:] / velocity_stat_p_updown[:], label = "velocity ratio")
+#plt.xlabel("x Field [Oe]")
+#plt.ylabel("Velocity ratio")
+##plt.legend()
+#plt.grid(True)
 
 plt.show()
 
