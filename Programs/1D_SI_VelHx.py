@@ -34,7 +34,7 @@ theta_SH = -0.20	# spin Hall angle.
 #C_1 = 3.0e-06	# velocity-DMI conversion coefficient.
 C_1 = 0.0
 #C_2 = 5.0e-16
-C_2 = 0.0
+C_2 = 1.5e-16
 #voltage = 25 # voltage. 25V.
 #rho_W = # resistivity of W. Ohm*m.
 #rho_Ta = # resistivity of Ta.
@@ -60,7 +60,7 @@ H_z = 0
 current = 0.4e+12
 
 H_x_start = -1000e+03 / (4 * pi)
-H_x_end = 1000e+03 / (4 * pi)
+H_x_end = 1150e+03 / (4 * pi)
 H_x_step = 100e+03 / (4 * pi)
 H_x_list = np.arange(H_x_start, H_x_end, H_x_step, dtype = np.float64)	# x-field. A/m.
 velocity_eff_p_updown = np.zeros(H_x_list.size) 
@@ -76,7 +76,8 @@ velocity_stat_n_downup = np.zeros(H_x_list.size)
 ## time array
 #duration = 2.6e-09	# current pulse duration. 10ns.
 duration = 100e-09
-t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
+#t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
+t_step = 1e-10
 t_1 = np.arange(0, duration, t_step, dtype = np.float64)	# time array when solutions are obtained.
 ## after switch of the current
 t_end = 300e-09	# final time. 300ns.

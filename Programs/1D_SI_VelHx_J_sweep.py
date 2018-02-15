@@ -36,7 +36,7 @@ P = 0.72	# spin polarization factor
 #alpha_R = 0	# Rashba parameter
 #C_1 = 3.0e-06	# velocity-DMI conversion coefficient.
 C_1 = 0.0
-C_2 = 3.0e-16
+C_2 = 1.5e-16
 #C_2 = 0.0
 C_2 *= P	# based on the STT-like mechanism
 #voltage = 25 # voltage. 25V.
@@ -61,9 +61,9 @@ H_z = 0
 # current density in heavy metal layer Ta / W. A/m^2.
 # This should be negative, for the convenience later.
 #current = 0.5e+12	
-current_start = 0.05e+12
+current_start = 0.2e+12
 current_end = 1.2e+12
-current_step = 0.05e+12
+current_step = 0.1e+12
 current_list = np.arange(current_start, current_end, current_step, dtype = np.float64)
 DMI = np.zeros(current_list.size)
 
@@ -199,10 +199,12 @@ for current in current_list:
 
 # plot DMI v.s. J
 plt.figure(1)
-plt.scatter(current_list[:] / 1e+12, DMI[:], label = "")
+plt.scatter(current_list[:] / 1e+12, DMI[:], label = "", c = "red", s = 150)
 plt.xlabel("Current Density [$10^{12}$ A/m$^2$]")
-plt.ylabel("DMI [mJ/m$^2$]")	
+plt.ylabel("DMI [mJ / m$^2$]")	
 plt.grid(True)
+plt.xlim([0, 1.2])
+plt.ylim([0.2, 0.45])
 
 plt.show()
 
