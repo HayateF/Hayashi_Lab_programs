@@ -27,7 +27,7 @@ width = 5.0e-06	# width of wire. 5um.
 t_FM = 1.0e-09	# thickness of CoFeB. 1nm.
 #D_0 = 0.24e-03	# DMI constant. J/m^2
 D_0 = 0.32e-03
-theta_SH = -0.21	# spin Hall angle.
+theta_SH = -0.20	# spin Hall angle.
 #P = 0.72	# spin polarization factor
 #xi = 0	# dimensionless non-adiabatic parameter
 #alpha_R = 0	# Rashba parameter
@@ -53,7 +53,7 @@ H_z = 0
 current = 0.9e+12	# current density in heavy metal layer Ta / W. A/m^2.
 
 pulse_start = 0.5	# pulse duration starts from 1ns
-pulse_end = 7.1	# pulse duration ends at 100ns
+pulse_end = 7.5	# pulse duration ends at 100ns
 pulse_step = 0.1
 pulse_list = np.arange(pulse_start, pulse_end, pulse_step, dtype = np.float64)
 velocity_eff = np.zeros(pulse_list.size) 
@@ -87,9 +87,12 @@ for duration in pulse_list:
 
 ## plot velocity
 plt.figure(1)
-plt.scatter(pulse_list[:], velocity_eff[:], label = "effective")
+#plt.scatter(pulse_list[:], velocity_eff[:], label = "", c = "red", s = 100)
+plt.plot(pulse_list[:], velocity_eff[:], label = "", color = "red", linewidth = 3.0)
 plt.xlabel("Pulse width [ns]")
 plt.ylabel("Velocity [m/s]")
+plt.xlim([0, 8])
+plt.ylim([80, 230])
 plt.legend()
 plt.grid(True)
 
