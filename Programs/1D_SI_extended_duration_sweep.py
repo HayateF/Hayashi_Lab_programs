@@ -92,7 +92,7 @@ plt.plot(pulse_list[:], velocity_eff[:], label = "", color = "red", linewidth = 
 plt.xlabel("Pulse width [ns]")
 plt.ylabel("Velocity [m/s]")
 plt.xlim([0, 8])
-plt.ylim([80, 230])
+plt.ylim([80, 180])
 plt.legend()
 plt.grid(True)
 
