@@ -13,19 +13,22 @@ from one_dim_si_func_def import *
 #seed = 213	# seed of Mersenne twister
 
 ## Consider W / 1 CoFeB / 2 MgO / 1 Ta.
-K_eff = 3.2e+05	# effective magnetic anisotropy energy. J/m^3.
+#K_eff = 3.2e+05	# effective magnetic anisotropy energy. J/m^3.
+K_eff = 6.2e+05
 M_s = 1100e+03	# saturation magnetization. J/Tm^3.
 K_u = K_eff + mu_0 * M_s**2 / 2	# magnetic anisotropy energy.
-alpha = 0.01	# damping coefficient
+#alpha = 0.01	# damping coefficient
+alpha = 0.09
 Q = 1	# this means up/down DW. -1 if down/up DW.
 A = 1.5e-11	# exchange stiffness. J/m.
 Delta = sqrt(A / K_eff)	# width of DW.
 width = 5.0e-06	# width of wire. 5um.
 t_FM = 1.0e-09	# thickness of CoFeB. 1nm.
-D_0 = 0.24e-03	# DMI constant. J/m^2
-theta_SH = -0.21	# spin Hall angle.
-#P = 0.72	# spin polarization factor
-#xi = 0	# dimensionless non-adiabatic parameter
+#D_0 = 0.24e-03	# DMI constant. J/m^2
+D_0 = 0.32e-03
+theta_SH = -0.20	# spin Hall angle.
+P = 0.72	# spin polarization factor
+xi = 0	# dimensionless non-adiabatic parameter
 #alpha_R = 0	# Rashba parameter
 #C_1 = 3.0e-06	# DW-motion-to-DMI conversion coefficient
 C_1 = 0.0
@@ -51,6 +54,7 @@ H_z = 0
 #np.random.seed(seed)	# set seed for Mersenne twister
 
 current = 0.5e+12	# current density in heavy metal layer Ta / W. A/m^2.
+
 #current_start = -0.2e+08
 #current_end = 0.2e+08
 #current_step = 0.001e+08
@@ -60,7 +64,7 @@ current = 0.5e+12	# current density in heavy metal layer Ta / W. A/m^2.
 #print (Current)
 
 ## time array
-duration = 100e-09	# current pulse duration. 100ns.
+duration = 10e-09	# current pulse duration. 10ns.
 t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 t_1 = np.arange(0, duration, t_step, dtype = np.float64)	# time array when solutions are obtained.
 ## after switch of the current
@@ -69,6 +73,8 @@ t_2 = np.arange(duration, t_end, t_step, dtype = np.float64)
 
 print ("flag 20")
 
+bJ = 0
+#bJ = b_J(current, P, M_s)
 
 y_0 = np.array([0.0, - (Q-1) * pi / 2, 0.0])
 #y_0 = np.array([0.0, pi, 0.0])
@@ -79,7 +85,7 @@ y_0 = np.array([0.0, - (Q-1) * pi / 2, 0.0])
 y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 			0, H_SH(theta_SH, current, M_s, t_FM), \
-			alpha, Delta, width, Q, K_u, M_s, A, D(D_0, current), t_FM, 0, 0, current, C_1, C_2))
+			alpha, Delta, width, Q, K_u, M_s, A, D(D_0, current), t_FM, bJ, xi, current, C_1, C_2))
 y_0 = y_1[-1]
 #y_2 = odeint(one_dim_model_3var, y_0, t_2, \
 #	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(0), Delta, M_s), \
@@ -88,7 +94,7 @@ y_0 = y_1[-1]
 y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
 	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
 			0, 0, \
-			alpha, Delta, width, Q, K_u, M_s, A, D(D_0, 0), t_FM, 0, 0, current, C_1, C_2))
+			alpha, Delta, width, Q, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, current, C_1, C_2))
 
 # combine the two results.
 t = np.r_[t_1, t_2]	# np.r_ combines two arrays in the row direction.
@@ -98,6 +104,8 @@ v = np.gradient((y[:, 0] / t_step).flatten())
 # np.gradient calculates derivatives.
 # np.gradient(y) means dy, and (t_end_1 / t_div_1) means dt. Then, v = dy/dt.
 #print (v)
+
+print ("The effective velocity is", y_2[-1][0] / duration, ".")
 
 ## plot position
 plt.figure(4)
