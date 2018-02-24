@@ -26,9 +26,10 @@ width = 5.0e-06	# width of wire. 5um.
 t_FM = 1.0e-09	# thickness of CoFeB. 1nm.
 #D_0 = 0.24e-03	# DMI constant. J/m^2
 D_0 = 0.32e-03
-theta_SH = -0.20	# spin Hall angle.
+#theta_SH = -0.20	# spin Hall angle.
+theta_SH = 0.0
 P = 0.72	# spin polarization factor
-xi = 0	# dimensionless non-adiabatic parameter
+xi = 0.09	# dimensionless non-adiabatic parameter
 #alpha_R = 0	# Rashba parameter
 #C_1 = 3.0e-06	# DW-motion-to-DMI conversion coefficient
 C_1 = 0.0
@@ -53,7 +54,8 @@ H_z = 0
 
 #np.random.seed(seed)	# set seed for Mersenne twister
 
-current = 0.5e+12	# current density in heavy metal layer Ta / W. A/m^2.
+#current = 0.5e+12	# current density in heavy metal layer Ta / W. A/m^2.
+current = 0.5e+12
 
 #current_start = -0.2e+08
 #current_end = 0.2e+08
@@ -73,8 +75,8 @@ t_2 = np.arange(duration, t_end, t_step, dtype = np.float64)
 
 print ("flag 20")
 
-bJ = 0
-#bJ = b_J(current, P, M_s)
+#bJ = 0
+bJ = b_J(current, P, M_s)
 
 y_0 = np.array([0.0, - (Q-1) * pi / 2, 0.0])
 #y_0 = np.array([0.0, pi, 0.0])
