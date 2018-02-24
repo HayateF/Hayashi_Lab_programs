@@ -91,8 +91,8 @@ def D(D_0, current):	# DMI constant depending on spin current. J/m^2.
 	return D_0
 
 def b_J(current, P, M_s):	# STT coefficient
-	#return - current * mu_B * P / (charge * M_s)
-	return 0
+	return - current * mu_B * P / (charge * M_s)
+	#return 0
 
 def Omega_A(phi, chi, H_x, H_y, H_K, H_D, H_R, Q, Delta, b_J):	
 	return - (1/2) * gamma * H_K * sin(2 * (phi - chi)) \
