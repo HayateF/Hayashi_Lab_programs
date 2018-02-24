@@ -100,7 +100,7 @@ def Omega_A(phi, chi, H_x, H_y, H_K, H_D, H_R, Q, Delta, b_J):
 			 + (pi/2) * gamma * H_x * sin(phi) \
 			 + (pi/2) * gamma * H_D * Q * sin(phi - chi) \
 			 - (pi/2) * gamma * H_R * cos(phi) \
-			 + (b_J / Delta) * cos(chi)
+			 + Q * (b_J / Delta) * cos(chi)
 
 def Omega_B(phi, chi, H_z, H_SH, H_R, H_PIN, H_th, Q, Delta, b_J, xi):
 	return gamma * Q * (H_z + H_PIN + H_th) \
