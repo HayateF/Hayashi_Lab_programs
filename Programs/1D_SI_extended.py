@@ -26,11 +26,13 @@ width = 5.0e-06	# width of wire. 5um.
 t_FM = 1.0e-09	# thickness of CoFeB. 1nm.
 #D_0 = 0.24e-03	# DMI constant. J/m^2
 D_0 = 0.32e-03
-#theta_SH = -0.20	# spin Hall angle.
-theta_SH = 0.0
+theta_SH = -0.20	# spin Hall angle.
+#theta_SH = 0.0
 P = 0.72	# spin polarization factor
-xi = 0.09	# dimensionless non-adiabatic parameter
-alpha_R = 1.0e-10 * charge	# Rashba parameter. 1.0e-10 eV m is the typical value.
+#xi = 0.09	# dimensionless non-adiabatic parameter
+#xi = 0.01
+xi = 0.0
+alpha_R = -1.0e-10 * charge	# Rashba parameter. 1.0e-10 eV m is the typical value.
 #C_1 = 3.0e-06	# DW-motion-to-DMI conversion coefficient
 C_1 = 0.0
 #C_2 = 1.0e-16
@@ -75,11 +77,11 @@ t_2 = np.arange(duration, t_end, t_step, dtype = np.float64)
 
 print ("flag 20")
 
-#bJ = 0
-bJ = b_J(current, P, M_s)
+bJ = 0
+#bJ = b_J(current, P, M_s)
 
-HR = 0
-#HR = H_R(alpha_R, P, current, M_s)
+#HR = 0
+HR = H_R(alpha_R, P, current, M_s)
 
 y_0 = np.array([0.0, - (Q-1) * pi / 2, 0.0])
 #y_0 = np.array([0.0, pi, 0.0])
