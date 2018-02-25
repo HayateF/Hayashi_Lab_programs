@@ -29,8 +29,11 @@ t_FM = 1.0e-09	# thickness of CoFeB. 1nm.
 D_0 = 0.32e-03	# DMI constant. J/m^2
 theta_SH = -0.20	# spin Hall angle.
 P = 0.72	# spin polarization factor
-xi = 0	# dimensionless non-adiabatic parameter
-alpha_R = 0	# Rashba parameter
+s_stt = 0	# switch for the adiabatic STT. s_stt = 1 is on, s_stt = 0 is off.
+xi = 0
+#xi = 0.09	# dimensionless non-adiabatic parameter
+alpha_R = 1.0e-10 * charge	# Rashba parameter
+s_R = 0	# switch for the Rashba field. s_R = 1 is on, s_R = 0 is off.
 #C_1 = 3.0e-06	# velocity-DMI conversion coefficient.
 C_1 = 0.0
 #C_2 = 1.5e-16
@@ -75,7 +78,7 @@ velocity_stat_n_downup = np.zeros(H_x_list.size)
 
 ## time array
 #duration = 2.6e-09	# current pulse duration. 10ns.
-duration = 100e-09
+duration = 10e-09
 #t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 t_step = 1e-10
 t_1 = np.arange(0, duration, t_step, dtype = np.float64)	# time array when solutions are obtained.
@@ -85,11 +88,6 @@ t_2 = np.arange(duration, t_end, t_step, dtype = np.float64)
 
 print ("flag 20")
 
-bJ = 0
-#bJ = b_J(current, P, M_s)
-
-HR = 0
-#HR = H_R(alpha_R, P, current, M_s)
 
 i = 0
 current *= -1
@@ -103,8 +101,9 @@ for H_x in H_x_list:
 	## solve the equation
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
-				HR, H_SH(theta_SH, current, M_s, t_FM), \
-				alpha, Delta, width, 1, K_u, M_s, A, D(D_0, current), t_FM, bJ, xi, current, C_1, C_2))	
+				H_R(alpha_R, P, current, M_s) * s_R, H_SH(theta_SH, current, M_s, t_FM), \
+				alpha, Delta, width, 1, K_u, M_s, A, D(D_0, current), t_FM, b_J(current, P, M_s) * s_stt, xi, \
+				current, C_1, C_2))	
 
 	print ("flag 40")
 	y_0 = y_1[-1]	# the initial condition is the final state of the previous calculation.
@@ -121,8 +120,9 @@ for H_x in H_x_list:
 	y_0 = np.array([0.0, -pi, 0.0])	# phi = -pi. right-handed wall is assumed.
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
-				HR, H_SH(theta_SH, current, M_s, t_FM), \
-				alpha, Delta, width, -1, K_u, M_s, A, D(D_0, current), t_FM, bJ, xi, current, C_1, C_2))	
+				H_R(alpha_R, P, current, M_s) * s_R, H_SH(theta_SH, current, M_s, t_FM), \
+				alpha, Delta, width, -1, K_u, M_s, A, D(D_0, current), t_FM, b_J(current, P, M_s) * s_stt, xi, \
+				current, C_1, C_2))	
 	y_0 = y_1[-1]	# the initial condition is the final state of the previous calculation.
 	y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
@@ -137,8 +137,9 @@ for H_x in H_x_list:
 	y_0 = np.array([0.0, 0.0, 0.0])
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
-				HR, H_SH(theta_SH, current, M_s, t_FM), \
-				alpha, Delta, width, 1, K_u, M_s, A, D(D_0, current), t_FM, bJ, xi, current, C_1, C_2))	
+				H_R(alpha_R, P, current, M_s) * s_R, H_SH(theta_SH, current, M_s, t_FM), \
+				alpha, Delta, width, 1, K_u, M_s, A, D(D_0, current), t_FM, b_J(current, P, M_s) * s_stt, xi, \
+				current, C_1, C_2))	
 	y_0 = y_1[-1]	# the initial condition is the final state of the previous calculation.
 	y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
@@ -150,8 +151,9 @@ for H_x in H_x_list:
 	y_0 = np.array([0.0, -pi, 0.0])
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
-				HR, H_SH(theta_SH, current, M_s, t_FM), \
-				alpha, Delta, width, -1, K_u, M_s, A, D(D_0, current), t_FM, bJ, xi, current, C_1, C_2))	
+				H_R(alpha_R, P, current, M_s) * s_R, H_SH(theta_SH, current, M_s, t_FM), \
+				alpha, Delta, width, -1, K_u, M_s, A, D(D_0, current), t_FM, b_J(current, P, M_s) * s_stt, xi, \
+				current, C_1, C_2))	
 	y_0 = y_1[-1]	# the initial condition is the final state of the previous calculation.
 	y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
