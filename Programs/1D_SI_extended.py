@@ -30,7 +30,7 @@ D_0 = 0.32e-03
 theta_SH = 0.0
 P = 0.72	# spin polarization factor
 xi = 0.09	# dimensionless non-adiabatic parameter
-#alpha_R = 0	# Rashba parameter
+alpha_R = 1.0e-10 * charge	# Rashba parameter. 1.0e-10 eV m is the typical value.
 #C_1 = 3.0e-06	# DW-motion-to-DMI conversion coefficient
 C_1 = 0.0
 #C_2 = 1.0e-16
@@ -78,6 +78,9 @@ print ("flag 20")
 #bJ = 0
 bJ = b_J(current, P, M_s)
 
+HR = 0
+#HR = H_R(alpha_R, P, current, M_s)
+
 y_0 = np.array([0.0, - (Q-1) * pi / 2, 0.0])
 #y_0 = np.array([0.0, pi, 0.0])
 #y_1 = odeint(one_dim_model_3var, y_0, t_1, \
@@ -86,7 +89,7 @@ y_0 = np.array([0.0, - (Q-1) * pi / 2, 0.0])
 #			alpha, Delta, width, Q, K_u, M_s, A, D(current), t_FM, b_J(current, P, M_s), xi))
 y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
-			0, H_SH(theta_SH, current, M_s, t_FM), \
+			HR, H_SH(theta_SH, current, M_s, t_FM), \
 			alpha, Delta, width, Q, K_u, M_s, A, D(D_0, current), t_FM, bJ, xi, current, C_1, C_2))
 y_0 = y_1[-1]
 #y_2 = odeint(one_dim_model_3var, y_0, t_2, \
