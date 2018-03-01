@@ -4,6 +4,8 @@ from math import *	# You don't have to add "math" before any modules of math.
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
+import scipy.interpolate as interpolate
+import scipy.optimize as optimize
 from one_dim_si_func_def import *
 
 ## Ref. Martinez, Current-driven dynamics of Dzyaloshinskii domain walls in the presence of in-plane field
@@ -33,7 +35,7 @@ s_stt = 0	# switch for the adiabatic STT. s_stt = 1 is on, s_stt = 0 is off.
 xi = 0
 #xi = 0.09	# dimensionless non-adiabatic parameter
 alpha_R = -1e-10 * charge	# Rashba parameter
-s_R = 1	# switch for the Rashba field. s_R = 1 is on, s_R = 0 is off.
+s_R = 0	# switch for the Rashba field. s_R = 1 is on, s_R = 0 is off.
 #C_1 = 3.0e-06	# velocity-DMI conversion coefficient.
 C_1 = 0.0
 #C_2 = 1.5e-16
@@ -77,8 +79,8 @@ velocity_stat_n_downup = np.zeros(H_x_list.size)
 #print (Current)
 
 ## time array
-duration = 2.6e-09	# current pulse duration. 10ns.
-#duration = 10e-09
+#duration = 2.6e-09	# current pulse duration. 10ns.
+duration = 10e-09
 #t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 t_step = 1e-10
 t_1 = np.arange(0, duration, t_step, dtype = np.float64)	# time array when solutions are obtained.
@@ -170,28 +172,32 @@ for H_x in H_x_list:
 H_x_list = H_x_list * 1e-03 * 4 * pi	## Oe conversion
 	
 ## perform linear regression for the effective velocities
-ab_p_ud = np.polyfit(H_x_list, velocity_eff_p_updown, 1)
-ab_p_du = np.polyfit(H_x_list, velocity_eff_p_downup, 1)
-ab_n_ud = np.polyfit(H_x_list, velocity_eff_n_updown, 1)
-ab_n_du = np.polyfit(H_x_list, velocity_eff_n_downup, 1)
+#ab_p_ud = np.polyfit(H_x_list, velocity_eff_p_updown, 1)
+#ab_p_du = np.polyfit(H_x_list, velocity_eff_p_downup, 1)
+#ab_n_ud = np.polyfit(H_x_list, velocity_eff_n_updown, 1)
+#ab_n_du = np.polyfit(H_x_list, velocity_eff_n_downup, 1)
+
 
 ## plot velocity
 plt.figure(1)
-plt.scatter(H_x_list[:], velocity_eff_p_updown[:], label = "+ up-down", c = "red", s = 150)
-plt.scatter(H_x_list[:], velocity_eff_p_downup[:], label = "+ down-up", facecolors = "none", edgecolors = "red", s = 150)
-plt.scatter(H_x_list[:], velocity_eff_n_updown[:], label = "- up-down", c = "blue", s = 150)
-plt.scatter(H_x_list[:], velocity_eff_n_downup[:], label = "- down-up", facecolors = "none", edgecolors = "blue", s = 150)
-plt.plot(H_x_list[:], ab_p_ud[0] * H_x_list[:] + ab_p_ud[1], label = "", linestyle = "solid", c = "red")
-plt.plot(H_x_list[:], ab_p_du[0] * H_x_list[:] + ab_p_du[1], label = "", linestyle = "solid", c = "red")
-plt.plot(H_x_list[:], ab_n_ud[0] * H_x_list[:] + ab_n_ud[1], label = "", linestyle = "solid", c = "blue")
-plt.plot(H_x_list[:], ab_n_du[0] * H_x_list[:] + ab_n_du[1], label = "", linestyle = "solid", c = "blue")
+plt.scatter(H_x_list[:], velocity_eff_p_updown[:], label = "", marker = "o", c = "red", s = 150)
+plt.scatter(H_x_list[:], velocity_eff_p_downup[:], label = "", marker = "o", facecolors = "none", edgecolors = "red", s = 150)
+plt.scatter(H_x_list[:], velocity_eff_n_updown[:], label = "", marker = "s", c = "blue", s = 150)
+plt.scatter(H_x_list[:], velocity_eff_n_downup[:], label = "", marker = "s", facecolors = "none", edgecolors = "blue", s = 150)
+#plt.plot(H_x_list[:], ab_p_ud[0] * H_x_list[:] + ab_p_ud[1], label = "", linestyle = "solid", c = "red")
+#plt.plot(H_x_list[:], ab_p_du[0] * H_x_list[:] + ab_p_du[1], label = "", linestyle = "solid", c = "red")
+#plt.plot(H_x_list[:], ab_n_ud[0] * H_x_list[:] + ab_n_ud[1], label = "", linestyle = "solid", c = "blue")
+#plt.plot(H_x_list[:], ab_n_du[0] * H_x_list[:] + ab_n_du[1], label = "", linestyle = "solid", c = "blue")
 #plt.scatter(H_x_list[:], velocity_stat_p_updown[:], label = "s+ up-down")
 #plt.scatter(H_x_list[:], velocity_stat_p_downup[:], label = "s+ down-up")
 #plt.scatter(H_x_list[:], velocity_stat_n_updown[:], label = "s- up-down")
 #plt.scatter(H_x_list[:], velocity_stat_n_downup[:], label = "s- down-up")
-plt.xlabel("x Field [Oe]")
-plt.ylabel("Velocity [m/s]")
-plt.legend()
+plt.xlabel("x Field [Oe]", fontsize = 25, fontname = "serif")
+plt.ylabel("Velocity [m/s]", fontsize = 25, fontname = "serif")
+plt.xticks(fontsize = 23, fontname = "serif")
+plt.yticks(fontsize = 23, fontname = "serif")
+plt.subplots_adjust(left = 0.23, bottom = 0.17)
+#plt.legend()
 plt.grid(True)
 
 ### plot ratio of effective velocity to stationary velocity
@@ -205,19 +211,26 @@ plt.grid(True)
 plt.show()
 
 
-H_c = (ab_p_ud[1] / ab_p_ud[0] - ab_p_du[1] / ab_p_du[0] + ab_n_ud[1] / ab_n_ud[0] - ab_n_du[1] / ab_n_du[0]) / 4
-print ("compensation field from the effective velocities is", H_c, "Oe.")
-print ("the DMI is", H_c * M_s * Delta / 10, "mJ/m^2")
+#H_c = (ab_p_ud[1] / ab_p_ud[0] - ab_p_du[1] / ab_p_du[0] + ab_n_ud[1] / ab_n_ud[0] - ab_n_du[1] / ab_n_du[0]) / 4
+f_p_ud = interpolate.interp1d(H_x_list, velocity_eff_p_updown)
+#print (f_p_ud(H_x_list))
+
+H_DMI_p_ud = optimize.brentq(f_p_ud, -950, 950)
+H_DMI = abs(H_DMI_p_ud)
+
+print ("H_DMI is", H_DMI, "Oe.")
+#print ("compensation field from the effective velocities is", H_c, "Oe.")
+print ("the DMI is", H_DMI * M_s * Delta / 10, "mJ/m^2")
 
 ## perform linear regression for the stationary velocities
-ab_p_ud = np.polyfit(H_x_list, velocity_stat_p_updown, 1)
-ab_p_du = np.polyfit(H_x_list, velocity_stat_p_downup, 1)
-ab_n_ud = np.polyfit(H_x_list, velocity_stat_n_updown, 1)
-ab_n_du = np.polyfit(H_x_list, velocity_stat_n_downup, 1)
+#ab_p_ud = np.polyfit(H_x_list, velocity_stat_p_updown, 1)
+#ab_p_du = np.polyfit(H_x_list, velocity_stat_p_downup, 1)
+#ab_n_ud = np.polyfit(H_x_list, velocity_stat_n_updown, 1)
+#ab_n_du = np.polyfit(H_x_list, velocity_stat_n_downup, 1)
 
-H_c = (ab_p_ud[1] / ab_p_ud[0] - ab_p_du[1] / ab_p_du[0] + ab_n_ud[1] / ab_n_ud[0] - ab_n_du[1] / ab_n_du[0]) / 4
-print ("compensation field from the stationary velocities is", H_c, "Oe.")
-print ("the DMI is", H_c * M_s * Delta / 10, "mJ/m^2")
+#H_c = (ab_p_ud[1] / ab_p_ud[0] - ab_p_du[1] / ab_p_du[0] + ab_n_ud[1] / ab_n_ud[0] - ab_n_du[1] / ab_n_du[0]) / 4
+#print ("compensation field from the stationary velocities is", H_c, "Oe.")
+#print ("the DMI is", H_c * M_s * Delta / 10, "mJ/m^2")
 
 
 #y_0 = np.array([0.0, 0.0, 0.0])
