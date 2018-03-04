@@ -28,9 +28,11 @@ t_FM = 1.0e-09	# thickness of CoFeB. 1nm.
 #D_0 = 0.24e-03	# DMI constant. J/m^2
 D_0 = 0.32e-03
 theta_SH = -0.20	# spin Hall angle.
-#P = 0.72	# spin polarization factor
-#xi = 0	# dimensionless non-adiabatic parameter
-#alpha_R = 0	# Rashba parameter
+P = 0.72	# spin polarization factor
+xi = 0	# dimensionless non-adiabatic parameter
+s_stt = 0	# switch for the STT. s_stt = 0 is off, s_stt = 1 is on.
+alpha_R = -1.0e-10 * charge	# Rashba parameter
+s_R = 1	# switch for the Rashba field. s_R = 0 is off, s_R = 1 is on.
 #C_1 = 1.0e-09	# DW-motion-to-DMI conversion coefficient
 C_1 = 0.0
 C_2 = 0.0
@@ -50,7 +52,8 @@ H_z = 0
 
 #np.random.seed(seed)	# set seed for Mersenne twister
 
-current = 0.9e+12	# current density in heavy metal layer Ta / W. A/m^2.
+#current = 0.9e+12	# current density in heavy metal layer Ta / W. A/m^2.
+current = 0.4e+12
 
 pulse_start = 0.5	# pulse duration starts from 1ns
 pulse_end = 7.5	# pulse duration ends at 100ns
@@ -73,13 +76,14 @@ for duration in pulse_list:
 	y_0 = np.array([0.0, 0.0, 0.0])
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
-				0, H_SH(theta_SH, current, M_s, t_FM), \
-				alpha, Delta, width, Q, K_u, M_s, A, D(D_0, current), t_FM, 0, 0, current, C_1, C_2))
+				H_R(alpha_R, P, current, M_s) * s_R, H_SH(theta_SH, current, M_s, t_FM), \
+				alpha, Delta, width, Q, K_u, M_s, A, D(D_0, current), t_FM, b_J(current, P, M_s) * s_stt, xi, \
+				current, C_1, C_2))
 	y_0 = y_1[-1]
 	y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
 				0, 0, \
-				alpha, Delta, width, Q, K_u, M_s, A, D(D_0, 0), t_FM, 0, 0, current, C_1, C_2))
+				alpha, Delta, width, Q, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, 0, C_1, C_2))
 	
 	velocity_eff[i] = (y_2[-1, 0] / duration * 1e+09)
 	print (i, "-th calculation finished.")
