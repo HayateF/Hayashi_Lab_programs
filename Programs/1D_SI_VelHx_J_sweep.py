@@ -41,7 +41,7 @@ alpha_R = -1e-10 * charge	# Rashba parameter
 s_R = 0	# switch for the Rashba field. s_R = 1 is on, s_R = 0 is off.
 #C_1 = 3.0e-06	# velocity-DMI conversion coefficient.
 C_1 = 0.0
-C_2 = 1.5e-16
+C_2 = 1.3e-16
 #C_2 = 0.0
 C_2 *= P	# based on the STT-like mechanism
 #voltage = 25 # voltage. 25V.
@@ -66,14 +66,14 @@ H_z = 0
 # current density in heavy metal layer Ta / W. A/m^2.
 # This should be negative, for the convenience later.
 #current = 0.5e+12	
-current_start = 0.2e+12
+current_start = 0.1e+12
 current_end = 1.2e+12
 current_step = 0.1e+12
 current_list = np.arange(current_start, current_end, current_step, dtype = np.float64)
 DMI = np.zeros(current_list.size)
 
 H_x_start = -1000e+03 / (4 * pi)
-H_x_end = 1000e+03 / (4 * pi)
+H_x_end = 1050e+03 / (4 * pi)
 #H_x_step = 50e+03 / (4 * pi)
 H_x_step = 100e+03 / (4 * pi)
 H_x_list = np.arange(H_x_start, H_x_end, H_x_step, dtype = np.float64)	# x-field. A/m.
@@ -204,13 +204,13 @@ for current in current_list:
 	f_n_ud = interpolate.interp1d(H_x_list, velocity_eff_n_updown)
 	f_n_du = interpolate.interp1d(H_x_list, velocity_eff_n_downup)
 
-	H_DMI_p_ud = optimize.brentq(f_p_ud, -950, 950)
-	H_DMI_p_du = optimize.brentq(f_p_du, -950, 950)
-	H_DMI_n_ud = optimize.brentq(f_n_ud, -950, 950)
-	H_DMI_n_du = optimize.brentq(f_n_du, -950, 950)
+	H_DMI_p_ud = optimize.brentq(f_p_ud, -950 * 1e+03 / (4 * pi), 950 * 1e+03 / (4 * pi))
+	H_DMI_p_du = optimize.brentq(f_p_du, -950 * 1e+03 / (4 * pi), 950 * 1e+03 / (4 * pi))
+	H_DMI_n_ud = optimize.brentq(f_n_ud, -950 * 1e+03 / (4 * pi), 950 * 1e+03 / (4 * pi))
+	H_DMI_n_du = optimize.brentq(f_n_du, -950 * 1e+03 / (4 * pi), 950 * 1e+03 / (4 * pi))
 	
 	H_DMI = (- H_DMI_p_ud + H_DMI_p_du - H_DMI_n_ud + H_DMI_n_du) / 4
-	H_DMI *= 1e-09 * 4 * pi
+	H_DMI *= 1e-03 * 4 * pi
 	DMI[j] = H_DMI * M_s * Delta / 10	# mJ/m^2
 	j += 1
 #####################################
@@ -221,11 +221,12 @@ for current in current_list:
 # plot DMI v.s. J
 plt.figure(1)
 plt.scatter(current_list[:] / 1e+12, DMI[:], label = "", marker = "o", c = "red", s = 150)
-plt.xlabel("Current Density [$10^{12}$ A/m$^2$]")
-plt.ylabel("DMI [mJ / m$^2$]")
-plt.xticks(fontsize = 23, fontoname = "serif")
-plt.yticks(fontsize = 23, fontoname = "serif")
-plt.subplots_adjust(left = 0.23, bottom = 0.17)
+#plt.xlabel("Current Density [$10^{12}$ A/m$^2$]", fontsize = 25, fontname = "serif")
+plt.xlabel("$J_{FM}$ [$10^{12}$ A/m$^2$]", fontsize = 25, fontname = "serif")
+plt.ylabel("DMI [mJ / m$^2$]", fontsize = 25, fontname = "serif")
+plt.xticks(fontsize = 22, fontname = "serif")
+plt.yticks(fontsize = 22, fontname = "serif")
+plt.subplots_adjust(left = 0.21, bottom = 0.19)
 plt.grid(True)
 plt.xlim([0, 1.2])
 plt.ylim([0.2, 0.45])

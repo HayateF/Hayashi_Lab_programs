@@ -38,7 +38,7 @@ alpha_R = -1e-10 * charge	# Rashba parameter
 s_R = 0	# switch for the Rashba field. s_R = 1 is on, s_R = 0 is off.
 #C_1 = 3.0e-06	# velocity-DMI conversion coefficient.
 C_1 = 0.0
-#C_2 = 1.5e-16
+#C_2 = 1.3e-16
 C_2 = 0.0
 #voltage = 25 # voltage. 25V.
 #rho_W = # resistivity of W. Ohm*m.
@@ -80,7 +80,7 @@ velocity_stat_n_downup = np.zeros(H_x_list.size)
 
 ## time array
 duration = 2.6e-09	# current pulse duration. 10ns.
-#duration = 10e-09
+#duration = 100e-09
 #t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 t_step = 1e-10
 t_1 = np.arange(0, duration, t_step, dtype = np.float64)	# time array when solutions are obtained.
@@ -192,8 +192,9 @@ plt.scatter(H_x_list[:], velocity_eff_n_downup[:], label = "", marker = "s", fac
 #plt.scatter(H_x_list[:], velocity_stat_p_downup[:], label = "s+ down-up")
 #plt.scatter(H_x_list[:], velocity_stat_n_updown[:], label = "s- up-down")
 #plt.scatter(H_x_list[:], velocity_stat_n_downup[:], label = "s- down-up")
-plt.xlabel("x Field [Oe]", fontsize = 25, fontname = "serif")
+plt.xlabel("Field [Oe]", fontsize = 25, fontname = "serif")
 plt.ylabel("Velocity [m/s]", fontsize = 25, fontname = "serif")
+plt.ylim([-199, 199])
 plt.xticks(fontsize = 23, fontname = "serif")
 plt.yticks(fontsize = 23, fontname = "serif")
 plt.subplots_adjust(left = 0.23, bottom = 0.17)
