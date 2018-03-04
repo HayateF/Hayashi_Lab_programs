@@ -32,8 +32,8 @@ D_0 = 0.32e-03	# DMI constant. J/m^2
 #theta_SH = -0.21	# spin Hall angle.
 theta_SH = -0.20	# spin Hall angle.
 P = 0.72	# spin polarization factor
-#xi = 0	# dimensionless non-adiabatic parameter
-xi = 0.09
+xi = 0	# dimensionless non-adiabatic parameter
+#xi = 0.09
 s_stt = 0	# switch for the adiabatic STT. s_stt = 1 is on, s_stt = 0 is off.
 alpha_R = -1e-10 * charge	# Rashba parameter
 s_R = 0	# switch for the Rashba field. s_R = 1 is on, s_R = 0 is off.
@@ -130,7 +130,7 @@ for current in current_list:
 		y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
 			args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
 					0, 0, \
-					alpha, Delta, width, 1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, current, C_1, C_2))
+					alpha, Delta, width, 1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, 0, C_1, C_2))
 		
 		velocity_eff_p_updown[i] = (y_2[-1, 0] / duration)
 		velocity_stat_p_updown[i] = (y_1[-1, 0] / duration)
@@ -146,7 +146,7 @@ for current in current_list:
 		y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
 			args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
 					0, 0, \
-					alpha, Delta, width, -1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, current, C_1, C_2))
+					alpha, Delta, width, -1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, 0, C_1, C_2))
 		velocity_eff_p_downup[i] = (y_2[-1, 0] / duration)
 		velocity_stat_p_downup[i] = (y_1[-1, 0] / duration)
 	
@@ -163,7 +163,7 @@ for current in current_list:
 		y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
 			args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
 					0, 0, \
-					alpha, Delta, width, 1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, current, C_1, C_2))
+					alpha, Delta, width, 1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, 0, C_1, C_2))
 		velocity_eff_n_updown[i] = (y_2[-1, 0] / duration)
 		velocity_stat_n_updown[i] = (y_1[-1, 0] / duration)
 		### down-up calculation
@@ -177,7 +177,7 @@ for current in current_list:
 		y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
 			args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
 					0, 0, \
-					alpha, Delta, width, -1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, current, C_1, C_2))
+					alpha, Delta, width, -1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, 0, C_1, C_2))
 		velocity_eff_n_downup[i] = (y_2[-1, 0] / duration)
 		velocity_stat_n_downup[i] = (y_1[-1, 0] / duration)
 	
