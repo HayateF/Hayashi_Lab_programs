@@ -4,6 +4,8 @@ from math import *	# You don't have to add "math" before any modules of math.
 import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
+import scipy.interpolate as interpolate
+import scipy.optimize as optimize
 from one_dim_si_func_def import *
 
 ## Ref. Martinez, Current-driven dynamics of Dzyaloshinskii domain walls in the presence of in-plane field
@@ -188,16 +190,28 @@ for current in current_list:
 	print (j, "-th calculation finished.")
 	
 	## perform linear regression for the effective velocities
-	ab_p_ud = np.polyfit(H_x_list, velocity_eff_p_updown, 1)
-	ab_p_du = np.polyfit(H_x_list, velocity_eff_p_downup, 1)
-	ab_n_ud = np.polyfit(H_x_list, velocity_eff_n_updown, 1)
-	ab_n_du = np.polyfit(H_x_list, velocity_eff_n_downup, 1)
+	#ab_p_ud = np.polyfit(H_x_list, velocity_eff_p_updown, 1)
+	#ab_p_du = np.polyfit(H_x_list, velocity_eff_p_downup, 1)
+	#ab_n_ud = np.polyfit(H_x_list, velocity_eff_n_updown, 1)
+	#ab_n_du = np.polyfit(H_x_list, velocity_eff_n_downup, 1)
 
-	print(j, "-th slope for positive up-down is", ab_p_ud[0])
+	#print(j, "-th slope for positive up-down is", ab_p_ud[0])
 
-	H_c = (ab_p_ud[1] / ab_p_ud[0] - ab_p_du[1] / ab_p_du[0] + ab_n_ud[1] / ab_n_ud[0] - ab_n_du[1] / ab_n_du[0]) / 4
-	H_c *= 1e-03 * 4 * pi	## Oe conversion
-	DMI[j] = H_c * M_s * Delta / 10	# mJ/m^2
+	#H_c = (ab_p_ud[1] / ab_p_ud[0] - ab_p_du[1] / ab_p_du[0] + ab_n_ud[1] / ab_n_ud[0] - ab_n_du[1] / ab_n_du[0]) / 4
+	#H_c *= 1e-03 * 4 * pi	## Oe conversion
+	f_p_ud = interpolate.interp1d(H_x_list, velocity_eff_p_updown)
+	f_p_du = interpolate.interp1d(H_x_list, velocity_eff_p_downup)
+	f_n_ud = interpolate.interp1d(H_x_list, velocity_eff_n_updown)
+	f_n_du = interpolate.interp1d(H_x_list, velocity_eff_n_downup)
+
+	H_DMI_p_ud = optimize.brentq(f_p_ud, -950, 950)
+	H_DMI_p_du = optimize.brentq(f_p_du, -950, 950)
+	H_DMI_n_ud = optimize.brentq(f_n_ud, -950, 950)
+	H_DMI_n_du = optimize.brentq(f_n_du, -950, 950)
+	
+	H_DMI = (- H_DMI_p_ud + H_DMI_p_du - H_DMI_n_ud + H_DMI_n_du) / 4
+	H_DMI *= 1e-09 * 4 * pi
+	DMI[j] = H_DMI * M_s * Delta / 10	# mJ/m^2
 	j += 1
 #####################################
 ####### current sweep end ###########
@@ -206,9 +220,12 @@ for current in current_list:
 
 # plot DMI v.s. J
 plt.figure(1)
-plt.scatter(current_list[:] / 1e+12, DMI[:], label = "", c = "red", s = 150)
+plt.scatter(current_list[:] / 1e+12, DMI[:], label = "", marker = "o", c = "red", s = 150)
 plt.xlabel("Current Density [$10^{12}$ A/m$^2$]")
-plt.ylabel("DMI [mJ / m$^2$]")	
+plt.ylabel("DMI [mJ / m$^2$]")
+plt.xticks(fontsize = 23, fontoname = "serif")
+plt.yticks(fontsize = 23, fontoname = "serif")
+plt.subplots_adjust(left = 0.23, bottom = 0.17)
 plt.grid(True)
 plt.xlim([0, 1.2])
 plt.ylim([0.2, 0.45])
