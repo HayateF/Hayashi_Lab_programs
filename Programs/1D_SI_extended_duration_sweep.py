@@ -52,8 +52,8 @@ H_z = 0
 
 #np.random.seed(seed)	# set seed for Mersenne twister
 
-#current = 0.9e+12	# current density in heavy metal layer Ta / W. A/m^2.
-current = 0.4e+12
+current = 0.9e+12	# current density in heavy metal layer Ta / W. A/m^2.
+#current = 0.4e+12
 
 pulse_start = 0.5	# pulse duration starts from 1ns
 pulse_end = 7.5	# pulse duration ends at 100ns
@@ -92,12 +92,15 @@ for duration in pulse_list:
 ## plot velocity
 plt.figure(1)
 #plt.scatter(pulse_list[:], velocity_eff[:], label = "", c = "red", s = 100)
-plt.plot(pulse_list[:], velocity_eff[:], label = "", color = "red", linewidth = 3.0)
-plt.xlabel("Pulse width [ns]")
-plt.ylabel("Velocity [m/s]")
-#plt.xlim([0, 8])
-#plt.ylim([80, 180])
-plt.legend()
+plt.plot(pulse_list[:], velocity_eff[:], label = "", color = "red", linewidth = 5.0)
+plt.xlabel("Pulse width [ns]", fontsize = 25, fontname = "serif")
+plt.ylabel("Velocity [m/s]", fontsize = 25, fontname = "serif")
+plt.xticks(fontsize = 23, fontname = "serif")
+plt.yticks(fontsize = 23, fontname = "serif")
+plt.subplots_adjust(left = 0.19, bottom = 0.17)
+plt.xlim([0, 8])
+plt.ylim([80, 180])
+#plt.legend()
 plt.grid(True)
 
 ## plot velocity ratio
