@@ -68,7 +68,7 @@ current = 0.5e+12
 #print (Current)
 
 ## time array
-duration = 10e-09	# current pulse duration. 10ns.
+duration = 100e-09	# current pulse duration. 10ns.
 t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 t_1 = np.arange(0, duration, t_step, dtype = np.float64)	# time array when solutions are obtained.
 ## after switch of the current
@@ -80,8 +80,8 @@ print ("flag 20")
 bJ = 0
 #bJ = b_J(current, P, M_s)
 
-#HR = 0
-HR = H_R(alpha_R, P, current, M_s)
+HR = 0
+#HR = H_R(alpha_R, P, current, M_s)
 
 y_0 = np.array([0.0, - (Q-1) * pi / 2, 0.0])
 #y_0 = np.array([0.0, pi, 0.0])
@@ -101,7 +101,7 @@ y_0 = y_1[-1]
 y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
 	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
 			0, 0, \
-			alpha, Delta, width, Q, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, current, C_1, C_2))
+			alpha, Delta, width, Q, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, 0, C_1, C_2))
 
 # combine the two results.
 t = np.r_[t_1, t_2]	# np.r_ combines two arrays in the row direction.
