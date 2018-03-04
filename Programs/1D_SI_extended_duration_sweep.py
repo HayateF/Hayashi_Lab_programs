@@ -32,7 +32,7 @@ P = 0.72	# spin polarization factor
 xi = 0	# dimensionless non-adiabatic parameter
 s_stt = 0	# switch for the STT. s_stt = 0 is off, s_stt = 1 is on.
 alpha_R = -1.0e-10 * charge	# Rashba parameter
-s_R = 1	# switch for the Rashba field. s_R = 0 is off, s_R = 1 is on.
+s_R = 0	# switch for the Rashba field. s_R = 0 is off, s_R = 1 is on.
 #C_1 = 1.0e-09	# DW-motion-to-DMI conversion coefficient
 C_1 = 0.0
 C_2 = 0.0
@@ -95,8 +95,8 @@ plt.figure(1)
 plt.plot(pulse_list[:], velocity_eff[:], label = "", color = "red", linewidth = 3.0)
 plt.xlabel("Pulse width [ns]")
 plt.ylabel("Velocity [m/s]")
-plt.xlim([0, 8])
-plt.ylim([80, 180])
+#plt.xlim([0, 8])
+#plt.ylim([80, 180])
 plt.legend()
 plt.grid(True)
 
