@@ -2,16 +2,16 @@
 ##plot "velocity-current.txt" u 9:15 title "-current down-up"
 set xrange [-800:800]
 set yrange [-200:200]
+#set yrange [-80:80]
 set xtics 300
 set mxtics
 set ytics 100
-set mytics
+#set ytics 20
 set xlabel "Field [Oe]"
 set ylabel "Velocity [m/s]"
 set xlabel font "Times, 25"
 set ylabel font "TImes, 25"
 ## font size 10 is the default
-#set lmargin 15
 set xlabel offset 0, -0.5
 set ylabel offset -3, 0
 set tics font "Times, 25"
@@ -20,7 +20,7 @@ unset key
 set grid
 
 # correction factor from pulse width. But in this linear fitting, this factor does not have any effects on the x-intercepts.
-f = 1.31
+f = 1.1
 
 #slope for positive up-down area
 Apu=0.0
@@ -42,16 +42,16 @@ vnu(x)=Anu*x+Bnu
 vnd(x)=And*x+Bnd
 
 # perform fitting
-fit [-450:600] [1:*] vpu(x) "< tail -n +2 velocity+current.txt" u 5:($12 * f) via Apu, Bpu
-fit [-600:350] [1:*] vpd(x) "< tail -n +2 velocity+current.txt" u 5:($15 * f) via Apd, Bpd
-fit [-150:600] [*:-1] vnu(x) "< tail -n +2 velocity-current.txt" u 5:($12 * f) via Anu, Bnu
-fit [-600:150] [*:-1] vnd(x) "< tail -n +2 velocity-current.txt" u 5:($15 * f) via And, Bnd
+fit [-250:600] [1:*] vpu(x) "< tail -n +2 velocity+current.txt" u 5:($12 * f) via Apu, Bpu
+fit [-600:250] [1:*] vpd(x) "< tail -n +2 velocity+current.txt" u 5:($15 * f) via Apd, Bpd
+fit [-350:600] [*:-1] vnu(x) "< tail -n +2 velocity-current.txt" u 5:($12 * f) via Anu, Bnu
+fit [-600:250] [*:-1] vnd(x) "< tail -n +2 velocity-current.txt" u 5:($15 * f) via And, Bnd
 
 # to get summary of fitting
-fit [-450:600] [1:*] vpu(x) "< tail -n +2 velocity+current.txt" u 5:($12 * f) via Apu, Bpu
-fit [-600:350] [1:*] vpd(x) "< tail -n +2 velocity+current.txt" u 5:($15 * f) via Apd, Bpd
-fit [-150:600] [*:-1] vnu(x) "< tail -n +2 velocity-current.txt" u 5:($12 * f) via Anu, Bnu
-fit [-600:150] [*:-1] vnd(x) "< tail -n +2 velocity-current.txt" u 5:($15 * f) via And, Bnd
+fit [-250:600] [1:*] vpu(x) "< tail -n +2 velocity+current.txt" u 5:($12 * f) via Apu, Bpu
+fit [-600:250] [1:*] vpd(x) "< tail -n +2 velocity+current.txt" u 5:($15 * f) via Apd, Bpd
+fit [-350:600] [*:-1] vnu(x) "< tail -n +2 velocity-current.txt" u 5:($12 * f) via Anu, Bnu
+fit [-600:250] [*:-1] vnd(x) "< tail -n +2 velocity-current.txt" u 5:($15 * f) via And, Bnd
 
 plot "velocity+current.txt" u 5:($12 * f) title "+ up-down" lc rgb "red" pt 7 ps 3
 rep "velocity+current.txt" u 5:($15 * f) title "+ down-up" lc rgb "red" pt 6 ps 3

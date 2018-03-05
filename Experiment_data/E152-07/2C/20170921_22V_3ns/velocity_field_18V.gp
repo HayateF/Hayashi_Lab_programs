@@ -1,22 +1,19 @@
 ##plot "velocity+current.txt" u 9:12 title "+current up-down"
 ##plot "velocity-current.txt" u 9:15 title "-current down-up"
 set xrange [-800:800]
-set yrange [-200:200]
-set xtics 300
+set yrange [-160:160]
+set xtics 200
 set mxtics
-set ytics 100
-set mytics
+set ytics 40
 set xlabel "Field [Oe]"
 set ylabel "Velocity [m/s]"
-set xlabel font "Times, 25"
-set ylabel font "TImes, 25"
+set xlabel font "Times, 15"
+set ylabel font "TImes, 15"
 ## font size 10 is the default
-#set lmargin 15
-set xlabel offset 0, -0.5
-set ylabel offset -3, 0
-set tics font "Times, 25"
-#set key center top
-unset key
+set xlabel offset 0, 0
+set ylabel offset 0, 0
+set tics font "Times, 15"
+set key center top
 set grid
 
 # correction factor from pulse width. But in this linear fitting, this factor does not have any effects on the x-intercepts.
@@ -53,10 +50,10 @@ fit [-600:350] [1:*] vpd(x) "< tail -n +2 velocity+current.txt" u 5:($15 * f) vi
 fit [-150:600] [*:-1] vnu(x) "< tail -n +2 velocity-current.txt" u 5:($12 * f) via Anu, Bnu
 fit [-600:150] [*:-1] vnd(x) "< tail -n +2 velocity-current.txt" u 5:($15 * f) via And, Bnd
 
-plot "velocity+current.txt" u 5:($12 * f) title "+ up-down" lc rgb "red" pt 7 ps 3
-rep "velocity+current.txt" u 5:($15 * f) title "+ down-up" lc rgb "red" pt 6 ps 3
-rep "velocity-current.txt" u 5:($12 * f) title "- up-down" lc rgb "blue" pt 5 ps 3
-rep "velocity-current.txt" u 5:($15 * f) title "- down-up" lc rgb "blue" pt 4 ps 3
+plot "velocity+current.txt" u 5:($12 * f) title "+ up-down" lc rgb "red" pt 7 ps 1.5
+rep "velocity+current.txt" u 5:($15 * f) title "+ down-up" lc rgb "red" pt 6 ps 1.5
+rep "velocity-current.txt" u 5:($12 * f) title "- up-down" lc rgb "blue" pt 5 ps 1.5
+rep "velocity-current.txt" u 5:($15 * f) title "- down-up" lc rgb "blue" pt 4 ps 1.5
 rep vpu(x) title "" lc rgb "red" lt 1 lw 1.5
 rep vpd(x) title "" lc rgb "red" lt 1 lw 1.5
 rep vnu(x) title "" lc rgb "blue" lt 1 lw 1.5
