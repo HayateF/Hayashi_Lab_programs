@@ -47,14 +47,14 @@ vnu(x)=Anu*x+Bnu
 vnd(x)=And*x+Bnd
 
 # perform fitting
-fit [-350:550] [1:*] vpu(x) "< tail -n +2 up-down/velocity+current.txt" u ($3 * Hall_a + Hall_b):($12 * f) via Apu, Bpu
-fit [-550:450] [1:*] vpd(x) "< tail -n +2 down-up/velocity+current.txt" u ($3 * Hall_a + Hall_b):($15 * f) via Apd, Bpd
+fit [-450:550] [1:*] vpu(x) "< tail -n +2 up-down/velocity+current.txt" u ($3 * Hall_a + Hall_b):($12 * f) via Apu, Bpu
+fit [-550:550] [1:*] vpd(x) "< tail -n +2 down-up/velocity+current.txt" u ($3 * Hall_a + Hall_b):($15 * f) via Apd, Bpd
 fit [-550:550] [*:-1] vnu(x) "< tail -n +2 up-down/velocity-current.txt" u ($3 * Hall_a + Hall_b):($12 * f) via Anu, Bnu
 fit [-550:450] [*:-1] vnd(x) "< tail -n +2 down-up/velocity-current.txt" u ($3 * Hall_a + Hall_b):($15 * f) via And, Bnd
 
 # to get summary of fitting
-fit [-350:550] [1:*] vpu(x) "< tail -n +2 up-down/velocity+current.txt" u ($3 * Hall_a + Hall_b):($12 * f) via Apu, Bpu
-fit [-550:450] [1:*] vpd(x) "< tail -n +2 down-up/velocity+current.txt" u ($3 * Hall_a + Hall_b):($15 * f) via Apd, Bpd
+fit [-450:550] [1:*] vpu(x) "< tail -n +2 up-down/velocity+current.txt" u ($3 * Hall_a + Hall_b):($12 * f) via Apu, Bpu
+fit [-550:550] [1:*] vpd(x) "< tail -n +2 down-up/velocity+current.txt" u ($3 * Hall_a + Hall_b):($15 * f) via Apd, Bpd
 fit [-550:550] [*:-1] vnu(x) "< tail -n +2 up-down/velocity-current.txt" u ($3 * Hall_a + Hall_b):($12 * f) via Anu, Bnu
 fit [-550:450] [*:-1] vnd(x) "< tail -n +2 down-up/velocity-current.txt" u ($3 * Hall_a + Hall_b):($15 * f) via And, Bnd
 

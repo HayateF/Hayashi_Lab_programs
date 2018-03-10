@@ -4,6 +4,7 @@ x_right = 35.0
 x_step = 5.0
 set xrange [x_left:x_right]
 set xtics x_step
+#set mxtics
 set xlabel "Pulse Amplitude [V]"
 set xlabel font "Times, 25"
 set xlabel offset 0, -0.5
@@ -13,6 +14,7 @@ y_up = 0.5
 y_down = 0
 set yrange [y_down:y_up]
 set ytics 0.1
+#set mytics
 set ylabel "DMI [mJ / m^2]"
 set ylabel font "Times, 25"
 set ylabel offset -3, 0
