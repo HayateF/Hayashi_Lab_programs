@@ -37,7 +37,7 @@ P = 0.72	# spin polarization factor
 xi = 0	# dimensionless non-adiabatic parameter
 #xi = 0.09
 s_stt = 0	# switch for the adiabatic STT. s_stt = 1 is on, s_stt = 0 is off.
-alpha_R = -1e-10 * charge	# Rashba parameter
+alpha_R = -0.5e-10 * charge	# Rashba parameter
 s_R = 0	# switch for the Rashba field. s_R = 1 is on, s_R = 0 is off.
 #C_1 = 3.0e-06	# velocity-DMI conversion coefficient.
 C_1 = 0.0
@@ -90,7 +90,8 @@ velocity_stat_n_downup = np.zeros(H_x_list.size)
 
 
 ## time array
-duration = 100e-09	# current pulse duration. 100ns.
+#duration = 100e-09	# current pulse duration. 100ns.
+duration = 9.1e-09	# current pulse duration. 100ns.
 #t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 t_step = 1e-10	# time step when we get the results, not a time step of numerical calculation.
 t_1 = np.arange(0, duration, t_step, dtype = np.float64)	# time array when solutions are obtained.
@@ -220,16 +221,17 @@ for current in current_list:
 
 # plot DMI v.s. J
 plt.figure(1)
-plt.scatter(current_list[:] / 1e+12, DMI[:], label = "", marker = "o", c = "red", s = 150)
+plt.scatter(current_list[:] / 1e+12, DMI[:], label = "", marker = "o", c = "black", s = 150)
 #plt.xlabel("Current Density [$10^{12}$ A/m$^2$]", fontsize = 25, fontname = "serif")
 plt.xlabel("$J_{FM}$ [$10^{12}$ A/m$^2$]", fontsize = 25, fontname = "serif")
 plt.ylabel("DMI [mJ / m$^2$]", fontsize = 25, fontname = "serif")
 plt.xticks(fontsize = 22, fontname = "serif")
-plt.yticks(fontsize = 22, fontname = "serif")
-plt.subplots_adjust(left = 0.21, bottom = 0.19)
+plt.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5], fontsize = 22, fontname = "serif")
+plt.subplots_adjust(left = 0.17, bottom = 0.19)
 plt.grid(True)
 plt.xlim([0, 1.2])
-plt.ylim([0.2, 0.45])
+#plt.ylim([0.2, 0.45])
+plt.ylim([0.0, 0.5])
 
 plt.show()
 
