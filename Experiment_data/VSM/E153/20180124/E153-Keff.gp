@@ -14,5 +14,5 @@ set key left top
 #set key invert
 set grid
 
-plot "Ms_and_Keff.txt" u 1:($4/100000) w linespoints title "" lc rgb "red" pt 5 ps 3
+plot "Ms_and_Keff.txt" u 1:($4/100000) w linespoints title "" lc rgb "black" pt 5 ps 3
 

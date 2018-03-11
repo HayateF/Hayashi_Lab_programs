@@ -25,15 +25,8 @@ set grid
 
 
 
-#D(x) = a * x**2 + b * x + c
-D(x) = a * x + b
 
-# perform fitting
-#fit [0:35] D(x) "< tail -n +10 DMI_Field_2M.txt" u 1:6:7 via a, b, c
-#fit [0:35] D(x) "< tail -n +10 DMI_Field_2M.txt" u 1:6:7 via a, b, c
-fit [10:26] D(x) "< tail -n +10 DMI_Field_2M.txt" u 1:6:7 via a, b
-
-plot "< tail -n +10 DMI_Field_2M.txt" u 1:6:7 w ye title "" lc rgb "red" pt 7 ps 3
+plot "< tail -n +10 DMI_Field_2M.txt" u 1:6:7 w ye title "" lc rgb "black" pt 7 ps 3
 #rep D(x) title "" lc rgb "black" lt 1 lw 1.5
 
 ## the width of the nanowire [m]
@@ -93,3 +86,13 @@ rep
 
 #rep "< tail -n +10 DMI_Field_2M.txt" u 1:($12 * Ms * sqrt(A / Keff) / 10) title "STT correction" lc rgb "blue" pt 7 ps 1.5
 
+
+
+
+#D(x) = a * x**2 + b * x + c
+D(x) = a * x + b
+
+# perform fitting
+#fit [0:35] D(x) "< tail -n +10 DMI_Field_2M.txt" u 1:6:7 via a, b, c
+#fit [0:35] D(x) "< tail -n +10 DMI_Field_2M.txt" u 1:6:7 via a, b, c
+fit [10 * 2 * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12:26 * 2 * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12] D(x) "< tail -n +10 DMI_Field_2M.txt" u ($1 * 2 * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12):6:7 via a, b

@@ -29,7 +29,7 @@ set grid
 
 
 
-plot "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 w ye title "" lc rgb "red" pt 7 ps 3
+plot "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 w ye title "" lc rgb "black" pt 7 ps 3
 
 
 ## the width of the nanowire [m]
@@ -98,7 +98,7 @@ D(x) = a * x + b
 #fit [0:35] D(x) "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 via a, b, c
 #fit [0:35] D(x) "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 via a, b, c
 #fit [10:26] D(x) "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 via a, b
-#fit [10 * 2 * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12:26 * 2 * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12] D(x) "< tail -n +10 DMI_Field_2C.txt" u ($1 * 2 * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12):6:7 via a, b
+fit [5 * 2 * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12:26 * 2 * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12] D(x) "< tail -n +10 DMI_Field_2C.txt" u ($1 * 2 * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12):6:7 via a, b
 
 #rep D(x) title "" lc rgb "black" lt 1 lw 1.5
 
