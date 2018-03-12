@@ -2,18 +2,22 @@
 ##plot "velocity-current.txt" u 9:15 title "-current down-up"
 set xrange [-1200:1200]
 set yrange [-220:220]
-set xtics 300
+set xtics 500
 set mxtics
-set ytics 50
+set ytics 100
+set mytics
 set xlabel "Field [Oe]"
 set ylabel "Velocity [m/s]"
-set xlabel font "Times, 15"
-set ylabel font "Times, 15"
+set xlabel font "Times, 25"
+set ylabel font "Times, 25"
 ## font size 10 is the default
-set xlabel offset 0, 0
-set ylabel offset 0, 0
-set tics font "Times, 15"
-set key center top
+set lmargin 12
+set bmargin 4
+set xlabel offset 0, -0.5
+set ylabel offset -3, 0
+set tics font "Times, 25"
+#set key center top
+unset key
 set grid
 
 # correction factor from pulse width. But in this linear fitting, this factor does not have any effects on the x-intercepts.
@@ -54,12 +58,12 @@ fit [-1100:550] [1:*] vpd(x) "< tail -n +2 down-up_Hx/velocity_down-up_+current.
 fit [-550:1100] [*:-1] vnu(x) "< tail -n +2 up-down_Hx/velocity_up-down_-current.txt" u ($3 * Hall_a + Hall_b):($12 * f) via Anu, Bnu
 fit [-1100:550] [*:-1] vnd(x) "< tail -n +2 down-up_Hx/velocity_down-up_-current.txt" u ($3 * Hall_a + Hall_b):($15 * f) via And, Bnd
 
-plot "up-down_Hx/velocity_up-down_+current.txt" u ($3 * Hall_a + Hall_b):($12 * f) title "+ up-down" lc rgb "red" pt 7 ps 1.5
-rep "down-up_Hx/velocity_down-up_+current.txt" u ($3 * Hall_a + Hall_b):($15 * f) title "+ down-up" lc rgb "red" pt 6 ps 1.5
-rep "up-down_Hx/velocity_up-down_-current.txt" u ($3 * Hall_a + Hall_b):($12 * f) title "- up-down" lc rgb "blue" pt 5 ps 1.5
-rep "down-up_Hx/velocity_down-up_-current.txt" u ($3 * Hall_a + Hall_b):($15 * f) title "- down-up" lc rgb "blue" pt 4 ps 1.5
-rep vpu(x) title "" lc rgb "red" lt 1 lw 1.5
-rep vpd(x) title "" lc rgb "red" lt 1 lw 1.5
-rep vnu(x) title "" lc rgb "blue" lt 1 lw 1.5
-rep vnd(x) title "" lc rgb "blue" lt 1 lw 1.5
+plot "up-down_Hx/velocity_up-down_+current.txt" u ($3 * Hall_a + Hall_b):($12 * f) title "+ up-down" lc rgb "red" pt 7 ps 3
+rep "down-up_Hx/velocity_down-up_+current.txt" u ($3 * Hall_a + Hall_b):($15 * f) title "+ down-up" lc rgb "red" pt 6 ps 3
+rep "up-down_Hx/velocity_up-down_-current.txt" u ($3 * Hall_a + Hall_b):($12 * f) title "- up-down" lc rgb "blue" pt 5 ps 3
+rep "down-up_Hx/velocity_down-up_-current.txt" u ($3 * Hall_a + Hall_b):($15 * f) title "- down-up" lc rgb "blue" pt 4 ps 3
+#rep vpu(x) title "" lc rgb "red" lt 1 lw 1.5
+#rep vpd(x) title "" lc rgb "red" lt 1 lw 1.5
+#rep vnu(x) title "" lc rgb "blue" lt 1 lw 1.5
+#rep vnd(x) title "" lc rgb "blue" lt 1 lw 1.5
 

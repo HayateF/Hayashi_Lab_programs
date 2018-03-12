@@ -2,16 +2,19 @@
 ##plot "velocity-current.txt" u 9:15 title "-current down-up"
 set xrange [-800:800]
 set yrange [-200:200]
-#set yrange [-80:80]
+#set yrange [-150:150]
 set xtics 300
 set mxtics
 set ytics 100
-#set ytics 20
+#set ytics 50
+set mytics
 set xlabel "Field [Oe]"
 set ylabel "Velocity [m/s]"
 set xlabel font "Times, 25"
 set ylabel font "TImes, 25"
 ## font size 10 is the default
+set lmargin 12
+set bmargin 4
 set xlabel offset 0, -0.5
 set ylabel offset -3, 0
 set tics font "Times, 25"

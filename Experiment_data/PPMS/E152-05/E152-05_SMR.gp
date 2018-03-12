@@ -1,7 +1,7 @@
 ##plot "velocity+current.txt" u 9:12 title "+current up-down"
 ##plot "velocity-current.txt" u 9:15 title "-current down-up"
 set xrange [0:3]
-set yrange [0:4]
+set yrange [0:5]
 set xtics 0.5
 set mxtics
 #set ytics 0.2

@@ -27,7 +27,7 @@ fn(x) = an * x + bn
 #fit [0:3] fp(x) "< tail -n +6 DWMV_and_DMI_10ns.txt" u 3:10:11 via ap, bp
 #fit [0:3] fn(x) "< tail -n +6 DWMV_and_DMI_10ns.txt" u 3:12:13 via an, bn
 
-plot "< tail -n +6 DWMV_and_DMI_10ns.txt" u 3:28:29 w ye title "" lc rgb "red" pt 7 ps 3 
+plot "< tail -n +6 DWMV_and_DMI_10ns.txt" u 3:28:29 w ye title "" lc rgb "black" pt 7 ps 3 
 #plot "< tail -n +6 DWMV_and_DMI_10ns.txt" u 3:13:15 w ye title "negative current" lc rgb "blue" pt 5 ps 1.5
 #rep "< tail -n +6 DWMV_and_DMI_10ns.txt" u 3:10:12 w ye title "positive current" lc rgb "red" pt 7 ps 1.5
 #rep fp(x) title "fit +"
