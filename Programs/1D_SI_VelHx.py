@@ -38,8 +38,8 @@ alpha_R = -0.2e-10 * charge	# Rashba parameter
 s_R = 0	# switch for the Rashba field. s_R = 1 is on, s_R = 0 is off.
 #C_1 = 3.0e-06	# velocity-DMI conversion coefficient.
 C_1 = 0.0
-C_2 = 1.3e-16
-#C_2 = 0.0
+#C_2 = 1.3e-16
+C_2 = 0.0
 C_2 *= P
 #voltage = 25 # voltage. 25V.
 #rho_W = # resistivity of W. Ohm*m.
@@ -82,8 +82,8 @@ velocity_stat_n_downup = np.zeros(H_x_list.size)
 #print (Current)
 
 ## time array
-#duration = 2.6e-09	# current pulse duration. 10ns.
-duration = 9.1e-09
+duration = 2.6e-09	# current pulse duration. 10ns.
+#duration = 9.1e-09
 #t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 t_step = 1e-10
 t_1 = np.arange(0, duration, t_step, dtype = np.float64)	# time array when solutions are obtained.
@@ -101,7 +101,12 @@ for H_x in H_x_list:
 	######## positive current ########
 	### up-down calculation
 	# initial condition
-	y_0 = np.array([0.0, 0.0, 0.0])
+	if (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
+		y_0 = np.array([0.0, pi, 0.0])
+	elif (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
+		y_0 = np.array([0.0, 0.0, 0.0])
+	else:
+		y_0 = np.array([0.0, acos((H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
 	print ("flag 30")
 	## solve the equation
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
@@ -122,7 +127,13 @@ for H_x in H_x_list:
 	velocity_stat_p_updown[i] = (y_1[-1, 0] / duration)
 
 	### down-up calculation
-	y_0 = np.array([0.0, -pi, 0.0])	# phi = -pi. right-handed wall is assumed.
+	if (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
+		y_0 = np.array([0.0, pi, 0.0])
+	elif (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
+		y_0 = np.array([0.0, 0.0, 0.0])
+	else:
+		y_0 = np.array([0.0, acos((-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
+	#y_0 = np.array([0.0, -pi, 0.0])	# phi = -pi. right-handed wall is assumed.
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 				H_R(alpha_R, P, current, M_s) * s_R, H_SH(theta_SH, current, M_s, t_FM), \
@@ -139,7 +150,13 @@ for H_x in H_x_list:
 	current *= -1
 	######## negative current ########
 	### up-down calculation
-	y_0 = np.array([0.0, 0.0, 0.0])
+	if (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
+		y_0 = np.array([0.0, pi, 0.0])
+	elif (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
+		y_0 = np.array([0.0, 0.0, 0.0])
+	else:
+		y_0 = np.array([0.0, acos((H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
+	#y_0 = np.array([0.0, 0.0, 0.0])
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 				H_R(alpha_R, P, current, M_s) * s_R, H_SH(theta_SH, current, M_s, t_FM), \
@@ -153,7 +170,13 @@ for H_x in H_x_list:
 	velocity_eff_n_updown[i] = (y_2[-1, 0] / duration)
 	velocity_stat_n_updown[i] = (y_1[-1, 0] / duration)
 	### down-up calculation
-	y_0 = np.array([0.0, -pi, 0.0])
+	if (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
+		y_0 = np.array([0.0, pi, 0.0])
+	elif (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
+		y_0 = np.array([0.0, 0.0, 0.0])
+	else:
+		y_0 = np.array([0.0, acos((-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
+	#y_0 = np.array([0.0, -pi, 0.0])
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 				H_R(alpha_R, P, current, M_s) * s_R, H_SH(theta_SH, current, M_s, t_FM), \
