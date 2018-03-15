@@ -47,7 +47,7 @@ C_2 = 0.0
 #period = 21e-09	# pinning periodicity. 21nm. 
 
 ## External Field. A/m. 1 Oe is 10^3/(4 pi) A/m.
-#H_x = 1000 * 1e+03 / (4 * pi)
+#H_x = -500 * 1e+03 / (4 * pi)
 H_x = 0
 #H_y = 1000 * 1e+03 / (4 * pi)
 H_y = 0
@@ -57,18 +57,20 @@ H_z = 0
 #np.random.seed(seed)	# set seed for Mersenne twister
 
 #current = 0.5e+12	# current density in heavy metal layer Ta / W. A/m^2.
-current = 0.5e+12
+#current = 0.4e+12
+current = 0
 
 #current_start = -0.2e+08
 #current_end = 0.2e+08
 #current_step = 0.001e+08
 #Current = np.arange(Current_start, Current_end, Current_step, dtype = np.float64)	# current density in heavy metal layer Ta / W. A/cm^2.
-#velocity_eff = np.zeros(Current.size) 
+
 #velocity_stat = np.zeros(Current.size)
 #print (Current)
 
 ## time array
-duration = 100e-09	# current pulse duration. 10ns.
+#duration = 100e-09	# current pulse duration. 10ns.
+duration = 2.6e-09
 t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 t_1 = np.arange(0, duration, t_step, dtype = np.float64)	# time array when solutions are obtained.
 ## after switch of the current
@@ -83,7 +85,16 @@ bJ = 0
 HR = 0
 #HR = H_R(alpha_R, P, current, M_s)
 
-y_0 = np.array([0.0, - (Q-1) * pi / 2, 0.0])
+#D_0 = 0.21e-03	# critical value
+D_0 = 0.15e-03
+if H_D(D(D_0, 0), Delta, M_s) * pi / 2 > H_K(t_FM, M_s, Delta):
+	print ("phi is", 0)
+else:
+	print ("phi is", acos(H_D(D(D_0, 0), Delta, M_s) * pi / (2 * H_K(t_FM, M_s, Delta))))
+
+
+#y_0 = np.array([0.0, - (Q-1) * pi / 2, 0.0])
+y_0 = np.array([0.0, - (Q-1) * pi / 2 + 0.000001, 0.0])
 #y_0 = np.array([0.0, pi, 0.0])
 #y_1 = odeint(one_dim_model_3var, y_0, t_1, \
 #	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
