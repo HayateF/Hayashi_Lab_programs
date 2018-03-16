@@ -86,10 +86,13 @@ duration = 2.6e-09	# current pulse duration. 10ns.
 #duration = 9.1e-09
 #t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 t_step = 1e-10
-t_1 = np.arange(0, duration, t_step, dtype = np.float64)	# time array when solutions are obtained.
-## after switch of the current
+t_init = 300e-09	# time for the first relaxation to determine the initial condition.
+
+t_0 = np.arange(0, 1.9 * t_init, t_init, dtype = np.float64) # t_0 becomes ([0, t_init])
+t_1 = np.arange(t_init, t_init + duration, t_step, dtype = np.float64)	# time array when solutions are obtained.
+## after switch off the current
 t_end = 300e-09	# final time. 300ns.
-t_2 = np.arange(duration, t_end, t_step, dtype = np.float64)
+t_2 = np.arange(t_init + duration, t_init + t_end, t_step, dtype = np.float64)
 
 print ("flag 20")
 
@@ -109,13 +112,17 @@ for H_x in H_x_list:
 		y_0 = np.array([0.0, acos((H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
 	print ("flag 30")
 	## solve the equation
+	y_05 = odeint(one_dim_model_3var_ex, y_0, t_0, \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
+				0, 0, \
+				alpha, Delta, width, 1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, \
+				0, C_1, C_2))
+	y_0 = y_05[-1]	
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 				H_R(alpha_R, P, current, M_s) * s_R, H_SH(theta_SH, current, M_s, t_FM), \
 				alpha, Delta, width, 1, K_u, M_s, A, D(D_0, current), t_FM, b_J(current, P, M_s) * s_stt, xi, \
 				current, C_1, C_2))	
-
-	print ("flag 40")
 	y_0 = y_1[-1]	# the initial condition is the final state of the previous calculation.
 	y_2 = odeint(one_dim_model_3var_ex, y_0, t_2, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
@@ -123,8 +130,8 @@ for H_x in H_x_list:
 				alpha, Delta, width, 1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, 0, C_1, C_2))
 	
 	print("flag 50")
-	velocity_eff_p_updown[i] = (y_2[-1, 0] / duration)
-	velocity_stat_p_updown[i] = (y_1[-1, 0] / duration)
+	velocity_eff_p_updown[i] = (y_2[-1, 0] - y_1[0, 0]) / duration
+	velocity_stat_p_updown[i] = (y_1[-1, 0] - y_1[0, 0]) / duration
 
 	### down-up calculation
 	if (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
@@ -134,6 +141,12 @@ for H_x in H_x_list:
 	else:
 		y_0 = np.array([0.0, acos((-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
 	#y_0 = np.array([0.0, -pi, 0.0])	# phi = -pi. right-handed wall is assumed.
+	y_05 = odeint(one_dim_model_3var_ex, y_0, t_0, \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
+				0, 0, \
+				alpha, Delta, width, -1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, \
+				0, C_1, C_2))
+	y_0 = y_05[-1]	
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 				H_R(alpha_R, P, current, M_s) * s_R, H_SH(theta_SH, current, M_s, t_FM), \
@@ -144,8 +157,8 @@ for H_x in H_x_list:
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
 				0, 0, \
 				alpha, Delta, width, -1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, 0, C_1, C_2))
-	velocity_eff_p_downup[i] = (y_2[-1, 0] / duration)
-	velocity_stat_p_downup[i] = (y_1[-1, 0] / duration)
+	velocity_eff_p_downup[i] = (y_2[-1, 0] - y_1[0, 0]) / duration
+	velocity_stat_p_downup[i] = (y_1[-1, 0] - y_1[0, 0]) / duration
 
 	current *= -1
 	######## negative current ########
@@ -157,6 +170,12 @@ for H_x in H_x_list:
 	else:
 		y_0 = np.array([0.0, acos((H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
 	#y_0 = np.array([0.0, 0.0, 0.0])
+	y_05 = odeint(one_dim_model_3var_ex, y_0, t_0, \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
+				0, 0, \
+				alpha, Delta, width, 1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, \
+				0, C_1, C_2))
+	y_0 = y_05[-1]	
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 				H_R(alpha_R, P, current, M_s) * s_R, H_SH(theta_SH, current, M_s, t_FM), \
@@ -167,8 +186,8 @@ for H_x in H_x_list:
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
 				0, 0, \
 				alpha, Delta, width, 1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, 0, C_1, C_2))
-	velocity_eff_n_updown[i] = (y_2[-1, 0] / duration)
-	velocity_stat_n_updown[i] = (y_1[-1, 0] / duration)
+	velocity_eff_n_updown[i] = (y_2[-1, 0] - y_1[0, 0]) / duration
+	velocity_stat_n_updown[i] = (y_1[-1, 0] - y_1[0, 0]) / duration
 	### down-up calculation
 	if (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
 		y_0 = np.array([0.0, pi, 0.0])
@@ -177,6 +196,12 @@ for H_x in H_x_list:
 	else:
 		y_0 = np.array([0.0, acos((-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
 	#y_0 = np.array([0.0, -pi, 0.0])
+	y_05 = odeint(one_dim_model_3var_ex, y_0, t_0, \
+		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
+				0, 0, \
+				alpha, Delta, width, -1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, \
+				0, C_1, C_2))
+	y_0 = y_05[-1]	
 	y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 				H_R(alpha_R, P, current, M_s) * s_R, H_SH(theta_SH, current, M_s, t_FM), \
@@ -187,8 +212,8 @@ for H_x in H_x_list:
 		args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
 				0, 0, \
 				alpha, Delta, width, -1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, 0, C_1, C_2))
-	velocity_eff_n_downup[i] = (y_2[-1, 0] / duration)
-	velocity_stat_n_downup[i] = (y_1[-1, 0] / duration)
+	velocity_eff_n_downup[i] = (y_2[-1, 0] - y_1[0, 0]) / duration
+	velocity_stat_n_downup[i] = (y_1[-1, 0] - y_1[0, 0])  / duration
 
 	print (i, "-th calculation finished.")
 	i += 1
