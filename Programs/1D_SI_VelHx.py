@@ -105,9 +105,9 @@ for H_x in H_x_list:
 	### up-down calculation
 	# initial condition
 	if (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
-		y_0 = np.array([0.0, pi, 0.0])
+		y_0 = np.array([0.0, pi - 0.01, 0.0])
 	elif (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
-		y_0 = np.array([0.0, 0.0, 0.0])
+		y_0 = np.array([0.0, 0.01, 0.0])
 	else:
 		y_0 = np.array([0.0, acos((H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
 	print ("flag 30")
@@ -135,9 +135,9 @@ for H_x in H_x_list:
 
 	### down-up calculation
 	if (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
-		y_0 = np.array([0.0, pi, 0.0])
+		y_0 = np.array([0.0, pi - 0.01, 0.0])
 	elif (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
-		y_0 = np.array([0.0, 0.0, 0.0])
+		y_0 = np.array([0.0, 0.01, 0.0])
 	else:
 		y_0 = np.array([0.0, acos((-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
 	#y_0 = np.array([0.0, -pi, 0.0])	# phi = -pi. right-handed wall is assumed.
@@ -164,9 +164,9 @@ for H_x in H_x_list:
 	######## negative current ########
 	### up-down calculation
 	if (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
-		y_0 = np.array([0.0, pi, 0.0])
+		y_0 = np.array([0.0, pi - 0.01, 0.0])
 	elif (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
-		y_0 = np.array([0.0, 0.0, 0.0])
+		y_0 = np.array([0.0, 0.01, 0.0])
 	else:
 		y_0 = np.array([0.0, acos((H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
 	#y_0 = np.array([0.0, 0.0, 0.0])
@@ -190,9 +190,9 @@ for H_x in H_x_list:
 	velocity_stat_n_updown[i] = (y_1[-1, 0] - y_1[0, 0]) / duration
 	### down-up calculation
 	if (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
-		y_0 = np.array([0.0, pi, 0.0])
+		y_0 = np.array([0.0, pi - 0.01, 0.0])
 	elif (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
-		y_0 = np.array([0.0, 0.0, 0.0])
+		y_0 = np.array([0.0, 0.01, 0.0])
 	else:
 		y_0 = np.array([0.0, acos((-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
 	#y_0 = np.array([0.0, -pi, 0.0])
