@@ -285,6 +285,7 @@ plt.ylim([0.0, 0.5])
 
 plt.show()
 
+np.savetxt("DMI-J.txt", np.stack([current_list / 1e+12, DMI], axis = 1), delimiter = "\t", header = "J_FM[10^{12}A/m^2]	DMI[mJ/m^2]")
 
 ### plot velocity
 #plt.figure(1)
@@ -321,6 +322,5 @@ plt.show()
 #
 #print ("compensation field from the stationary velocities is", H_c, "Oe.")
 #print ("the DMI is", H_c * M_s * Delta / 10, "mJ/m^2")
-
 
 
