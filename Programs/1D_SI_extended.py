@@ -49,8 +49,8 @@ C_2 = 0.0
 #period = 21e-09	# pinning periodicity. 21nm. 
 
 ## External Field. A/m. 1 Oe is 10^3/(4 pi) A/m.
-H_x = -500 * 1e+03 / (4 * pi)
-#H_x = 0
+#H_x = -500 * 1e+03 / (4 * pi)
+H_x = 0
 #H_y = 1000 * 1e+03 / (4 * pi)
 H_y = 0
 #H_z = 100 * 1e+03 / (4 * pi)
@@ -76,8 +76,8 @@ current = 0.4e+12
 duration = 9.1e-09
 t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 
-t_init = 300e-09	# time for the first relaxation to determine the inital condition.
-t_0 = np.arange(0, 1.9 * t_init, t_init, dtype = np.float64)	# t_0 becomes ([0, t_init])
+t_init = 0	# time for the first relaxation to determine the inital condition.
+#t_0 = np.arange(0, 1.9 * t_init, t_init, dtype = np.float64)	# t_0 becomes ([0, t_init])
 t_1 = np.arange(t_init, t_init + duration, t_step, dtype = np.float64)	# time array when solutions are obtained.
 ## after switch of the current
 t_end = 300e-09	# final time. 300ns.
@@ -98,20 +98,20 @@ HR = 0
 
 #print (acos(-0.5))
 
-#y_0 = np.array([0.0, - (Q-1) * pi / 2, 0.0])
-if (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / 2 > H_K(t_FM, M_s, Delta):
-	y_0 = np.array([0.0, 0.01, 0.0])
-else:
-	y_0 = np.array([0.0, acos((H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
-	#y_0 = np.array([0.0, -acos((H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
+y_0 = np.array([0.0, - (Q-1) * pi / 2, 0.0])
+#if (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / 2 > H_K(t_FM, M_s, Delta):
+#	y_0 = np.array([0.0, 0.01, 0.0])
+#else:
+#	y_0 = np.array([0.0, acos((H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
+#	#y_0 = np.array([0.0, -acos((H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
 
 
 
-y_05 = odeint(one_dim_model_3var_ex, y_0, t_0, \
-	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
-			0, 0, \
-			alpha, Delta, width, Q, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, 0, C_1, C_2))
-y_0 = y_05[-1]
+#y_05 = odeint(one_dim_model_3var_ex, y_0, t_0, \
+#	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
+#			0, 0, \
+#			alpha, Delta, width, Q, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, 0, C_1, C_2))
+#y_0 = y_05[-1]
 #y_0 = np.array([0.0, pi, 0.0])
 #y_1 = odeint(one_dim_model_3var, y_0, t_1, \
 #	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(current), Delta, M_s), \
