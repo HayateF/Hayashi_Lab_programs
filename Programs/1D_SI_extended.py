@@ -49,8 +49,8 @@ C_2 = 0.0
 #period = 21e-09	# pinning periodicity. 21nm. 
 
 ## External Field. A/m. 1 Oe is 10^3/(4 pi) A/m.
-#H_x = 200 * 1e+03 / (4 * pi)
-H_x = 0
+H_x = -500 * 1e+03 / (4 * pi)
+#H_x = 0
 #H_y = 1000 * 1e+03 / (4 * pi)
 H_y = 0
 #H_z = 100 * 1e+03 / (4 * pi)
@@ -103,6 +103,7 @@ if (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / 2 > H_K(t_FM, M_s, Delta):
 	y_0 = np.array([0.0, 0.01, 0.0])
 else:
 	y_0 = np.array([0.0, acos((H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
+	#y_0 = np.array([0.0, -acos((H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
 
 
 

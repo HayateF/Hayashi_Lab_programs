@@ -84,7 +84,7 @@ velocity_stat_n_downup = np.zeros(H_x_list.size)
 #print (Current)
 
 ## time array
-duration = 2.6e-09	# current pulse duration. 10ns.
+duration = 3e-09	# current pulse duration. 10ns.
 #duration = 9.1e-09
 #t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 t_step = 1e-10
