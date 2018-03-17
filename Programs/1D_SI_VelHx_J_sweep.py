@@ -17,9 +17,9 @@ from one_dim_si_func_def import *
 ## Consider W / 1 CoFeB / 2 MgO / 1 Ta.
 #K_eff = 3.2e+05	# effective magnetic anisotropy energy. J/m^3.
 K_eff = 6.2e+05	# effective magnetic anisotropy energy. J/m^3. 2C.
-#K_eff = 3.7e+05	# effective magnetic anisotropy energy. J/m^3. 2M.
-M_s = 1100e+03	# saturation magnetization. J/Tm^3. 2C.
-#M_s = 1000e+03	# saturation magnetization. J/Tm^3. 2M.
+#K_eff = 4.0e+05	# effective magnetic anisotropy energy. J/m^3. 2M.
+M_s = 1090e+03	# saturation magnetization. J/Tm^3. 2C.
+#M_s = 930e+03	# saturation magnetization. J/Tm^3. 2M.
 K_u = K_eff + mu_0 * M_s**2 / 2	# magnetic anisotropy energy.
 #alpha = 0.01	# damping coefficient
 #alpha = 0.05	# damping coefficient
