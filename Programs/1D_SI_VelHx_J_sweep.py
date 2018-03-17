@@ -94,9 +94,9 @@ velocity_stat_n_downup = np.zeros(H_x_list.size)
 duration = 9.1e-09	# current pulse duration. 100ns.
 #t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 t_step = 1e-10	# time step when we get the results, not a time step of numerical calculation.
-t_init = 300e-09	# time for the first relaxation to determine the initial condition
+t_init = 0	# time for the first relaxation to determine the initial condition
 
-t_0 = np.arange(0, 1.9 * t_init, t_init, dtype = np.float64)	# t_0 becomes ([0, t_init])
+#t_0 = np.arange(0, 1.9 * t_init, t_init, dtype = np.float64)	# t_0 becomes ([0, t_init])
 t_1 = np.arange(t_init, t_init + duration, t_step, dtype = np.float64)	# time array when solutions are obtained.
 ## after switch of the current
 t_end = 300e-09	# final time. 300ns.
@@ -124,20 +124,20 @@ for current in current_list:
 		######## positive current ########
 		### up-down calculation
 		# initial condition
-		#y_0 = np.array([0.0, 0.0, 0.0])
-		if (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
-			y_0 = np.array([0.0, pi - 0.01, 0.0])
-		elif (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
-			y_0 = np.array([0.0, 0.01, 0.0])
-		else:
-			y_0 = np.array([0.0, acos((H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
+		y_0 = np.array([0.0, 0.0, 0.0])
+		#if (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
+		#	y_0 = np.array([0.0, pi - 0.01, 0.0])
+		#elif (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
+		#	y_0 = np.array([0.0, 0.01, 0.0])
+		#else:
+		#	y_0 = np.array([0.0, acos((H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
 		## solve the equation
-		y_05 = odeint(one_dim_model_3var_ex, y_0, t_0, \
-			args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
-					0, 0, \
-					alpha, Delta, width, 1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, \
-					0, C_1, C_2))	
-		y_0 = y_05[-1]
+		#y_05 = odeint(one_dim_model_3var_ex, y_0, t_0, \
+		#	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
+		#			0, 0, \
+		#			alpha, Delta, width, 1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, \
+		#			0, C_1, C_2))	
+		#y_0 = y_05[-1]
 		y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 			args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 					H_R(alpha_R, P, current, M_s) * s_R, H_SH(theta_SH, current, M_s, t_FM), \
@@ -153,19 +153,19 @@ for current in current_list:
 		velocity_stat_p_updown[i] = (y_1[-1, 0] - y_1[0, 0]) / duration
 	
 		### down-up calculation
-		#y_0 = np.array([0.0, -pi, 0.0])	# phi = -pi. right-handed wall is assumed.
-		if (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
-			y_0 = np.array([0.0, pi - 0.01, 0.0])
-		elif (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
-			y_0 = np.array([0.0, 0.01, 0.0])
-		else:
-			y_0 = np.array([0.0, acos((-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
-		y_05 = odeint(one_dim_model_3var_ex, y_0, t_0, \
-			args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
-					0, 0, \
-					alpha, Delta, width, -1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, \
-					0, C_1, C_2))	
-		y_0 = y_05[-1]
+		y_0 = np.array([0.0, -pi, 0.0])	# phi = -pi. right-handed wall is assumed.
+		#if (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
+		#	y_0 = np.array([0.0, pi - 0.01, 0.0])
+		#elif (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
+		#	y_0 = np.array([0.0, 0.01, 0.0])
+		#else:
+		#	y_0 = np.array([0.0, acos((-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
+		#y_05 = odeint(one_dim_model_3var_ex, y_0, t_0, \
+		#	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
+		#			0, 0, \
+		#			alpha, Delta, width, -1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, \
+		#			0, C_1, C_2))	
+		#y_0 = y_05[-1]
 		y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 			args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 					H_R(alpha_R, P, current, M_s) * s_R, H_SH(theta_SH, current, M_s, t_FM), \
@@ -182,19 +182,19 @@ for current in current_list:
 		current *= -1
 		######## negative current ########
 		### up-down calculation
-		#y_0 = np.array([0.0, 0.0, 0.0])
-		if (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
-			y_0 = np.array([0.0, pi - 0.01, 0.0])
-		elif (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
-			y_0 = np.array([0.0, 0.01, 0.0])
-		else:
-			y_0 = np.array([0.0, acos((H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
-		y_05 = odeint(one_dim_model_3var_ex, y_0, t_0, \
-			args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
-					0, 0, \
-					alpha, Delta, width, 1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, \
-					0, C_1, C_2))	
-		y_0 = y_05[-1]
+		y_0 = np.array([0.0, 0.0, 0.0])
+		#if (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
+		#	y_0 = np.array([0.0, pi - 0.01, 0.0])
+		#elif (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
+		#	y_0 = np.array([0.0, 0.01, 0.0])
+		#else:
+		#	y_0 = np.array([0.0, acos((H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
+		#y_05 = odeint(one_dim_model_3var_ex, y_0, t_0, \
+		#	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
+		#			0, 0, \
+		#			alpha, Delta, width, 1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, \
+		#			0, C_1, C_2))	
+		#y_0 = y_05[-1]
 		y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 			args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 					H_R(alpha_R, P, current, M_s) * s_R, H_SH(theta_SH, current, M_s, t_FM), \
@@ -208,19 +208,19 @@ for current in current_list:
 		velocity_eff_n_updown[i] = (y_2[-1, 0] - y_1[0, 0]) / duration
 		velocity_stat_n_updown[i] = (y_1[-1, 0] - y_1[0, 0]) / duration
 		### down-up calculation
-		#y_0 = np.array([0.0, -pi, 0.0])
-		if (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
-			y_0 = np.array([0.0, pi - 0.01, 0.0])
-		elif (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
-			y_0 = np.array([0.0, 0.01, 0.0])
-		else:
-			y_0 = np.array([0.0, acos((-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
-		y_05 = odeint(one_dim_model_3var_ex, y_0, t_0, \
-			args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
-					0, 0, \
-					alpha, Delta, width, -1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, \
-					0, C_1, C_2))	
-		y_0 = y_05[-1]
+		y_0 = np.array([0.0, -pi, 0.0])
+		#if (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
+		#	y_0 = np.array([0.0, pi - 0.01, 0.0])
+		#elif (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
+		#	y_0 = np.array([0.0, 0.01, 0.0])
+		#else:
+		#	y_0 = np.array([0.0, acos((-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta))), 0.0])
+		#y_05 = odeint(one_dim_model_3var_ex, y_0, t_0, \
+		#	args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, 0), Delta, M_s), \
+		#			0, 0, \
+		#			alpha, Delta, width, -1, K_u, M_s, A, D(D_0, 0), t_FM, 0, xi, \
+		#			0, C_1, C_2))	
+		#y_0 = y_05[-1]
 		y_1 = odeint(one_dim_model_3var_ex, y_0, t_1, \
 			args = (H_x, H_y, H_z, H_K(t_FM, M_s, Delta), H_D(D(D_0, current), Delta, M_s), \
 					H_R(alpha_R, P, current, M_s) * s_R, H_SH(theta_SH, current, M_s, t_FM), \
