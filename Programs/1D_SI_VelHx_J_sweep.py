@@ -16,10 +16,10 @@ from one_dim_si_func_def import *
 
 ## Consider W / 1 CoFeB / 2 MgO / 1 Ta.
 #K_eff = 3.2e+05	# effective magnetic anisotropy energy. J/m^3.
-K_eff = 6.2e+05	# effective magnetic anisotropy energy. J/m^3. 2C.
-#K_eff = 4.0e+05	# effective magnetic anisotropy energy. J/m^3. 2M.
-M_s = 1090e+03	# saturation magnetization. J/Tm^3. 2C.
-#M_s = 930e+03	# saturation magnetization. J/Tm^3. 2M.
+#K_eff = 6.2e+05	# effective magnetic anisotropy energy. J/m^3. 2C.
+K_eff = 4.0e+05	# effective magnetic anisotropy energy. J/m^3. 2M.
+#M_s = 1090e+03	# saturation magnetization. J/Tm^3. 2C.
+M_s = 930e+03	# saturation magnetization. J/Tm^3. 2M.
 K_u = K_eff + mu_0 * M_s**2 / 2	# magnetic anisotropy energy.
 #alpha = 0.01	# damping coefficient
 #alpha = 0.05	# damping coefficient
@@ -29,8 +29,8 @@ A = 1.5e-11	# exchange stiffness. J/m.
 Delta = sqrt(A / K_eff)	# width of DW.
 width = 5.0e-06	# width of wire. 5um.
 t_FM = 1.0e-09	# thickness of CoFeB. 1nm.
-#D_0 = 0.24e-03	# DMI constant. J/m^2
-D_0 = 0.32e-03	# DMI constant. J/m^2
+#D_0 = 0.32e-03	# DMI constant. J/m^2. 2C
+D_0 = 0.24e-03	# DMI constant. J/m^2. 2M
 #theta_SH = -0.21	# spin Hall angle.
 theta_SH = -0.20	# spin Hall angle.
 P = 0.72	# spin polarization factor
@@ -41,7 +41,8 @@ alpha_R = -0.5e-10 * charge	# Rashba parameter
 s_R = 0	# switch for the Rashba field. s_R = 1 is on, s_R = 0 is off.
 #C_1 = 3.0e-06	# velocity-DMI conversion coefficient.
 C_1 = 0.0
-C_2 = 1.3e-16
+#C_2 = 1.3e-16
+C_2 = 4.2e-16
 #C_2 = 0.0
 C_2 *= P	# based on the STT-like mechanism
 #voltage = 25 # voltage. 25V.

@@ -71,7 +71,9 @@ Keff = 618799.413
 
 ## x2 is the current density in the ferromagnetic layer
 #set x2range [x_left * sigma_CFB / L * 1e-12:x_right * sigma_CFB / L * 1e-12]
-set x2range [2 * x_left * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12:2 * x_right * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12]
+x2conv = 2 * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12
+set x2range [x_left * x2conv:x_right * x2conv] 
+#set x2range [2 * x_left * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12:2 * x_right * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12]
 set x2tics 0.3
 set x2label "J_{FM} [10^{12} A/m^2]"
 set x2label font "Times, 25"
@@ -87,6 +89,8 @@ set y2label offset 3.2, 0
 set ytics nomirror
 
 rep
+
+rep "../../../Programs/DMI-J_C2-1.3e-06_9.1ns_2C.txt" u ($1 / x2conv):2 title "" lc rgb "black" pt 4 ps 3
 
 #rep "< tail -n +10 DMI_Field_2C.txt" u 1:($12 * Ms * sqrt(A / Keff) / 10) title "STT correction" lc rgb "blue" pt 7 ps 1.5
 
