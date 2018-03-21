@@ -1,6 +1,6 @@
 set xrange [0:3]
 set yrange [0:20]
-set xtics 1
+set xtics 0.5
 set ytics 5
 set mxtics
 set mytics
