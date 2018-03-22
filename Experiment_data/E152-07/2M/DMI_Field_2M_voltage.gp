@@ -4,7 +4,7 @@ x_right = 35.0
 x_step = 5.0
 set xrange [x_left:x_right]
 set xtics x_step
-set xlabel "Pulse Amplitude [V]"
+set xlabel "Pulse amplitude [V]"
 set xlabel font "Times, 25"
 set xlabel offset 0, -0.5
 
@@ -13,7 +13,7 @@ y_up = 0.5
 y_down = 0.0
 set yrange [y_down:y_up]
 set ytics 0.1
-set ylabel "DMI [mJ / m^2]"
+set ylabel "D [mJ / m^2]"
 set ylabel font "Times, 25"
 set ylabel offset -3, 0
 
@@ -79,7 +79,7 @@ set xtics nomirror
 ## y2 is the DMI field
 set y2range [10 * y_down / (Ms * sqrt(A / Keff)):10 * y_up / (Ms * sqrt(A / Keff))]
 set y2tics 200
-set y2label "DMI Field [Oe]"
+set y2label "H_{DM} [Oe]"
 set y2label font "Times, 25"
 set y2label offset 3.2, 0
 set ytics nomirror
