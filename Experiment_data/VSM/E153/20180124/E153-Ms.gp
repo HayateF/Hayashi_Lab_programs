@@ -3,10 +3,13 @@ set yrange [0:1200]
 set xtics 1
 set ytics 300
 set xlabel "Ta thickness [nm]"
-set ylabel "M_s [10^3 J / Tm^3]"
+#set ylabel "M_s [10^3 J / Tm^3]"
+set ylabel "M_s [kA / m]"
 set xlabel font "Times, 25"
 set ylabel font "Times, 25"
 ## font size 10 is the default
+set lmargin 13
+set bmargin 4
 set xlabel offset 0, -0.5
 set ylabel offset -3, 0
 set tics font "Times, 25"
