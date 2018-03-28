@@ -1,21 +1,21 @@
 ##plot "velocity+current.txt" u 9:12 title "+current up-down"
 ##plot "velocity-current.txt" u 9:15 title "-current down-up"
-#set xrange [-800:800]
-set xrange [-80:80]
+set xrange [-800:800]
+#set xrange [-80:80]
 set yrange [-150:150]
-#set xtics 300
-set xtics 30
+set xtics 300
+#set xtics 30
 set mxtics
 set ytics 50
 set mytics
-set xlabel "H_x [mT]"
+set xlabel "H_x [10^{-1} mT]"
 set ylabel "Velocity [m/s]"
 set xlabel font "Times, 25"
 set ylabel font "TImes, 25"
 ## font size 10 is the default
 set lmargin 12
 set bmargin 4
-set xlabel offset 0, -0.25
+set xlabel offset 0, 0
 set ylabel offset -3, 0
 set tics font "Times, 25"
 #set key center top
@@ -23,7 +23,7 @@ unset key
 set grid
 
 # mT or Oe. C = 1 if Oe, C = 10 if mT.
-C = 10
+C = 1
 
 
 # correction factor from pulse width. But in this linear fitting, this factor does not have any effects on the x-intercepts.
