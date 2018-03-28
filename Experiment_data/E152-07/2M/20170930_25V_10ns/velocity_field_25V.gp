@@ -49,16 +49,16 @@ vnu(x)=Anu*x+Bnu
 vnd(x)=And*x+Bnd
 
 # perform fitting
-fit [-600:600] [1:*] vpu(x) "< tail -n +2 velocity+current.txt" u ($5 / C):($12 * f) via Apu, Bpu
-fit [-600:450] [1:*] vpd(x) "< tail -n +2 velocity+current.txt" u ($5 / C):($15 * f) via Apd, Bpd
-fit [-350:600] [*:-1] vnu(x) "< tail -n +2 velocity-current.txt" u ($5 / C):($12 * f) via Anu, Bnu
-fit [-600:250] [*:-1] vnd(x) "< tail -n +2 velocity-current.txt" u ($5 / C):($15 * f) via And, Bnd
+fit [-600 / C:600 / C] [1:*] vpu(x) "< tail -n +2 velocity+current.txt" u ($5 / C):($12 * f) via Apu, Bpu
+fit [-600 / C:450 / C] [1:*] vpd(x) "< tail -n +2 velocity+current.txt" u ($5 / C):($15 * f) via Apd, Bpd
+fit [-350 / C:600 / C] [*:-1] vnu(x) "< tail -n +2 velocity-current.txt" u ($5 / C):($12 * f) via Anu, Bnu
+fit [-600 / C:250 / C] [*:-1] vnd(x) "< tail -n +2 velocity-current.txt" u ($5 / C):($15 * f) via And, Bnd
 
 # to get summary of fitting
-fit [-600:600] [1:*] vpu(x) "< tail -n +2 velocity+current.txt" u ($5 / C):($12 * f) via Apu, Bpu
-fit [-600:450] [1:*] vpd(x) "< tail -n +2 velocity+current.txt" u ($5 / C):($15 * f) via Apd, Bpd
-fit [-350:600] [*:-1] vnu(x) "< tail -n +2 velocity-current.txt" u ($5 / C):($12 * f) via Anu, Bnu
-fit [-600:250] [*:-1] vnd(x) "< tail -n +2 velocity-current.txt" u ($5 / C):($15 * f) via And, Bnd
+fit [-600 / C:600 / C] [1:*] vpu(x) "< tail -n +2 velocity+current.txt" u ($5 / C):($12 * f) via Apu, Bpu
+fit [-600 / C:450 / C] [1:*] vpd(x) "< tail -n +2 velocity+current.txt" u ($5 / C):($15 * f) via Apd, Bpd
+fit [-350 / C:600 / C] [*:-1] vnu(x) "< tail -n +2 velocity-current.txt" u ($5 / C):($12 * f) via Anu, Bnu
+fit [-600 / C:250 / C] [*:-1] vnd(x) "< tail -n +2 velocity-current.txt" u ($5 / C):($15 * f) via And, Bnd
 
 plot "velocity+current.txt" u ($5 / C):($12 * f) title "+ up-down" lc rgb "red" pt 7 ps 3
 rep "velocity+current.txt" u ($5 / C):($15 * f) title "+ down-up" lc rgb "red" pt 6 ps 3
