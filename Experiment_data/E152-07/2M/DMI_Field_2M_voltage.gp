@@ -79,7 +79,7 @@ set xtics nomirror
 ## y2 is the DMI field
 set y2range [10 * y_down / (Ms * sqrt(A / Keff)):10 * y_up / (Ms * sqrt(A / Keff))]
 set y2tics 200
-set y2label "H_{DM} [Oe]"
+set y2label "H_{DM} [10^{-1} mT]"
 set y2label font "Times, 25"
 set y2label offset 3.2, 0
 set ytics nomirror
