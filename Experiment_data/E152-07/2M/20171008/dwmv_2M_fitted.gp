@@ -4,7 +4,7 @@ set xrange [-35:35]
 set yrange [-100:100]
 set xtics 10
 set ytics 25
-set xlabel "Pulse voltage [V]"
+set xlabel "Pulse amplitude [V]"
 set ylabel "Velocity [m/s]"
 set xlabel font "Times, 25"
 set ylabel font "Times, 25"
