@@ -20,6 +20,9 @@ set tics font "Times, 25"
 unset key
 set grid
 
+set label 1 at graph 0.4125, 0.9 "18 V"
+set label 1 font "Times, 25"
+
 # correction factor from pulse width. But in this linear fitting, this factor does not have any effects on the x-intercepts.
 f = 1.1
 

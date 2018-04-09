@@ -22,6 +22,9 @@ set tics font "Times, 25"
 unset key
 set grid
 
+set label 1 at graph 0.4125, 0.9 "25 V"
+set label 1 font "Times, 25"
+
 # mT or Oe. C = 1 if Oe, C = 10 if mT.
 C = 1
 
