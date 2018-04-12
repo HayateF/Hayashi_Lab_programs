@@ -31,6 +31,9 @@ set grid
 
 plot "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 w ye title "" lc rgb "black" pt 7 ps 3
 
+D(x) = a * x**2 + b * x + c
+fit [0:40] D(x) "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 via a, b, c
+rep D(x) title ""
 
 ## the width of the nanowire [m]
 w = 5e-06
@@ -95,16 +98,15 @@ rep "../../../Programs/DMI-J_C2-1.3e-06_9.1ns_2C.txt" u ($1 / x2conv):2 title ""
 #rep "< tail -n +10 DMI_Field_2C.txt" u 1:($12 * Ms * sqrt(A / Keff) / 10) title "STT correction" lc rgb "blue" pt 7 ps 1.5
 
 
-#D(x) = a * x**2 + b * x + c
-D(x) = a * x + b
+#D(x) = a * x + b
 
 # perform fitting
-#fit [0:35] D(x) "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 via a, b, c
-#fit [0:35] D(x) "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 via a, b, c
-#fit [10:26] D(x) "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 via a, b
-fit [5 * x2conv:23 * x2conv] D(x) "< tail -n +10 DMI_Field_2C.txt" u ($1 * x2conv):6:7 via a, b
+###fit [0:35] D(x) "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 via a, b, c
+###fit [0:35] D(x) "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 via a, b, c
+###fit [10:26] D(x) "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 via a, b
+#fit [5 * x2conv:23 * x2conv] D(x) "< tail -n +10 DMI_Field_2C.txt" u ($1 * x2conv):6:7 via a, b
 
 a = a * x2conv
-rep D(x) title "" lc rgb "black" lt 1 lw 1.5
+#rep D(x) title "" lc rgb "black" lt 1 lw 1.5
 
 
