@@ -1,12 +1,15 @@
 ##plot "velocity+current.txt" u 9:12 title "+current up-down"
 ##plot "velocity-current.txt" u 9:15 title "-current down-up"
-set xrange [-800:800]
+#set xrange [-800:800]
+set xrange [-80:80]
 set yrange [-200:200]
-set xtics 300
+#set xtics 300
+set xtics 30
 set mxtics
 set ytics 100
 set mytics
-set xlabel "H_x [10^{-1} mT]"
+#set xlabel "H_x [10^{-1} mT]"
+set xlabel "H_x [mT]"
 set ylabel "Velocity [m/s]"
 set xlabel font "Times, 25"
 set ylabel font "Times, 25"
@@ -62,10 +65,16 @@ fit [-550:350] [1:*] vpd(x) "< tail -n +2 down-up/velocity+current.txt" u ($3 * 
 fit [-350:550] [*:-1] vnu(x) "< tail -n +2 up-down/velocity-current.txt" u ($3 * Hall_a + Hall_b):($12 * f) via Anu, Bnu
 fit [-550:350] [*:-1] vnd(x) "< tail -n +2 down-up/velocity-current.txt" u ($3 * Hall_a + Hall_b):($15 * f) via And, Bnd
 
-plot "up-down/velocity+current.txt" u ($3 * Hall_a + Hall_b):($12 * f) title "+ up-down" lc rgb "red" pt 7 ps 3
-rep "down-up/velocity+current.txt" u ($3 * Hall_a + Hall_b):($15 * f) title "+ down-up" lc rgb "red" pt 6 ps 3
-rep "up-down/velocity-current.txt" u ($3 * Hall_a + Hall_b):($12 * f) title "- up-down" lc rgb "blue" pt 5 ps 3
-rep "down-up/velocity-current.txt" u ($3 * Hall_a + Hall_b):($15 * f) title "- down-up" lc rgb "blue" pt 4 ps 3
+Apu = Apu * 10
+Apd = Apd * 10
+Anu = Anu * 10
+And = And * 10
+
+
+plot "up-down/velocity+current.txt" u (($3 * Hall_a + Hall_b) / 10):($12 * f) title "+ up-down" lc rgb "red" pt 7 ps 3
+rep "down-up/velocity+current.txt" u (($3 * Hall_a + Hall_b) / 10):($15 * f) title "+ down-up" lc rgb "red" pt 6 ps 3
+rep "up-down/velocity-current.txt" u (($3 * Hall_a + Hall_b) / 10):($12 * f) title "- up-down" lc rgb "blue" pt 5 ps 3
+rep "down-up/velocity-current.txt" u (($3 * Hall_a + Hall_b) / 10):($15 * f) title "- down-up" lc rgb "blue" pt 4 ps 3
 rep vpu(x) title "" lc rgb "red" lt 1 lw 1.5
 rep vpd(x) title "" lc rgb "red" lt 1 lw 1.5
 rep vnu(x) title "" lc rgb "blue" lt 1 lw 1.5
