@@ -29,10 +29,14 @@ set grid
 
 
 
-plot "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 w ye title "" lc rgb "black" pt 7 ps 3
+#plot "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 w ye title "" lc rgb "black" pt 7 ps 3
+plot "< tail -n +10 DMI_Field_2C.txt" u 1:15:16 w ye title "" lc rgb "blue" pt 7 ps 3
+rep "< tail -n +10 DMI_Field_2C.txt" u 1:13:14 w ye title "" lc rgb "red" pt 7 ps 3
 
-D(x) = a * x**2 + b * x + c
-fit [0:40] D(x) "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 via a, b, c
+#D(x) = a * x**2 + b * x + c
+boundary = 22
+D(x) = (x < boundary)? (a1 * (x - boundary) + b) : (a2 * (x - boundary) + b)
+fit [0:40] D(x) "< tail -n +10 DMI_Field_2C.txt" u 1:6:7 via a1, a2, b
 rep D(x) title "" lc rgb "black" lt 1 lw 1.5
 
 ## the width of the nanowire [m]
@@ -84,11 +88,14 @@ set x2label offset 0, 0.7
 set xtics nomirror
 
 ## y2 is the DMI field
-set y2range [10 * y_down / (Ms * sqrt(A / Keff)):10 * y_up / (Ms * sqrt(A / Keff))]
-set y2tics 200
-set y2label "H_{DM} [10^{-1} mT]"
+# C = 10 if Oe, C = 1 if mT.
+C = 1
+set y2range [C * y_down / (Ms * sqrt(A / Keff)):C * y_up / (Ms * sqrt(A / Keff))]
+set y2tics 20*C
+#set y2label "H_{DM} [10^{-1} mT]"
+set y2label "H_{DM} [mT]"
 set y2label font "Times, 25"
-set y2label offset 3.2, 0
+set y2label offset 3, 0
 set ytics nomirror
 
 rep
