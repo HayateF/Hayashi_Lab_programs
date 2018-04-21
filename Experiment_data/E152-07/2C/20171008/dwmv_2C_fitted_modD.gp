@@ -46,11 +46,11 @@ aCnd = -4.0
 
 vpu(x) = (x > aCpu)? (A * Dp(x)) / sqrt(1+(Bpu * Dp(x) / (x-aCpu))**2) : 0
 vpd(x) = (x > aCpd)? (A * Dp(x)) / sqrt(1+(Bpd * Dp(x) / (x-aCpd))**2) : 0
-vnu(x) = (x < aCpu)? (A * Dn(x)) / sqrt(1+(Bnu * Dn(x) / (x-aCnu))**2) : 0
-vnd(x) = (x < aCpu)? (A * Dn(x)) / sqrt(1+(Bnd * Dn(x) / (x-aCnd))**2) : 0
+vnu(x) = (x < aCnu)? (A * Dn(x)) / sqrt(1+(Bnu * Dn(x) / (x-aCnu))**2) : 0
+vnd(x) = (x < aCnd)? (A * Dn(x)) / sqrt(1+(Bnd * Dn(x) / (x-aCnd))**2) : 0
 
-plot vpu(x)
-rep vnu(x)
+#plot vpu(x)
+#rep vnu(x)
 #rep Dp(x)
 #rep "< tail -n +2 velocity_v1_51a.dat" u 9:($12 * f)
 
@@ -68,8 +68,8 @@ fit [-30:0] vnd(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($15 * f) via aCnd, Bn
 
 plot "velocity_v1_51a.dat" u 9:($15 * f) title "down-up" lc rgb "blue" pt 5 ps 3
 rep "velocity_v1_51a.dat" u 9:($12 * f) title "up-down" lc rgb "red" pt 7 ps 3
-rep vnd(x) title "fit - down-up" lc rgb "purple" lt 2 lw 3
-rep vnu(x) title "fit - up-down" lc rgb "black" lt 4 lw 3
-rep vpd(x) title "fit + down-up" lc rgb "purple" lt 2 lw 3
-rep vpu(x) title "fit + up-down" lc rgb "black" lt 4 lw 3
+rep vnd(x) title "fit - down-up" lc rgb "purple" lt 2 lw 1
+rep vnu(x) title "fit - up-down" lc rgb "black" lt 4 lw 1
+rep vpd(x) title "fit + down-up" lc rgb "purple" lt 2 lw 1
+rep vpu(x) title "fit + up-down" lc rgb "black" lt 4 lw 1
 
