@@ -25,32 +25,37 @@ f = 1.1
 # v_D / D
 A = 253348.612
 # V_D / D
-Bpu = 13800
-Bpd = 13800
-Bnu = 13800
-Bnd = 13800
+Bpu = 13900
+Bpd = 13900
+Bnu = 13900
+Bnd = 13900
 # DMI constant
 #D(x) = apu * x**2 + bpu * x + cpu
 Dp(x) = (x < 22)? (a1 * (x - 22) + b) : (a2 * (x - 22) + b)
-Dn(x) = (x > -22)? (-a1 * (x + 22) + b) : (-a2 * (x + 22) + b)
+Dn(x) = (x > -22)? (a1 * (x + 22) - b) : (a2 * (x + 22) - b)
 a1 = 0.00452475 / 1000
 a2 = -0.0102069 / 1000
 b = 0.385581 / 1000
 
 
 #threshold pulse voltage
-aCpu = 7.9
+aCpu = 8.0
 aCpd = 8.0
-aCnu = -8.0
-aCnd = -8.0
+aCnu = -4.0
+aCnd = -4.0
 
 vpu(x) = (x > aCpu)? (A * Dp(x)) / sqrt(1+(Bpu * Dp(x) / (x-aCpu))**2) : 0
 vpd(x) = (x > aCpd)? (A * Dp(x)) / sqrt(1+(Bpd * Dp(x) / (x-aCpd))**2) : 0
-vpu(x) = (x > aCpu)? (A * Dn(x)) / sqrt(1+(Bnu * Dn(x) / (x-aCnu))**2) : 0
-vpu(x) = (x > aCpu)? (A * Dn(x)) / sqrt(1+(Bnd * Dn(x) / (x-aCnd))**2) : 0
+vnu(x) = (x < aCpu)? (A * Dn(x)) / sqrt(1+(Bnu * Dn(x) / (x-aCnu))**2) : 0
+vnd(x) = (x < aCpu)? (A * Dn(x)) / sqrt(1+(Bnd * Dn(x) / (x-aCnd))**2) : 0
+
+plot vpu(x)
+rep vnu(x)
+#rep Dp(x)
+#rep "< tail -n +2 velocity_v1_51a.dat" u 9:($12 * f)
 
 # perform fitting
-fit [0:30] vpu(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($12 * f) via aCpu, Bpu 
+fit [0:30] vpu(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($12 * f) via Bpu, aCpu 
 fit [0:30] vpd(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($15 * f) via aCpd, Bpd
 fit [-30:0] vnu(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($12 * f) via aCnu, Bnu
 fit [-30:0] vnd(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($15 * f) via aCnd, Bnd
