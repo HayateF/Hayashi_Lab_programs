@@ -60,11 +60,57 @@ fit [0:30] vpd(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($15 * f) via aCpd, Bpd
 fit [-30:0] vnu(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($12 * f) via aCnu, Bnu
 fit [-30:0] vnd(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($15 * f) via aCnd, Bnd
 
-# to get summary of fitting
+
+
+
+## saturation velocity for positive up-down are
+vDpu = 30.0
+
+vDpd = 30.0
+vDnu = -30.0
+vDnd = -30.0
+
+## saturation pulse amplitude
+aDpu = 5.0
+aDpd = 5.0
+aDnu = -5.0
+aDnd = -5.0
+
+## threshold pulse voltage
+aTpu = 8.0
+aTpd = 8.0
+aTnu = -8.0
+aTnd = -8.0
+
+upu(x) = (x > aTpu)? vDpu / sqrt(1 + (aDpu / (x - aTpu))**2) : 0
+upd(x) = (x > aTpd)? vDpd / sqrt(1 + (aDpd / (x - aTpd))**2) : 0
+unu(x) = (x < aTnu)? vDnu / sqrt(1 + (aDnu / (x - aTnu))**2) : 0
+und(x) = (x < aTnd)? vDnd / sqrt(1 + (aDnd / (x - aTnd))**2) : 0
+
+## perfom fitting
+fit [0:30] upu(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($12 * f) via vDpu, aDpu, aTpu 
+fit [0:30] upd(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($15 * f) via vDpd, aDpd, aTpd
+fit [-30:0] unu(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($12 * f) via vDnu, aDnu, aTnu
+fit [-30:0] und(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($15 * f) via vDnd, aDnd, aTnd
+
+
+
+
+## to get summary of fitting
 fit [0:30] vpu(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($12 * f) via aCpu, Bpu 
 fit [0:30] vpd(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($15 * f) via aCpd, Bpd
 fit [-30:0] vnu(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($12 * f) via aCnu, Bnu
 fit [-30:0] vnd(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($15 * f) via aCnd, Bnd
+
+fit [0:30] upu(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($12 * f) via vDpu, aDpu, aTpu 
+fit [0:30] upd(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($15 * f) via vDpd, aDpd, aTpd
+fit [-30:0] unu(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($12 * f) via vDnu, aDnu, aTnu
+fit [-30:0] und(x) "< tail -n +2 velocity_v1_51a.dat" u 9:($15 * f) via vDnd, aDnd, aTnd
+
+
+
+
+
 
 plot "velocity_v1_51a.dat" u 9:($15 * f) title "down-up" lc rgb "blue" pt 5 ps 3
 rep "velocity_v1_51a.dat" u 9:($12 * f) title "up-down" lc rgb "red" pt 7 ps 3
@@ -72,4 +118,8 @@ rep vnd(x) title "fit - down-up" lc rgb "purple" lt 2 lw 1
 rep vnu(x) title "fit - up-down" lc rgb "black" lt 4 lw 1
 rep vpd(x) title "fit + down-up" lc rgb "purple" lt 2 lw 1
 rep vpu(x) title "fit + up-down" lc rgb "black" lt 4 lw 1
+rep und(x) title "" lc rgb "purple" lt 1 lw 1.5
+rep unu(x) title "" lc rgb "black" lt 1 lw 1.5
+rep upd(x) title "" lc rgb "purple" lt 1 lw 1.5
+rep upu(x) title "" lc rgb "black" lt 1 lw 1.5
 
