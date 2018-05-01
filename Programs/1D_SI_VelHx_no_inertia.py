@@ -21,9 +21,9 @@ K_eff = 4.0e+05	# 2M
 #M_s = 1090e+03	# saturation magnetization. J/Tm^3.
 M_s = 930e+03	# 2M
 K_u = K_eff + mu_0 * M_s**2 / 2	# magnetic anisotropy energy.
-alpha = 0.01	# damping coefficient
+#alpha = 0.01	# damping coefficient
 #alpha = 0.05	# damping coefficient
-#alpha = 0.09
+alpha = 0.09
 Q = 1	# this means up/down DW. -1 if down/up DW.
 A = 1.5e-11	# exchange stiffness. J/m.
 Delta = sqrt(A / K_eff)	# width of DW.
@@ -239,10 +239,10 @@ H_x_list = H_x_list * 1e-03 * 4 * pi	## Oe conversion
 
 ## plot velocity
 plt.figure(1)
-plt.scatter(H_x_list[:], velocity_eff_p_updown[:], label = "", marker = "o", c = "red", s = 150)
-plt.scatter(H_x_list[:], velocity_eff_p_downup[:], label = "", marker = "o", facecolors = "none", edgecolors = "red", s = 150)
-plt.scatter(H_x_list[:], velocity_eff_n_updown[:], label = "", marker = "s", c = "blue", s = 150)
-plt.scatter(H_x_list[:], velocity_eff_n_downup[:], label = "", marker = "s", facecolors = "none", edgecolors = "blue", s = 150)
+plt.scatter(H_x_list[:], velocity_stat_p_updown[:], label = "", marker = "o", c = "red", s = 150)
+plt.scatter(H_x_list[:], velocity_stat_p_downup[:], label = "", marker = "o", facecolors = "none", edgecolors = "red", s = 150)
+plt.scatter(H_x_list[:], velocity_stat_n_updown[:], label = "", marker = "s", c = "blue", s = 150)
+plt.scatter(H_x_list[:], velocity_stat_n_downup[:], label = "", marker = "s", facecolors = "none", edgecolors = "blue", s = 150)
 #plt.plot(H_x_list[:], ab_p_ud[0] * H_x_list[:] + ab_p_ud[1], label = "", linestyle = "solid", c = "red")
 #plt.plot(H_x_list[:], ab_p_du[0] * H_x_list[:] + ab_p_du[1], label = "", linestyle = "solid", c = "red")
 #plt.plot(H_x_list[:], ab_n_ud[0] * H_x_list[:] + ab_n_ud[1], label = "", linestyle = "solid", c = "blue")

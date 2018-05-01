@@ -14,10 +14,10 @@ from one_dim_si_func_def import *
 
 ## Consider W / 1 CoFeB / 2 MgO / 1 Ta.
 #K_eff = 3.2e+05	# effective magnetic anisotropy energy. J/m^3.
-K_eff = 6.2e+05
-#K_eff = 4.0e+05	# 2M
-M_s = 1090e+03	# saturation magnetization. J/Tm^3.
-#M_s = 930e+03	# 2M
+#K_eff = 6.2e+05
+K_eff = 4.0e+05	# 2M
+#M_s = 1090e+03	# saturation magnetization. J/Tm^3.
+M_s = 930e+03	# 2M
 K_u = K_eff + mu_0 * M_s**2 / 2	# magnetic anisotropy energy.
 #alpha = 0.01	# damping coefficient
 alpha = 0.09
@@ -27,7 +27,8 @@ Delta = sqrt(A / K_eff)	# width of DW.
 width = 5.0e-06	# width of wire. 5um.
 t_FM = 1.0e-09	# thickness of CoFeB. 1nm.
 #D_0 = 0.24e-03	# DMI constant. J/m^2
-D_0 = 0.32e-03
+#D_0 = 0.32e-03
+D_0 = 0.14e-03	# DMI constant for 2M by extrapolating the D v.s. V to 0 V.
 theta_SH = -0.20	# spin Hall angle.
 #theta_SH = 0.0
 P = 0.72	# spin polarization factor
@@ -38,7 +39,8 @@ alpha_R = -1.0e-10 * charge	# Rashba parameter. 1.0e-10 eV m is the typical valu
 #C_1 = 3.0e-06	# DW-motion-to-DMI conversion coefficient
 C_1 = 0.0
 #C_2 = 1.0e-16
-C_2 = 0.0
+#C_2 = 0.0
+C_2 = 5.3e-16
 #voltage = 25 # voltage. 25V.
 #rho_W = # resistivity of W. Ohm*m.
 #rho_Ta = # resistivity of Ta.
@@ -50,7 +52,8 @@ C_2 = 0.0
 
 ## External Field. A/m. 1 Oe is 10^3/(4 pi) A/m.
 #H_x = -500 * 1e+03 / (4 * pi)
-H_x = 0
+#H_x = 0
+H_x = -600 * 1e+03 / (4 * pi)
 #H_y = 1000 * 1e+03 / (4 * pi)
 H_y = 0
 #H_z = 100 * 1e+03 / (4 * pi)
@@ -59,7 +62,7 @@ H_z = 0
 #np.random.seed(seed)	# set seed for Mersenne twister
 
 #current = 0.5e+12	# current density in heavy metal layer Ta / W. A/m^2.
-current = 0.4e+12
+current = 1.0e+12
 #current = 0
 
 #current_start = -0.2e+08
@@ -74,6 +77,7 @@ current = 0.4e+12
 #duration = 100e-09	# current pulse duration. 10ns.
 #duration = 2.6e-09
 duration = 9.1e-09
+#duration = 100e-09
 t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 
 t_init = 0	# time for the first relaxation to determine the inital condition.
@@ -98,7 +102,8 @@ HR = 0
 
 #print (acos(-0.5))
 
-y_0 = np.array([0.0, - (Q-1) * pi / 2, 0.0])
+###y_0 = np.array([0.0, - (Q-1) * pi / 2, 0.0])
+y_0 = np.array([0.0, pi / 2, 0.0])
 #if (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / 2 > H_K(t_FM, M_s, Delta):
 #	y_0 = np.array([0.0, 0.01, 0.0])
 #else:
