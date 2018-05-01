@@ -26,9 +26,9 @@ set grid
 
 
 
-#plot "< tail -n +10 DMI_Field_2M.txt" u 1:6:7 w ye title "" lc rgb "black" pt 7 ps 3
-plot "< tail -n +10 DMI_Field_2M.txt" u 1:15:16 w ye title "" lc rgb "blue" pt 7 ps 3
-rep "< tail -n +10 DMI_Field_2M.txt" u 1:13:14 w ye title "" lc rgb "red" pt 7 ps 3
+plot "< tail -n +10 DMI_Field_2M.txt" u 1:6:7 w ye title "" lc rgb "black" pt 7 ps 3
+#plot "< tail -n +10 DMI_Field_2M.txt" u 1:15:16 w ye title "" lc rgb "blue" pt 7 ps 3
+#rep "< tail -n +10 DMI_Field_2M.txt" u 1:13:14 w ye title "" lc rgb "red" pt 7 ps 3
 
 #rep D(x) title "" lc rgb "black" lt 1 lw 1.5
 boundary = 25
@@ -97,7 +97,8 @@ set ytics nomirror
 
 rep
 
-rep "../../../Programs/DMI-J_C2-4.2e-06_9.1ns_2M.txt" u ($1 / x2conv):2 title "" lc rgb "black" pt 4 ps 3
+#rep "../../../Programs/DMI-J.txt" u ($1 / x2conv):2 title "" lc rgb "black" pt 4 ps 3
+rep "../../../Programs/DMI-J_C2-5.3e-06_9.1ns_2M.txt" u ($1 / x2conv):2 title "" lc rgb "black" pt 4 ps 3
 
 #rep "< tail -n +10 DMI_Field_2M.txt" u 1:($12 * Ms * sqrt(A / Keff) / 10) title "STT correction" lc rgb "blue" pt 7 ps 1.5
 
