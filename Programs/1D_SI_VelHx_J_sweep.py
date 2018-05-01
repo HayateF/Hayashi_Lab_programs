@@ -21,9 +21,10 @@ K_eff = 4.0e+05	# effective magnetic anisotropy energy. J/m^3. 2M.
 #M_s = 1090e+03	# saturation magnetization. J/Tm^3. 2C.
 M_s = 930e+03	# saturation magnetization. J/Tm^3. 2M.
 K_u = K_eff + mu_0 * M_s**2 / 2	# magnetic anisotropy energy.
-#alpha = 0.01	# damping coefficient
+alpha = 0.01	# damping coefficient
 #alpha = 0.05	# damping coefficient
-alpha = 0.09
+#alpha = 0.09
+#alpha = 0.2
 Q = 1	# this means up/down DW. -1 if down/up DW.
 A = 1.5e-11	# exchange stiffness. J/m.
 Delta = sqrt(A / K_eff)	# width of DW.
@@ -93,8 +94,8 @@ velocity_stat_n_downup = np.zeros(H_x_list.size)
 
 
 ## time array
-#duration = 100e-09	# current pulse duration. 100ns.
-duration = 9.1e-09	# current pulse duration. 100ns.
+duration = 100e-09	# current pulse duration. 100ns.
+#duration = 9.1e-09	# current pulse duration. 100ns.
 #t_step = 1e-12	# time step when we get the results, not a time step of numerical calculation.
 t_step = 1e-10	# time step when we get the results, not a time step of numerical calculation.
 t_init = 0	# time for the first relaxation to determine the initial condition
@@ -127,7 +128,8 @@ for current in current_list:
 		######## positive current ########
 		### up-down calculation
 		# initial condition
-		y_0 = np.array([0.0, 0.0, 0.0])
+		###y_0 = np.array([0.0, 0.0, 0.0])
+		y_0 = np.array([0.0, pi / 2, 0.0])
 		#if (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
 		#	y_0 = np.array([0.0, pi - 0.01, 0.0])
 		#elif (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
@@ -156,7 +158,8 @@ for current in current_list:
 		velocity_stat_p_updown[i] = (y_1[-1, 0] - y_1[0, 0]) / duration
 	
 		### down-up calculation
-		y_0 = np.array([0.0, -pi, 0.0])	# phi = -pi. right-handed wall is assumed.
+		###y_0 = np.array([0.0, -pi, 0.0])	# phi = -pi. right-handed wall is assumed.
+		y_0 = np.array([0.0, -pi / 2, 0.0])	# phi = -pi. right-handed wall is assumed.
 		#if (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
 		#	y_0 = np.array([0.0, pi - 0.01, 0.0])
 		#elif (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
@@ -185,7 +188,8 @@ for current in current_list:
 		current *= -1
 		######## negative current ########
 		### up-down calculation
-		y_0 = np.array([0.0, 0.0, 0.0])
+		###y_0 = np.array([0.0, 0.0, 0.0])
+		y_0 = np.array([0.0, pi / 2, 0.0])
 		#if (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
 		#	y_0 = np.array([0.0, pi - 0.01, 0.0])
 		#elif (H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
@@ -211,7 +215,8 @@ for current in current_list:
 		velocity_eff_n_updown[i] = (y_2[-1, 0] - y_1[0, 0]) / duration
 		velocity_stat_n_updown[i] = (y_1[-1, 0] - y_1[0, 0]) / duration
 		### down-up calculation
-		y_0 = np.array([0.0, -pi, 0.0])
+		###y_0 = np.array([0.0, -pi, 0.0])
+		y_0 = np.array([0.0, -pi / 2, 0.0])
 		#if (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) < -1:
 		#	y_0 = np.array([0.0, pi - 0.01, 0.0])
 		#elif (-H_D(D(D_0, 0), Delta, M_s) + H_x) * pi / (2 * H_K(t_FM, M_s, Delta)) > 1:
