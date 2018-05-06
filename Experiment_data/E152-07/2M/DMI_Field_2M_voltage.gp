@@ -98,7 +98,7 @@ set ytics nomirror
 rep
 
 #rep "../../../Programs/DMI-J.txt" u ($1 / x2conv):2 title "" lc rgb "black" pt 4 ps 3
-rep "../../../Programs/DMI-J_C2-5.3e-06_9.1ns_2M.txt" u ($1 / x2conv):2 title "" lc rgb "black" pt 4 ps 3
+rep "../../../Programs/DMI-J_C2-5.9e-06_9.1ns_2M.txt" u ($1 / x2conv):2 title "" lc rgb "black" pt 4 ps 3
 
 #rep "< tail -n +10 DMI_Field_2M.txt" u 1:($12 * Ms * sqrt(A / Keff) / 10) title "STT correction" lc rgb "blue" pt 7 ps 1.5
 
