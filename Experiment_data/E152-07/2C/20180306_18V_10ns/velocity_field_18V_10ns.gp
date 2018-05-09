@@ -25,6 +25,11 @@ set grid
 
 set label 1 at graph 0.4125, 0.9 "18 V"
 set label 1 font "Times, 25"
+set label 2 at graph 0.92, 0.2 "B"
+set label 2 font "Times, 25"
+set label 3 at graph 0.03, 0.8 "(d)"
+set label 3 font "Times, 25"
+
 
 # correction factor from pulse width. But in this linear fitting, this factor does not have any effects on the x-intercepts.
 f = 1.1
