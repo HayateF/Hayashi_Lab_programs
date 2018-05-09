@@ -23,6 +23,11 @@ set tics font "Times, 25"
 set key left top
 set grid
 
+#set label 1 at graph 0.92, 0.1 "A"
+#set label 1 font "Times, 25"
+set label 2 at graph 0.03, 0.9 "(a)"
+set label 2 font "Times, 25"
+
 
 
 
