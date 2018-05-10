@@ -25,8 +25,8 @@ set grid
 
 set label 1 at graph 0.4125, 0.9 "25 V"
 set label 1 font "Times, 25"
-set label 2 at graph 0.92, 0.2 "A"
-set label 2 font "Times, 25"
+#set label 2 at graph 0.92, 0.2 "A"
+#set label 2 font "Times, 25"
 set label 3 at graph 0.03, 0.8 "(c)"
 set label 3 font "Times, 25"
 
