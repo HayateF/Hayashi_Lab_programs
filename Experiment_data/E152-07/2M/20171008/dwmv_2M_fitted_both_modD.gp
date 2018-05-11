@@ -1,6 +1,7 @@
 #plot "velocity_v1_51a.dat" u 9:12 title "up-down"
 #plot "velocity_v1_51a.dat" u 9:15 title "down-up"
-set xrange [-35:35]
+#set xrange [-35:35]
+set xrange [-40:40]
 set yrange [-100:100]
 set xtics 10
 set ytics 25
@@ -39,8 +40,8 @@ b = 0.372236 / 1000
 aCu=8.0
 aCd=8.0
 
-vu(x) = (x > aCu)? (A * Dp(x)) / sqrt(1+(Bu * Dp(x) / (x-aCu))**2) : 0
-vd(x) = (x > aCd)? (A * Dp(x)) / sqrt(1+(Bd * Dp(x) / (x-aCd))**2) : 0
+vu(x) = (x < 36.5)? ( (x > aCu)? (A * Dp(x)) / sqrt(1+(Bu * Dp(x) / (x-aCu))**2) : 0 ) : 1/0
+vd(x) = (x < 36.5)? ( (x > aCd)? (A * Dp(x)) / sqrt(1+(Bd * Dp(x) / (x-aCd))**2) : 0 ) : 1/0
 
 # perform fitting
 fit [0:36] vu(x) "< tail -n +2 velocity_v1_51a.dat" u (abs($9)):(abs($12) * f) via Bu, aCu
@@ -98,12 +99,12 @@ fit [0:36] ud(x) "< tail -n +2 velocity_v1_51a.dat" u (abs($9)):(abs($15) * f) v
 
 plot "velocity_v1_51a.dat" u 9:($15 * f) title "down-up" lc rgb "blue" pt 5 ps 3
 rep "velocity_v1_51a.dat" u 9:($12 * f) title "up-down" lc rgb "red" pt 7 ps 3
-rep vd(x) title "fit + down-up" lc rgb "purple" lt 2 lw 1
-rep vu(x) title "fit + up-down" lc rgb "black" lt 4 lw 1
-rep -vd(-x) title "fit + down-up" lc rgb "purple" lt 2 lw 1
-rep -vu(-x) title "fit + up-down" lc rgb "black" lt 4 lw 1
-rep ud(x) title "" lc rgb "purple" lt 1 lw 1.5
-rep uu(x) title "" lc rgb "black" lt 1 lw 1.5
-rep -ud(-x) title "" lc rgb "purple" lt 1 lw 1.5
-rep -uu(-x) title "" lc rgb "black" lt 1 lw 1.5
+rep vd(x) title "fit + down-up" lc rgb "purple" lt 2 lw 2
+rep vu(x) title "fit + up-down" lc rgb "black" lt 4 lw 2
+rep -vd(-x) title "fit + down-up" lc rgb "purple" lt 2 lw 2
+rep -vu(-x) title "fit + up-down" lc rgb "black" lt 4 lw 2
+rep ud(x) title "" lc rgb "purple" lt 1 lw 2
+rep uu(x) title "" lc rgb "black" lt 1 lw 2
+rep -ud(-x) title "" lc rgb "purple" lt 1 lw 2
+rep -uu(-x) title "" lc rgb "black" lt 1 lw 2
 
