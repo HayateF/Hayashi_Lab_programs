@@ -1,6 +1,7 @@
 #plot "velocity_v1_51a.dat" u 9:12 title "up-down"
 #plot "velocity_v1_51a.dat" u 9:15 title "down-up"
-set xrange [-35:35]
+#set xrange [-35:35]
+set xrange [-40:40]
 set yrange [-100:100]
 set xtics 10
 set ytics 25
