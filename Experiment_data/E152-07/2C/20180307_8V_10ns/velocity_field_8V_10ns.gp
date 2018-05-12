@@ -5,30 +5,31 @@ set xrange [-80:80]
 set yrange [-200:200]
 #set xtics 300
 set xtics 30
-set mxtics
+set xtics offset 0, -0.5
+#set mxtics
 set ytics 100
-set mytics
-#set xlabel "H_x [10^{-1} mT]"
-set xlabel "H_x [mT]"
+#set mytics
+#set xlabel "{/Times-Italic H}_x (10^{-1} mT)"
+set xlabel "{/Times-Italic H}_{/Times-Italic x} (mT)"
 set ylabel "Velocity [m/s]"
-set xlabel font "Times, 25"
-set ylabel font "Times, 25"
+set xlabel font "Times, 40"
+set ylabel font "Times, 40"
 ## font size 10 is the default
-set lmargin 12
-set bmargin 4
-set xlabel offset 0, 0
-set ylabel offset -3, 0
-set tics font "Times, 25"
+set lmargin 14
+set bmargin 6
+set xlabel offset 0, -1.5
+set ylabel offset -5, 0
+set tics font "Times, 40"
 #set key center top
 unset key
 set grid
 
-set label 1 at graph 0.45, 0.9 "8 V"
-set label 1 font "Times, 25"
+set label 1 at graph 0.45, 0.94 "8 V"
+set label 1 font "Times, 40"
 #set label 2 at graph 0.92, 0.1 "B"
 #set label 2 font "Times, 25"
-set label 3 at graph 0.03, 0.9 "(b)"
-set label 3 font "Times, 25"
+set label 3 at graph 0.03, 0.95 "(b)"
+set label 3 font "Times, 40"
 
 
 # correction factor from pulse width. But in this linear fitting, this factor does not have any effects on the x-intercepts.
