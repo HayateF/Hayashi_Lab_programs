@@ -4,21 +4,26 @@
 set xrange [-40:40]
 set yrange [-100:100]
 set xtics 10
+set xtics offset 0, -0.5
 set ytics 25
-set xlabel "Pulse amplitude [V]"
-set ylabel "Velocity [m/s]"
-set xlabel font "Times, 25"
-set ylabel font "Times, 25"
+set xlabel "Pulse amplitude (V)"
+set ylabel "Velocity (m/s)"
+set xlabel font "Times, 40"
+set ylabel font "Times, 40"
 ## font size 10 is the default
-set lmargin 13
-set bmargin 4.5
-set xlabel offset 0, -0.5
-set ylabel offset -3, 0
-set tics font "Times, 25"
+set lmargin 14
+set bmargin 6
+set xlabel offset 0, -1.5
+set ylabel offset -4, 0
+set tics font "Times, 40"
 #set key left top
 #set key invert
 unset key
 set grid
+
+set label 1 at graph 0.03, 0.95 "(b)"
+set label 1 font "Times, 40"
+
 
 #correction factor from pulse duration
 f = 1.1
@@ -71,8 +76,8 @@ aDd = 5.0
 aTu = 8.0
 aTd = 8.0
 
-uu(x) = (x > aTu)? vDu / sqrt(1 + (aDu / (x - aTu))**2) : 0
-ud(x) = (x > aTd)? vDd / sqrt(1 + (aDd / (x - aTd))**2) : 0
+uu(x) = (x < 28.5)? ( (x > aTu)? vDu / sqrt(1 + (aDu / (x - aTu))**2) : 0) : 1/0
+ud(x) = (x < 28.5)? ( (x > aTd)? vDd / sqrt(1 + (aDd / (x - aTd))**2) : 0) : 1/0
 #unu(x) = (x < aTnu)? vDnu / sqrt(1 + (aDnu / (x - aTnu))**2) : 0
 #und(x) = (x < aTnd)? vDnd / sqrt(1 + (aDnd / (x - aTnd))**2) : 0
 
@@ -112,9 +117,9 @@ rep "velocity_v1_51a.dat" u 9:($12 * f) title "up-down" lc rgb "red" pt 7 ps 3
 #rep vnd(x) title "fit - down-up" lc rgb "purple" lt 2 lw 1
 #rep vnu(x) title "fit - up-down" lc rgb "black" lt 4 lw 1
 rep vd(x) title "fit + down-up" lc rgb "purple" lt 2 lw 2
-rep vu(x) title "fit + up-down" lc rgb "black" lt 4 lw 2
+rep vu(x) title "fit + up-down" lc rgb "black" lt 2 lw 2
 rep -vd(-x) title "fit - down-up" lc rgb "purple" lt 2 lw 2
-rep -vu(-x) title "fit - up-down" lc rgb "black" lt 4 lw 2
+rep -vu(-x) title "fit - up-down" lc rgb "black" lt 2 lw 2
 #rep und(x) title "" lc rgb "purple" lt 1 lw 1.5
 #rep unu(x) title "" lc rgb "black" lt 1 lw 1.5
 rep ud(x) title "" lc rgb "purple" lt 1 lw 2
