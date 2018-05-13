@@ -4,29 +4,31 @@ x_right = 35.0
 x_step = 5.0
 set xrange [x_left:x_right]
 set xtics x_step
-set xlabel "Pulse amplitude [V]"
-set xlabel font "Times, 25"
-set xlabel offset 0, -0.5
+set xtics offset 0, -0.5
+set xlabel "Pulse amplitude (V)"
+set xlabel font "Times, 40"
+set xlabel offset 0, -1.5
 
 ## y is DMI
 y_up = 0.5
 y_down = 0.0
 set yrange [y_down:y_up]
 set ytics 0.1
-set ylabel "D [mJ / m^2]"
-set ylabel font "Times, 25"
-set ylabel offset -3, 0
+set ylabel "{/Times-Italic D} (mJ / m^2)"
+set ylabel font "Times, 40"
+set ylabel offset -4, 0
 
-set bmargin 4.2
-set tmargin 4.2
-set tics font "Times, 25"
+set lmargin 14
+set bmargin 6
+set tmargin 7
+set tics font "Times, 40"
 set key left top
 set grid
 
 #set label 1 at graph 0.92, 0.1 "A"
 #set label 1 font "Times, 25"
-set label 2 at graph 0.03, 0.9 "(a)"
-set label 2 font "Times, 25"
+set label 2 at graph 0.03, 0.90 "(a)"
+set label 2 font "Times, 40"
 
 
 
@@ -84,9 +86,10 @@ x2conv = 2 * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12
 set x2range [x_left * x2conv:x_right * x2conv]
 #set x2range [2 * x_left * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12:2 * x_right * ratio / ((resist + 50) * w * t_CFB * 1e-09) * 1e-12]
 set x2tics 0.3
-set x2label "J_{FM} [10^{12} A/m^2]"
-set x2label font "Times, 25"
-set x2label offset 0, 0.7
+set x2tics offset 0, 0.5
+set x2label "{/Times-Italic J}_{FM} (10^{12} A/m^2)"
+set x2label font "Times, 40"
+set x2label offset 0, 2
 set xtics nomirror
 
 ## y2 is the DMI field
@@ -95,9 +98,9 @@ C = 1
 set y2range [C * y_down / (Ms * sqrt(A / Keff)):C * y_up / (Ms * sqrt(A / Keff))]
 set y2tics 20*C
 #set y2label "H_{DM} [10^{-1} mT]"
-set y2label "H_{DM} [mT]"
-set y2label font "Times, 25"
-set y2label offset 3, 0
+set y2label "{/Times-Italic H}_{DM} (mT)"
+set y2label font "Times, 40"
+set y2label offset 3.5, 0
 set ytics nomirror
 
 rep
