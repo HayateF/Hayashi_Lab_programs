@@ -103,12 +103,12 @@ fit [0:36] ud(x) "< tail -n +2 velocity_v1_51a.dat" u (abs($9)):(abs($15) * f) v
 
 plot "velocity_v1_51a.dat" u 9:($15 * f) title "down-up" lc rgb "blue" pt 5 ps 3
 rep "velocity_v1_51a.dat" u 9:($12 * f) title "up-down" lc rgb "red" pt 7 ps 3
-rep vd(x) title "fit + down-up" lc rgb "purple" lt 2 lw 2
-rep vu(x) title "fit + up-down" lc rgb "black" lt 2 lw 2
-rep -vd(-x) title "fit + down-up" lc rgb "purple" lt 2 lw 2
-rep -vu(-x) title "fit + up-down" lc rgb "black" lt 2 lw 2
-rep ud(x) title "" lc rgb "purple" lt 1 lw 2
-rep uu(x) title "" lc rgb "black" lt 1 lw 2
-rep -ud(-x) title "" lc rgb "purple" lt 1 lw 2
-rep -uu(-x) title "" lc rgb "black" lt 1 lw 2
+rep vd(x) title "fit + down-up" lc rgb "purple" lt 2 lw 4
+rep vu(x) title "fit + up-down" lc rgb "black" lt 2 lw 4
+rep -vd(-x) title "fit + down-up" lc rgb "purple" lt 2 lw 4
+rep -vu(-x) title "fit + up-down" lc rgb "black" lt 2 lw 4
+rep ud(x) title "" lc rgb "purple" lt 1 lw 4
+rep uu(x) title "" lc rgb "black" lt 1 lw 4
+rep -ud(-x) title "" lc rgb "purple" lt 1 lw 4
+rep -uu(-x) title "" lc rgb "black" lt 1 lw 4
 
