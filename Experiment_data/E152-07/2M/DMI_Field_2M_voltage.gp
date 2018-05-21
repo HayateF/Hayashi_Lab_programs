@@ -39,7 +39,7 @@ plot "< tail -n +10 DMI_Field_2M.txt" u 1:6:7 w ye title "" lc rgb "black" pt 7 
 
 #rep D(x) title "" lc rgb "black" lt 1 lw 1.5
 boundary = 25
-D(x) = (x < boundary)? (a1 * (x - boundary) + b) : (a2 * (x - boundary) + b)
+D(x) = (x < 36.5)? ( (x < boundary)? (a1 * (x - boundary) + b) : (a2 * (x - boundary) + b) ) : 1/0
 fit [0:40] D(x) "< tail -n +10 DMI_Field_2M.txt" u 1:6:7 via a1, a2, b
 rep D(x) title "" lc rgb "black" lt 1 lw 1.5
 
