@@ -1,7 +1,7 @@
 #plot "velocity_v1_51a.dat" u 9:12 title "up-down"
 #plot "velocity_v1_51a.dat" u 9:15 title "down-up"
-#set xrange [-35:35]
-set xrange [-40:40]
+set xrange [-35:35]
+#set xrange [-40:40]
 set yrange [-100:100]
 set xtics 10
 set xtics offset 0, -0.5
@@ -21,7 +21,7 @@ set tics font "Times, 40"
 unset key
 set grid
 
-set label 1 at graph 0.03, 0.95 "(b)"
+set label 1 at graph 0.08, 0.95 "(b)"
 set label 1 font "Times, 40"
 
 

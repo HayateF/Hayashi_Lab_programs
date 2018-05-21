@@ -1,6 +1,6 @@
 ## x is voltage
 x_left = 0.0
-x_right = 35.0
+x_right = 40.0
 x_step = 5.0
 set xrange [x_left:x_right]
 set xtics x_step
@@ -27,7 +27,7 @@ set grid
 
 #set label 1 at graph 0.92, 0.1 "A"
 #set label 1 font "Times, 25"
-set label 2 at graph 0.03, 0.90 "(a)"
+set label 2 at graph 0.02, 0.90 "(a)"
 set label 2 font "Times, 40"
 
 
@@ -39,7 +39,7 @@ plot "< tail -n +10 DMI_Field_2M.txt" u 1:6:7 w ye title "" lc rgb "black" pt 7 
 
 #rep D(x) title "" lc rgb "black" lt 1 lw 1.5
 boundary = 25
-D(x) = (x < 36.5)? ( (x < boundary)? (a1 * (x - boundary) + b) : (a2 * (x - boundary) + b) ) : 1/0
+D(x) = (x < 32.5)? ( (x < boundary)? (a1 * (x - boundary) + b) : (a2 * (x - boundary) + b) ) : 1/0
 fit [0:40] D(x) "< tail -n +10 DMI_Field_2M.txt" u 1:6:7 via a1, a2, b
 rep D(x) title "" lc rgb "black" lt 1 lw 1.5
 
